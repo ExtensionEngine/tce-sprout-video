@@ -1,6 +1,0 @@
-const ELEMENT_STATE = {
-  UPLOADING: 'UPLOADING',
-  UPLOADED: 'UPLOADED'
-};
-
-module.exports = { ELEMENT_STATE };
