@@ -25,6 +25,10 @@ class Request {
       .catch(toHttpError);
   }
 
+  delete(url, options = {}) {
+    return this._client.delete(url, options);
+  }
+
   get prefixUrl() {
     return this._client.defaults.baseURL;
   }

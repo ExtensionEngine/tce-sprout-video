@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash/cloneDeep';
 import axios from 'axios';
 import get from 'lodash/get';
 
@@ -34,7 +35,8 @@ function upload(_ref) {
 
 var ELEMENT_STATE = {
   UPLOADING: 'UPLOADING',
-  UPLOADED: 'UPLOADED'
+  UPLOADED: 'UPLOADED',
+  DELETING: 'DELETING'
 };
 var shared = {
   ELEMENT_STATE: ELEMENT_STATE
@@ -459,47 +461,47 @@ var script$4 = {
   },
   computed: {
     isEmpty: function isEmpty() {
-      var _this$element$data = this.element.data,
-          error = _this$element$data.error,
-          fileName = _this$element$data.fileName;
+      var _this$element$data$vi = this.element.data.video,
+          error = _this$element$data$vi.error,
+          fileName = _this$element$data$vi.fileName;
       return !error && !fileName;
     },
     didUploadFail: function didUploadFail() {
-      var status = this.element.data.status;
+      var status = this.element.data.video.status;
       return status === shared.ELEMENT_STATE.UPLOADING && !this.file;
     },
     errorMessage: function errorMessage() {
-      var error = this.element.data.error;
+      var error = this.element.data.video.error;
       return this.didUploadFail ? UPLOAD_FAILED_ERROR_MSG : error;
     },
     infoMessage: function infoMessage() {
-      var _this$element$data2 = this.element.data,
-          status = _this$element$data2.status,
-          playable = _this$element$data2.playable;
+      var _this$element$data$vi2 = this.element.data.video,
+          status = _this$element$data$vi2.status,
+          playable = _this$element$data$vi2.playable;
       if (status === shared.ELEMENT_STATE.UPLOADING) return UPLOADING_MSG;
       return playable ? '' : PROCESSING_MSG;
     },
     isPreparedToUpload: function isPreparedToUpload() {
-      var _this$element$data3 = this.element.data,
-          token = _this$element$data3.token,
-          uploadUrl = _this$element$data3.uploadUrl;
+      var _this$element$data$vi3 = this.element.data.video,
+          token = _this$element$data$vi3.token,
+          uploadUrl = _this$element$data$vi3.uploadUrl;
       return token && this.file && uploadUrl;
     }
   },
   methods: {
     appendVideo: function appendVideo() {
-      var _this$element$data4;
+      var _this$element$data$vi4;
 
       var player = this.$refs.player;
       if (!player) return;
-      player.innerHTML = (_this$element$data4 = this.element.data) === null || _this$element$data4 === void 0 ? void 0 : _this$element$data4.embedCode;
+      player.innerHTML = (_this$element$data$vi4 = this.element.data.video) === null || _this$element$data$vi4 === void 0 ? void 0 : _this$element$data$vi4.embedCode;
     },
     upload: function upload$1() {
       var _this = this;
 
-      var _this$element$data5 = this.element.data,
-          url = _this$element$data5.uploadUrl,
-          token = _this$element$data5.token;
+      var _this$element$data$vi5 = this.element.data.video,
+          url = _this$element$data$vi5.uploadUrl,
+          token = _this$element$data$vi5.token;
       upload({
         url: url,
         file: this.file,
@@ -509,21 +511,25 @@ var script$4 = {
         _this.file = null;
 
         _this.$emit('save', Object.assign({}, _this.element.data, {
-          videoId: id,
-          status: shared.ELEMENT_STATE.UPLOADED
+          video: Object.assign({}, _this.element.data.video, {
+            id: id,
+            status: shared.ELEMENT_STATE.UPLOADED
+          })
         }));
       })["catch"](function (err) {
         _this.$emit('save', Object.assign({}, _this.element.data, {
-          status: shared.ELEMENT_STATE.UPLOADED,
-          error: get(err, 'response.data.error', DEFAULT_ERROR_MSG),
-          fileName: null
+          video: Object.assign({}, _this.element.data.video, {
+            status: shared.ELEMENT_STATE.UPLOADED,
+            error: get(err, 'response.data.error', DEFAULT_ERROR_MSG),
+            fileName: null
+          })
         }));
       });
     }
   },
   watch: {
-    'element.data.embedCode': 'appendVideo',
-    'element.data.uploadUrl': function elementDataUploadUrl() {
+    'element.data.video.embedCode': 'appendVideo',
+    'element.data.video.uploadUrl': function elementDataVideoUploadUrl() {
       if (this.isPreparedToUpload) this.upload();
     }
   },
@@ -532,20 +538,27 @@ var script$4 = {
 
     this.appendVideo();
     this.$elementBus.on('save', function (_ref2) {
-      var file = _ref2.file;
-      _this2.file = file;
+      var video = _ref2.video,
+          caption = _ref2.caption;
 
-      _this2.$emit('save', Object.assign({}, _this2.element.data, {
-        fileName: file.name,
-        error: null,
-        status: shared.ELEMENT_STATE.UPLOADING
-      }));
+      if (video) {
+        _this2.file = video.file;
+        delete video.file;
+      }
+
+      var data = cloneDeep(_this2.element.data);
+      Object.assign(data.video, video);
+      Object.assign(data.caption, caption);
+
+      _this2.$emit('save', data);
     });
     this.$elementBus.on('error', function (_ref3) {
       var data = _ref3.data;
 
       _this2.$emit('save', Object.assign({}, _this2.element.data, {
-        error: get(data, 'error.message', DEFAULT_ERROR_MSG)
+        video: Object.assign({}, _this2.element.data.video, {
+          error: get(data, 'error.message', DEFAULT_ERROR_MSG)
+        })
       }));
     });
   },
@@ -598,7 +611,7 @@ var __vue_staticRenderFns__$4 = [];
 var __vue_inject_styles__$4 = undefined;
 /* scoped */
 
-var __vue_scope_id__$4 = "data-v-76b15544";
+var __vue_scope_id__$4 = "data-v-45d06c04";
 /* module identifier */
 
 var __vue_module_identifier__$4 = undefined;
@@ -696,7 +709,156 @@ function _nonIterableRest() {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var script$5 = {
+  name: 'confirmation-dialog',
+  data: function data() {
+    return {
+      dialog: false
+    };
+  },
+  methods: {
+    confirm: function confirm() {
+      this.dialog = false;
+      this.$emit('confirm');
+    }
+  }
+};
+
+/* script */
+var __vue_script__$5 = script$5;
+/* template */
+
+var __vue_render__$5 = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c('v-dialog', {
+    attrs: {
+      "width": "500"
+    },
+    scopedSlots: _vm._u([{
+      key: "activator",
+      fn: function fn(scope) {
+        return [_vm._t("default", null, null, scope)];
+      }
+    }], null, true),
+    model: {
+      value: _vm.dialog,
+      callback: function callback($$v) {
+        _vm.dialog = $$v;
+      },
+      expression: "dialog"
+    }
+  }, [_vm._v(" "), _c('v-card', [_c('v-card-title', {
+    staticClass: "dialog-title primary darken-1",
+    attrs: {
+      "primary-title": ""
+    }
+  }, [_c('v-avatar', {
+    staticClass: "mr-3",
+    attrs: {
+      "color": "secondary",
+      "size": "38"
+    }
+  }, [_c('v-icon', {
+    attrs: {
+      "dark": ""
+    }
+  }, [_vm._v("mdi-alert")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "text-truncate white--text"
+  }, [_vm._v("\n        Delete caption?\n      ")])], 1), _vm._v(" "), _c('v-card-text', {
+    staticClass: "text-left pt-7 px-4 pb-2"
+  }, [_vm._v("\n      Are you sure you want to delete caption?\n    ")]), _vm._v(" "), _c('v-card-actions', {
+    staticClass: "px-4 pb-3"
+  }, [_c('v-spacer'), _vm._v(" "), _c('v-btn', {
+    attrs: {
+      "color": "primary",
+      "text": ""
+    },
+    on: {
+      "click": function click($event) {
+        _vm.dialog = false;
+      }
+    }
+  }, [_vm._v("\n        Close\n      ")]), _vm._v(" "), _c('v-btn', {
+    attrs: {
+      "color": "error",
+      "text": ""
+    },
+    on: {
+      "click": _vm.confirm
+    }
+  }, [_vm._v("\n        Confirm\n      ")])], 1)], 1)], 1);
+};
+
+var __vue_staticRenderFns__$5 = [];
+/* style */
+
+var __vue_inject_styles__$5 = undefined;
+/* scoped */
+
+var __vue_scope_id__$5 = undefined;
+/* module identifier */
+
+var __vue_module_identifier__$5 = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$5 = false;
+/* style inject */
+
+/* style inject SSR */
+
+var ConfirmationDialog = normalizeComponent_1({
+  render: __vue_render__$5,
+  staticRenderFns: __vue_staticRenderFns__$5
+}, __vue_inject_styles__$5, __vue_script__$5, __vue_scope_id__$5, __vue_is_functional_template__$5, __vue_module_identifier__$5, undefined, undefined);
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var script$6 = {
   name: 'video-upload-btn',
   inheritAttrs: false,
   props: {
@@ -712,10 +874,10 @@ var script$5 = {
 };
 
 /* script */
-var __vue_script__$5 = script$5;
+var __vue_script__$6 = script$6;
 /* template */
 
-var __vue_render__$5 = function __vue_render__() {
+var __vue_render__$6 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -753,29 +915,29 @@ var __vue_render__$5 = function __vue_render__() {
   })], 2);
 };
 
-var __vue_staticRenderFns__$5 = [];
+var __vue_staticRenderFns__$6 = [];
 /* style */
 
-var __vue_inject_styles__$5 = undefined;
+var __vue_inject_styles__$6 = undefined;
 /* scoped */
 
-var __vue_scope_id__$5 = undefined;
+var __vue_scope_id__$6 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$5 = undefined;
+var __vue_module_identifier__$6 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$5 = false;
+var __vue_is_functional_template__$6 = false;
 /* style inject */
 
 /* style inject SSR */
 
 var UploadBtn = normalizeComponent_1({
-  render: __vue_render__$5,
-  staticRenderFns: __vue_staticRenderFns__$5
-}, __vue_inject_styles__$5, __vue_script__$5, __vue_scope_id__$5, __vue_is_functional_template__$5, __vue_module_identifier__$5, undefined, undefined);
+  render: __vue_render__$6,
+  staticRenderFns: __vue_staticRenderFns__$6
+}, __vue_inject_styles__$6, __vue_script__$6, __vue_scope_id__$6, __vue_is_functional_template__$6, __vue_module_identifier__$6, undefined, undefined);
 
-var script$6 = {
+var script$7 = {
   name: 'tce-sprout-video-toolbar',
   inject: ['$elementBus'],
   props: {
@@ -785,11 +947,23 @@ var script$6 = {
     }
   },
   computed: {
-    fileName: function fileName(_ref) {
-      var _element$data;
+    videoFileName: function videoFileName(_ref) {
+      var _element$data$video;
 
       var element = _ref.element;
-      return (_element$data = element.data) === null || _element$data === void 0 ? void 0 : _element$data.fileName;
+      return (_element$data$video = element.data.video) === null || _element$data$video === void 0 ? void 0 : _element$data$video.fileName;
+    },
+    captionFileName: function captionFileName(_ref2) {
+      var _element$data$caption;
+
+      var element = _ref2.element;
+      return (_element$data$caption = element.data.caption) === null || _element$data$caption === void 0 ? void 0 : _element$data$caption.fileName;
+    },
+    showCaptionUploadBtn: function showCaptionUploadBtn() {
+      var _this$element$data$vi = this.element.data.video,
+          videoId = _this$element$data$vi.id,
+          playable = _this$element$data$vi.playable;
+      return videoId && playable && !this.captionFileName;
     }
   },
   methods: {
@@ -798,20 +972,55 @@ var script$6 = {
           file = _e$target$files[0];
 
       this.$elementBus.emit('save', {
-        file: file
+        video: {
+          file: file,
+          fileName: file.name,
+          status: shared.ELEMENT_STATE.UPLOADING,
+          error: null
+        }
+      });
+    },
+    uploadCaption: function uploadCaption(e) {
+      var _this = this;
+
+      var _e$target$files2 = _slicedToArray(e.target.files, 1),
+          file = _e$target$files2[0];
+
+      var fileReader = new window.FileReader();
+      fileReader.readAsText(file);
+
+      fileReader.onload = function (e) {
+        _this.$elementBus.emit('save', {
+          caption: {
+            fileName: file.name,
+            content: e.target.result,
+            status: shared.ELEMENT_STATE.UPLOADING,
+            error: null
+          }
+        });
+      };
+    },
+    deleteCaption: function deleteCaption() {
+      this.$elementBus.emit('save', {
+        caption: {
+          fileName: null,
+          status: shared.ELEMENT_STATE.DELETING,
+          error: null
+        }
       });
     }
   },
   components: {
+    ConfirmationDialog: ConfirmationDialog,
     UploadBtn: UploadBtn
   }
 };
 
 /* script */
-var __vue_script__$6 = script$6;
+var __vue_script__$7 = script$7;
 /* template */
 
-var __vue_render__$6 = function __vue_render__() {
+var __vue_render__$7 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -828,7 +1037,7 @@ var __vue_render__$6 = function __vue_render__() {
     staticClass: "pl-1 text-left"
   }, [_vm._v("Sprout Video")]), _vm._v(" "), _c('v-toolbar-items', {
     staticClass: "mx-auto"
-  }, [!_vm.fileName ? _c('upload-btn', {
+  }, [!_vm.videoFileName ? _c('upload-btn', {
     staticClass: "upload-btn",
     attrs: {
       "label": "Upload Sprout video",
@@ -839,43 +1048,105 @@ var __vue_render__$6 = function __vue_render__() {
     }
   }) : _c('v-text-field', {
     attrs: {
-      "value": _vm.fileName,
+      "value": _vm.videoFileName,
       "readonly": "",
       "hide-details": "",
       "filled": ""
+    },
+    scopedSlots: _vm._u([{
+      key: "prepend-inner",
+      fn: function fn() {
+        return [_c('v-icon', [_vm._v("mdi-video")])];
+      },
+      proxy: true
+    }])
+  }), _vm._v(" "), !_vm.captionFileName ? _c('upload-btn', {
+    staticClass: "upload-btn",
+    attrs: {
+      "disabled": !_vm.showCaptionUploadBtn,
+      "label": "Upload caption",
+      "accept": "text/vtt"
+    },
+    on: {
+      "change": _vm.uploadCaption
     }
-  })], 1)], 1);
+  }) : _vm._e(), _vm._v(" "), _vm.captionFileName ? _c('v-text-field', {
+    attrs: {
+      "value": _vm.captionFileName,
+      "readonly": "",
+      "hide-details": "",
+      "filled": ""
+    },
+    scopedSlots: _vm._u([{
+      key: "prepend-inner",
+      fn: function fn() {
+        return [_c('v-icon', [_vm._v("mdi-closed-caption")])];
+      },
+      proxy: true
+    }, {
+      key: "append",
+      fn: function fn() {
+        return [_c('confirmation-dialog', {
+          on: {
+            "confirm": _vm.deleteCaption
+          },
+          scopedSlots: _vm._u([{
+            key: "default",
+            fn: function fn(ref) {
+              var on = ref.on;
+              var attrs = ref.attrs;
+              return [_c('v-icon', _vm._g(_vm._b({
+                staticClass: "delete-caption",
+                attrs: {
+                  "color": "error"
+                }
+              }, 'v-icon', attrs, false), on), [_vm._v("\n            mdi-delete\n          ")])];
+            }
+          }], null, false, 1871611032)
+        })];
+      },
+      proxy: true
+    }], null, false, 2709543325)
+  }) : _vm._e()], 1)], 1);
 };
 
-var __vue_staticRenderFns__$6 = [];
+var __vue_staticRenderFns__$7 = [];
 /* style */
 
-var __vue_inject_styles__$6 = undefined;
+var __vue_inject_styles__$7 = undefined;
 /* scoped */
 
-var __vue_scope_id__$6 = "data-v-3b444bb4";
+var __vue_scope_id__$7 = "data-v-2f006932";
 /* module identifier */
 
-var __vue_module_identifier__$6 = undefined;
+var __vue_module_identifier__$7 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$6 = false;
+var __vue_is_functional_template__$7 = false;
 /* style inject */
 
 /* style inject SSR */
 
 var Toolbar = normalizeComponent_1({
-  render: __vue_render__$6,
-  staticRenderFns: __vue_staticRenderFns__$6
-}, __vue_inject_styles__$6, __vue_script__$6, __vue_scope_id__$6, __vue_is_functional_template__$6, __vue_module_identifier__$6, undefined, undefined);
+  render: __vue_render__$7,
+  staticRenderFns: __vue_staticRenderFns__$7
+}, __vue_inject_styles__$7, __vue_script__$7, __vue_scope_id__$7, __vue_is_functional_template__$7, __vue_module_identifier__$7, undefined, undefined);
 
 var initState = function initState() {
   return {
-    fileName: null,
-    videoId: null,
-    playable: false,
-    status: null,
-    error: null
+    video: {
+      id: null,
+      fileName: null,
+      playable: false,
+      status: null,
+      error: null
+    },
+    caption: {
+      id: null,
+      fileName: null,
+      status: null,
+      error: null
+    }
   };
 };
 /**
