@@ -124,7 +124,7 @@ export default {
 }
 
 .player {
-  height: 25.625rem;
+  min-height: 22.5rem;
   background: #000;
 }
 </style>
