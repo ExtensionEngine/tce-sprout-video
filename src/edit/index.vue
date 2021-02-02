@@ -95,6 +95,7 @@ export default {
       this.$emit('save', {
         ...this.element.data,
         fileName: file.name,
+        error: null,
         status: ELEMENT_STATE.UPLOADING
       });
     });
