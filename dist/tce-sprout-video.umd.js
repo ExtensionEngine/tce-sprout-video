@@ -541,6 +541,7 @@
 
         _this2.$emit('save', Object.assign({}, _this2.element.data, {
           fileName: file.name,
+          error: null,
           status: shared.ELEMENT_STATE.UPLOADING
         }));
       });
@@ -601,7 +602,7 @@
   var __vue_inject_styles__$4 = undefined;
   /* scoped */
 
-  var __vue_scope_id__$4 = "data-v-fd7dbd8c";
+  var __vue_scope_id__$4 = "data-v-5e0cfa7b";
   /* module identifier */
 
   var __vue_module_identifier__$4 = undefined;

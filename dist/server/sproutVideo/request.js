@@ -35,8 +35,8 @@ const getResponseData = res => res.data;
 function toHttpError(error) {
   const { response } = error;
   if (!response) return Promise.reject(error);
-  const { status, title } = response.data;
-  return Promise.reject(httpError(status, title));
+  const { status, data: { error: message } } = response;
+  return Promise.reject(httpError(status, message));
 }
 
 module.exports = Request;
