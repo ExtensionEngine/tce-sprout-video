@@ -522,7 +522,11 @@ var script$4 = {
           status: shared.ELEMENT_STATE.UPLOADED
         }));
       })["catch"](function (err) {
-        return _this.$elementBus.emit('error', err.response);
+        _this.$emit('save', Object.assign({}, _this.element.data, {
+          status: shared.ELEMENT_STATE.UPLOADED,
+          error: get__default['default'](err, 'response.data.error', DEFAULT_ERROR_MSG),
+          fileName: null
+        }));
       });
     }
   },
@@ -603,7 +607,7 @@ var __vue_staticRenderFns__$4 = [];
 var __vue_inject_styles__$4 = undefined;
 /* scoped */
 
-var __vue_scope_id__$4 = "data-v-5e0cfa7b";
+var __vue_scope_id__$4 = "data-v-35ea53ec";
 /* module identifier */
 
 var __vue_module_identifier__$4 = undefined;
@@ -780,8 +784,6 @@ var UploadBtn = normalizeComponent_1({
   staticRenderFns: __vue_staticRenderFns__$5
 }, __vue_inject_styles__$5, __vue_script__$5, __vue_scope_id__$5, __vue_is_functional_template__$5, __vue_module_identifier__$5, undefined, undefined);
 
-var MP4_MIME_TYPE = 'video/mp4';
-var FORMAT_ERROR = 'MP4 format is required.';
 var script$6 = {
   name: 'tce-sprout-video-toolbar',
   inject: ['$elementBus'],
@@ -803,17 +805,6 @@ var script$6 = {
     upload: function upload(e) {
       var _e$target$files = _slicedToArray(e.target.files, 1),
           file = _e$target$files[0];
-
-      if (file.type !== MP4_MIME_TYPE) {
-        this.$elementBus.emit('error', {
-          data: {
-            error: {
-              message: FORMAT_ERROR
-            }
-          }
-        });
-        return;
-      }
 
       this.$elementBus.emit('save', {
         file: file
@@ -850,7 +841,7 @@ var __vue_render__$6 = function __vue_render__() {
     staticClass: "upload-btn",
     attrs: {
       "label": "Upload Sprout video",
-      "accept": "video/mp4"
+      "accept": "video/*"
     },
     on: {
       "change": _vm.upload
@@ -871,7 +862,7 @@ var __vue_staticRenderFns__$6 = [];
 var __vue_inject_styles__$6 = undefined;
 /* scoped */
 
-var __vue_scope_id__$6 = "data-v-29b0667f";
+var __vue_scope_id__$6 = "data-v-3b444bb4";
 /* module identifier */
 
 var __vue_module_identifier__$6 = undefined;

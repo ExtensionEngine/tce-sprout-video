@@ -78,7 +78,14 @@ export default {
             status: ELEMENT_STATE.UPLOADED
           });
         })
-        .catch(err => this.$elementBus.emit('error', err.response));
+        .catch(err => {
+          this.$emit('save', {
+            ...this.element.data,
+            status: ELEMENT_STATE.UPLOADED,
+            error: get(err, 'response.data.error', DEFAULT_ERROR_MSG),
+            fileName: null
+          });
+        });
     }
   },
   watch: {

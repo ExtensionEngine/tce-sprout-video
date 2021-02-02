@@ -9,7 +9,7 @@
         v-if="!fileName"
         @change="upload"
         label="Upload Sprout video"
-        accept="video/mp4"
+        accept="video/*"
         class="upload-btn" />
       <v-text-field
         v-else
@@ -21,9 +21,6 @@
 
 <script>
 import UploadBtn from './UploadBtn.vue';
-
-const MP4_MIME_TYPE = 'video/mp4';
-const FORMAT_ERROR = 'MP4 format is required.';
 
 export default {
   name: 'tce-sprout-video-toolbar',
@@ -37,10 +34,6 @@ export default {
   methods: {
     upload(e) {
       const [file] = e.target.files;
-      if (file.type !== MP4_MIME_TYPE) {
-        this.$elementBus.emit('error', { data: { error: { message: FORMAT_ERROR } } });
-        return;
-      }
       this.$elementBus.emit('save', { file });
     }
   },
