@@ -6,20 +6,52 @@
     <v-toolbar-title class="pl-1 text-left">Sprout Video</v-toolbar-title>
     <v-toolbar-items class="mx-auto">
       <upload-btn
-        v-if="!fileName"
+        v-if="!videoFileName"
         @change="upload"
         label="Upload Sprout video"
         accept="video/*"
         class="upload-btn" />
       <v-text-field
         v-else
-        :value="fileName"
-        readonly hide-details filled />
+        :value="videoFileName"
+        readonly hide-details filled>
+        <template #prepend-inner>
+          <v-icon>mdi-video</v-icon>
+        </template>
+      </v-text-field>
+      <upload-btn
+        v-if="!captionFileName"
+        @change="uploadCaption"
+        :disabled="!showCaptionUploadBtn"
+        label="Upload caption"
+        accept="text/vtt"
+        class="upload-btn" />
+      <v-text-field
+        v-if="captionFileName"
+        :value="captionFileName"
+        readonly hide-details filled>
+        <template #prepend-inner>
+          <v-icon>mdi-closed-caption</v-icon>
+        </template>
+        <template #append>
+          <confirmation-dialog v-slot="{ on, attrs }" @confirm="deleteCaption">
+            <v-icon
+              v-on="on"
+              v-bind="attrs"
+              class="delete-caption"
+              color="error">
+              mdi-delete
+            </v-icon>
+          </confirmation-dialog>
+        </template>
+      </v-text-field>
     </v-toolbar-items>
   </v-toolbar>
 </template>
 
 <script>
+import ConfirmationDialog from './ConfirmationDialog.vue';
+import { ELEMENT_STATE } from '../shared';
 import UploadBtn from './UploadBtn.vue';
 
 export default {
@@ -29,15 +61,51 @@ export default {
     element: { type: Object, required: true }
   },
   computed: {
-    fileName: ({ element }) => element.data?.fileName
+    videoFileName: ({ element }) => element.data.video?.fileName,
+    captionFileName: ({ element }) => element.data.caption?.fileName,
+    showCaptionUploadBtn() {
+      const { id: videoId, playable } = this.element.data.video;
+      return videoId && playable && !this.captionFileName;
+    }
   },
   methods: {
     upload(e) {
       const [file] = e.target.files;
-      this.$elementBus.emit('save', { file });
+      this.$elementBus.emit('save', {
+        video: {
+          file,
+          fileName: file.name,
+          status: ELEMENT_STATE.UPLOADING,
+          error: null
+        }
+      });
+    },
+    uploadCaption(e) {
+      const [file] = e.target.files;
+      const fileReader = new window.FileReader();
+      fileReader.readAsText(file);
+      fileReader.onload = e => {
+        this.$elementBus.emit('save', {
+          caption: {
+            fileName: file.name,
+            content: e.target.result,
+            status: ELEMENT_STATE.UPLOADING,
+            error: null
+          }
+        });
+      };
+    },
+    deleteCaption() {
+      this.$elementBus.emit('save', {
+        caption: {
+          fileName: null,
+          status: ELEMENT_STATE.DELETING,
+          error: null
+        }
+      });
     }
   },
-  components: { UploadBtn }
+  components: { ConfirmationDialog, UploadBtn }
 };
 </script>
 
