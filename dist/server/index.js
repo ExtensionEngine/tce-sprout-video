@@ -3,10 +3,6 @@
 const { createClient } = require('./sproutVideo');
 const { ELEMENT_STATE } = require('../shared');
 
-function beforeSave(asset) {
-  return asset;
-}
-
 async function afterSave(asset, { config: { tce } }) {
   const { videoId, playable, fileName, error, status } = asset.data;
   if (!fileName || playable) return asset;
@@ -49,4 +45,4 @@ function setAssetError(asset, error) {
   return asset;
 }
 
-module.exports = { beforeSave, afterSave, afterLoaded };
+module.exports = { afterSave, afterLoaded };
