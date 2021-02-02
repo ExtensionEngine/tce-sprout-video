@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import cloneDeep from 'lodash/cloneDeep';
 import createUpload from '../upload';
 import { ELEMENT_STATE } from '../shared';
 import ElementPlaceholder from '../tce-core/ElementPlaceholder.vue';
@@ -40,24 +41,24 @@ export default {
   data: () => ({ file: null }),
   computed: {
     isEmpty() {
-      const { error, fileName } = this.element.data;
+      const { error, fileName } = this.element.data.video;
       return !error && !fileName;
     },
     didUploadFail() {
-      const { status } = this.element.data;
+      const { status } = this.element.data.video;
       return status === ELEMENT_STATE.UPLOADING && !this.file;
     },
     errorMessage() {
-      const { error } = this.element.data;
+      const { error } = this.element.data.video;
       return this.didUploadFail ? UPLOAD_FAILED_ERROR_MSG : error;
     },
     infoMessage() {
-      const { status, playable } = this.element.data;
+      const { status, playable } = this.element.data.video;
       if (status === ELEMENT_STATE.UPLOADING) return UPLOADING_MSG;
       return playable ? '' : PROCESSING_MSG;
     },
     isPreparedToUpload() {
-      const { token, uploadUrl } = this.element.data;
+      const { token, uploadUrl } = this.element.data.video;
       return token && this.file && uploadUrl;
     }
   },
@@ -65,52 +66,62 @@ export default {
     appendVideo() {
       const { player } = this.$refs;
       if (!player) return;
-      player.innerHTML = this.element.data?.embedCode;
+      player.innerHTML = this.element.data.video?.embedCode;
     },
     upload() {
-      const { uploadUrl: url, token } = this.element.data;
+      const { uploadUrl: url, token } = this.element.data.video;
       createUpload({ url, file: this.file, token })
         .then(({ id }) => {
           this.file = null;
           this.$emit('save', {
             ...this.element.data,
-            videoId: id,
-            status: ELEMENT_STATE.UPLOADED
+            video: {
+              ...this.element.data.video,
+              id,
+              status: ELEMENT_STATE.UPLOADED
+            }
           });
         })
         .catch(err => {
           this.$emit('save', {
             ...this.element.data,
-            status: ELEMENT_STATE.UPLOADED,
-            error: get(err, 'response.data.error', DEFAULT_ERROR_MSG),
-            fileName: null
+            video: {
+              ...this.element.data.video,
+              status: ELEMENT_STATE.UPLOADED,
+              error: get(err, 'response.data.error', DEFAULT_ERROR_MSG),
+              fileName: null
+            }
           });
         });
     }
   },
   watch: {
-    'element.data.embedCode': 'appendVideo',
-    'element.data.uploadUrl'() {
+    'element.data.video.embedCode': 'appendVideo',
+    'element.data.video.uploadUrl'() {
       if (this.isPreparedToUpload) this.upload();
     }
   },
   mounted() {
     this.appendVideo();
 
-    this.$elementBus.on('save', ({ file }) => {
-      this.file = file;
-      this.$emit('save', {
-        ...this.element.data,
-        fileName: file.name,
-        error: null,
-        status: ELEMENT_STATE.UPLOADING
-      });
+    this.$elementBus.on('save', ({ video, caption }) => {
+      if (video) {
+        this.file = video.file;
+        delete video.file;
+      }
+      const data = cloneDeep(this.element.data);
+      Object.assign(data.video, video);
+      Object.assign(data.caption, caption);
+      this.$emit('save', data);
     });
 
     this.$elementBus.on('error', ({ data }) => {
       this.$emit('save', {
         ...this.element.data,
-        error: get(data, 'error.message', DEFAULT_ERROR_MSG)
+        video: {
+          ...this.element.data.video,
+          error: get(data, 'error.message', DEFAULT_ERROR_MSG)
+        }
       });
     });
   },
