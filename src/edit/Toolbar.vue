@@ -22,7 +22,7 @@
       <upload-btn
         v-if="!captionFileName"
         @change="uploadCaption"
-        :disabled="!showCaptionUploadBtn"
+        :disabled="isCaptionUploadBtnDisabled"
         label="Upload caption"
         accept="text/vtt"
         class="upload-btn" />
@@ -63,9 +63,9 @@ export default {
   computed: {
     videoFileName: ({ element }) => element.data.video?.fileName,
     captionFileName: ({ element }) => element.data.caption?.fileName,
-    showCaptionUploadBtn() {
+    isCaptionUploadBtnDisabled() {
       const { id: videoId, playable } = this.element.data.video;
-      return videoId && playable && !this.captionFileName;
+      return !videoId || !playable || this.captionFileName;
     }
   },
   methods: {

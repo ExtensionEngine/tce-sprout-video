@@ -998,11 +998,11 @@ var script$7 = {
       var element = _ref2.element;
       return (_element$data$caption = element.data.caption) === null || _element$data$caption === void 0 ? void 0 : _element$data$caption.fileName;
     },
-    showCaptionUploadBtn: function showCaptionUploadBtn() {
+    isCaptionUploadBtnDisabled: function isCaptionUploadBtnDisabled() {
       var _this$element$data$vi = this.element.data.video,
           videoId = _this$element$data$vi.id,
           playable = _this$element$data$vi.playable;
-      return videoId && playable && !this.captionFileName;
+      return !videoId || !playable || this.captionFileName;
     }
   },
   methods: {
@@ -1102,7 +1102,7 @@ var __vue_render__$7 = function __vue_render__() {
   }), _vm._v(" "), !_vm.captionFileName ? _c('upload-btn', {
     staticClass: "upload-btn",
     attrs: {
-      "disabled": !_vm.showCaptionUploadBtn,
+      "disabled": _vm.isCaptionUploadBtnDisabled,
       "label": "Upload caption",
       "accept": "text/vtt"
     },
@@ -1155,7 +1155,7 @@ var __vue_staticRenderFns__$7 = [];
 var __vue_inject_styles__$7 = undefined;
 /* scoped */
 
-var __vue_scope_id__$7 = "data-v-96c49fcc";
+var __vue_scope_id__$7 = "data-v-548753bc";
 /* module identifier */
 
 var __vue_module_identifier__$7 = undefined;
