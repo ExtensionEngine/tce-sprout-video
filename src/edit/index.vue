@@ -115,7 +115,8 @@ export default {
         ...this.element.data,
         caption: {
           ...this.element.data.caption,
-          error: null
+          error: null,
+          status: null
         }
       });
       toggle();

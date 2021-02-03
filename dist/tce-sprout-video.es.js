@@ -535,7 +535,8 @@ var script$4 = {
       this.error = null;
       this.$emit('save', Object.assign({}, this.element.data, {
         caption: Object.assign({}, this.element.data.caption, {
-          error: null
+          error: null,
+          status: null
         })
       }));
       toggle();
@@ -640,7 +641,7 @@ var __vue_staticRenderFns__$4 = [];
 var __vue_inject_styles__$4 = undefined;
 /* scoped */
 
-var __vue_scope_id__$4 = "data-v-01ae490e";
+var __vue_scope_id__$4 = "data-v-986361c8";
 /* module identifier */
 
 var __vue_module_identifier__$4 = undefined;
