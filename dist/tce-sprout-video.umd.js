@@ -629,7 +629,9 @@
         "active-placeholder": "Use toolbar to upload the video",
         "active-icon": "mdi-arrow-up"
       }
-    }) : _c('div', [_vm.errorMessage ? _c('error-message', {
+    }) : _c('div', {
+      staticClass: "player-container"
+    }, [_vm.errorMessage ? _c('error-message', {
       attrs: {
         "message": _vm.errorMessage
       }
@@ -649,7 +651,7 @@
   var __vue_inject_styles__$4 = undefined;
   /* scoped */
 
-  var __vue_scope_id__$4 = "data-v-986361c8";
+  var __vue_scope_id__$4 = "data-v-a61ba412";
   /* module identifier */
 
   var __vue_module_identifier__$4 = undefined;

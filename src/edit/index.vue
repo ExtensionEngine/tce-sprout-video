@@ -19,7 +19,7 @@
       icon="mdi-video-image"
       active-placeholder="Use toolbar to upload the video"
       active-icon="mdi-arrow-up" />
-    <div v-else>
+    <div v-else class="player-container">
       <error-message v-if="errorMessage" :message="errorMessage" />
       <progress-message v-if="!errorMessage && infoMessage" :message="infoMessage" />
       <div ref="player" class="player d-flex align-center justify-center"></div>
@@ -155,8 +155,12 @@ export default {
   position: relative;
 }
 
-.player {
-  min-height: 22.5rem;
-  background: #000;
+.player-container {
+  position: relative;
+
+  .player {
+    min-height: 22.5rem;
+    background: #000;
+  }
 }
 </style>
