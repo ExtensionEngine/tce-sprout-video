@@ -1017,8 +1017,7 @@ var script$7 = {
 
       var fileReader = new window.FileReader();
       fileReader.readAsText(file);
-
-      fileReader.onload = function (e) {
+      fileReader.addEventListener('load', function (e) {
         _this.$elementBus.emit('save', {
           caption: {
             fileName: file.name,
@@ -1027,7 +1026,7 @@ var script$7 = {
             error: null
           }
         });
-      };
+      });
     },
     deleteCaption: function deleteCaption() {
       this.$elementBus.emit('save', {
@@ -1145,7 +1144,7 @@ var __vue_staticRenderFns__$7 = [];
 var __vue_inject_styles__$7 = undefined;
 /* scoped */
 
-var __vue_scope_id__$7 = "data-v-548753bc";
+var __vue_scope_id__$7 = "data-v-12ca9026";
 /* module identifier */
 
 var __vue_module_identifier__$7 = undefined;

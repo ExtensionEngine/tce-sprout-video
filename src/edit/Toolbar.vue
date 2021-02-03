@@ -84,7 +84,7 @@ export default {
       const [file] = e.target.files;
       const fileReader = new window.FileReader();
       fileReader.readAsText(file);
-      fileReader.onload = e => {
+      fileReader.addEventListener('load', e => {
         this.$elementBus.emit('save', {
           caption: {
             fileName: file.name,
@@ -93,7 +93,7 @@ export default {
             error: null
           }
         });
-      };
+      });
     },
     deleteCaption() {
       this.$elementBus.emit('save', {
