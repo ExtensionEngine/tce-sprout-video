@@ -50,7 +50,7 @@ function stringifyError(error) {
   if (typeof error === 'string') return error;
   const errors = error.errors || {};
   return Object.keys(errors)
-    .reduce((message, prop) => message + `${prop}: ${errors[prop]}. `, '');
+    .reduce((message, prop) => `${message}${prop}: ${errors[prop]}. `, '');
 }
 
 module.exports = Request;
