@@ -4,4 +4,6 @@ const ELEMENT_STATE = {
   DELETING: 'DELETING'
 };
 
-module.exports = { ELEMENT_STATE };
+const DEFAULT_ERROR_MSG = 'Something went wrong.';
+
+module.exports = { ELEMENT_STATE, DEFAULT_ERROR_MSG };

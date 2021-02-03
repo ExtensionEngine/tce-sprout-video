@@ -1,9 +1,8 @@
 'use strict';
 
 const axios = require('axios');
+const { DEFAULT_ERROR_MSG } = require('../../server');
 const httpError = require('http-errors');
-
-const DEFAULT_ERROR_MSG = 'Something went wrong.';
 
 class Request {
   constructor({ apiKey, baseUrl }) {

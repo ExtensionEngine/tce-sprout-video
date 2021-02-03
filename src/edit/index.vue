@@ -28,15 +28,14 @@
 </template>
 
 <script>
+import { DEFAULT_ERROR_MSG, ELEMENT_STATE } from '../shared';
 import cloneDeep from 'lodash/cloneDeep';
 import createUpload from '../upload';
-import { ELEMENT_STATE } from '../shared';
 import ElementPlaceholder from '../tce-core/ElementPlaceholder.vue';
 import ErrorMessage from './ErrorMessage.vue';
 import get from 'lodash/get';
 import ProgressMessage from './ProgressMessage.vue';
 
-const DEFAULT_ERROR_MSG = 'Something went wrong.';
 const UPLOAD_FAILED_ERROR_MSG = 'Video upload failed. Please try again.';
 const UPLOADING_MSG = 'Video is uploading... Do not leave the page.';
 const PROCESSING_MSG = 'Video is processing...';

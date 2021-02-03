@@ -13,6 +13,17 @@ var tailor = {
 	}
 };
 
+var ELEMENT_STATE = {
+  UPLOADING: 'UPLOADING',
+  UPLOADED: 'UPLOADED',
+  DELETING: 'DELETING'
+};
+var DEFAULT_ERROR_MSG = 'Something went wrong.';
+var shared = {
+  ELEMENT_STATE: ELEMENT_STATE,
+  DEFAULT_ERROR_MSG: DEFAULT_ERROR_MSG
+};
+
 var PRIVATE_VIDEO_CODE = 0;
 function upload(_ref) {
   var url = _ref.url,
@@ -32,15 +43,6 @@ function upload(_ref) {
     return res.data;
   });
 }
-
-var ELEMENT_STATE = {
-  UPLOADING: 'UPLOADING',
-  UPLOADED: 'UPLOADED',
-  DELETING: 'DELETING'
-};
-var shared = {
-  ELEMENT_STATE: ELEMENT_STATE
-};
 
 //
 //
@@ -433,7 +435,6 @@ var ProgressMessage = normalizeComponent_1({
 }, __vue_inject_styles__$3, __vue_script__$3, __vue_scope_id__$3, __vue_is_functional_template__$3, __vue_module_identifier__$3, undefined, undefined);
 
 //
-var DEFAULT_ERROR_MSG = 'Something went wrong.';
 var UPLOAD_FAILED_ERROR_MSG = 'Video upload failed. Please try again.';
 var UPLOADING_MSG = 'Video is uploading... Do not leave the page.';
 var PROCESSING_MSG = 'Video is processing...';
@@ -525,7 +526,7 @@ var script$4 = {
         _this.$emit('save', Object.assign({}, _this.element.data, {
           video: Object.assign({}, _this.element.data.video, {
             status: shared.ELEMENT_STATE.UPLOADED,
-            error: get(err, 'response.data.error', DEFAULT_ERROR_MSG),
+            error: get(err, 'response.data.error', shared.DEFAULT_ERROR_MSG),
             fileName: null
           })
         }));
@@ -569,7 +570,7 @@ var script$4 = {
     });
     this.$elementBus.on('error', function (_ref3) {
       var data = _ref3.data;
-      _this2.error = get(data, 'error.message', DEFAULT_ERROR_MSG);
+      _this2.error = get(data, 'error.message', shared.DEFAULT_ERROR_MSG);
     });
   },
   components: {
@@ -643,7 +644,7 @@ var __vue_staticRenderFns__$4 = [];
 var __vue_inject_styles__$4 = undefined;
 /* scoped */
 
-var __vue_scope_id__$4 = "data-v-a61ba412";
+var __vue_scope_id__$4 = "data-v-21da0e76";
 /* module identifier */
 
 var __vue_module_identifier__$4 = undefined;
