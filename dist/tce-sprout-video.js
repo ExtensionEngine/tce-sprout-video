@@ -856,7 +856,7 @@ var __vue_render__$5 = function __vue_render__() {
     on: {
       "click": _vm.confirm
     }
-  }, [_vm._v("\n        Confirm\n      ")])], 1)], 1)], 1);
+  }, [_vm._v("\n        Delete caption\n      ")])], 1)], 1)], 1);
 };
 
 var __vue_staticRenderFns__$5 = [];

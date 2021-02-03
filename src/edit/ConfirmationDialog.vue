@@ -33,7 +33,7 @@
           @click="confirm"
           color="error"
           text>
-          Confirm
+          Delete caption
         </v-btn>
       </v-card-actions>
     </v-card>
