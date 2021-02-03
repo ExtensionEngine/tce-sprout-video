@@ -756,24 +756,6 @@ function _nonIterableRest() {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 var script$5 = {
   name: 'confirmation-dialog',
   data: function data() {
@@ -834,7 +816,7 @@ var __vue_render__$5 = function __vue_render__() {
     }
   }, [_vm._v("mdi-alert")])], 1), _vm._v(" "), _c('div', {
     staticClass: "text-truncate white--text"
-  }, [_vm._v("\n        Delete caption?\n      ")])], 1), _vm._v(" "), _c('v-card-text', {
+  }, [_vm._v("Delete caption?")])], 1), _vm._v(" "), _c('v-card-text', {
     staticClass: "text-left pt-7 px-4 pb-2"
   }, [_vm._v("\n      Are you sure you want to delete caption?\n    ")]), _vm._v(" "), _c('v-card-actions', {
     staticClass: "px-4 pb-3"
@@ -848,7 +830,7 @@ var __vue_render__$5 = function __vue_render__() {
         _vm.dialog = false;
       }
     }
-  }, [_vm._v("\n        Close\n      ")]), _vm._v(" "), _c('v-btn', {
+  }, [_vm._v("Close")]), _vm._v(" "), _c('v-btn', {
     attrs: {
       "color": "error",
       "text": ""
@@ -856,7 +838,7 @@ var __vue_render__$5 = function __vue_render__() {
     on: {
       "click": _vm.confirm
     }
-  }, [_vm._v("\n        Delete caption\n      ")])], 1)], 1)], 1);
+  }, [_vm._v("Delete caption")])], 1)], 1)], 1);
 };
 
 var __vue_staticRenderFns__$5 = [];
