@@ -456,7 +456,8 @@ var script$4 = {
   },
   data: function data() {
     return {
-      file: null
+      file: null,
+      error: null
     };
   },
   computed: {
@@ -486,6 +487,10 @@ var script$4 = {
           token = _this$element$data$vi3.token,
           uploadUrl = _this$element$data$vi3.uploadUrl;
       return token && this.file && uploadUrl;
+    },
+    globalErrorMessage: function globalErrorMessage() {
+      var error = this.element.data.caption.error;
+      return this.error || error;
     }
   },
   methods: {
@@ -525,6 +530,15 @@ var script$4 = {
           })
         }));
       });
+    },
+    clearGlobalError: function clearGlobalError(toggle) {
+      this.error = null;
+      this.$emit('save', Object.assign({}, this.element.data, {
+        caption: Object.assign({}, this.element.data.caption, {
+          error: null
+        })
+      }));
+      toggle();
     }
   },
   watch: {
@@ -554,12 +568,7 @@ var script$4 = {
     });
     this.$elementBus.on('error', function (_ref3) {
       var data = _ref3.data;
-
-      _this2.$emit('save', Object.assign({}, _this2.element.data, {
-        video: Object.assign({}, _this2.element.data.video, {
-          error: get(data, 'error.message', DEFAULT_ERROR_MSG)
-        })
-      }));
+      _this2.error = get(data, 'error.message', DEFAULT_ERROR_MSG);
     });
   },
   components: {
@@ -582,7 +591,27 @@ var __vue_render__$4 = function __vue_render__() {
 
   return _c('div', {
     staticClass: "tce-sprout-video"
-  }, [_vm.isEmpty ? _c('element-placeholder', {
+  }, [_vm.globalErrorMessage ? _c('v-alert', {
+    staticClass: "text-left",
+    attrs: {
+      "type": "error",
+      "close-text": "Close Alert",
+      "dismissible": ""
+    },
+    scopedSlots: _vm._u([{
+      key: "close",
+      fn: function fn(ref) {
+        var toggle = ref.toggle;
+        return [_c('v-icon', {
+          on: {
+            "click": function click($event) {
+              return _vm.clearGlobalError(toggle);
+            }
+          }
+        }, [_vm._v("mdi-close-circle")])];
+      }
+    }], null, false, 3481962701)
+  }, [_vm._v("\n    " + _vm._s(_vm.globalErrorMessage) + "\n    ")]) : _vm._e(), _vm._v(" "), _vm.isEmpty ? _c('element-placeholder', {
     attrs: {
       "is-focused": _vm.isFocused,
       "is-disabled": _vm.isDisabled,
@@ -611,7 +640,7 @@ var __vue_staticRenderFns__$4 = [];
 var __vue_inject_styles__$4 = undefined;
 /* scoped */
 
-var __vue_scope_id__$4 = "data-v-45d06c04";
+var __vue_scope_id__$4 = "data-v-01ae490e";
 /* module identifier */
 
 var __vue_module_identifier__$4 = undefined;

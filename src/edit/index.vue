@@ -1,5 +1,16 @@
 <template>
   <div class="tce-sprout-video">
+    <v-alert
+      v-if="globalErrorMessage"
+      type="error"
+      close-text="Close Alert"
+      dismissible
+      class="text-left">
+      {{ globalErrorMessage }}
+      <template #close="{ toggle }">
+        <v-icon @click="clearGlobalError(toggle)">mdi-close-circle</v-icon>
+      </template>
+    </v-alert>
     <element-placeholder
       v-if="isEmpty"
       :is-focused="isFocused"
@@ -38,7 +49,7 @@ export default {
     isFocused: { type: Boolean, default: false },
     isDisabled: { type: Boolean, default: false }
   },
-  data: () => ({ file: null }),
+  data: () => ({ file: null, error: null }),
   computed: {
     isEmpty() {
       const { error, fileName } = this.element.data.video;
@@ -60,6 +71,10 @@ export default {
     isPreparedToUpload() {
       const { token, uploadUrl } = this.element.data.video;
       return token && this.file && uploadUrl;
+    },
+    globalErrorMessage() {
+      const { error } = this.element.data.caption;
+      return this.error || error;
     }
   },
   methods: {
@@ -93,6 +108,17 @@ export default {
             }
           });
         });
+    },
+    clearGlobalError(toggle) {
+      this.error = null;
+      this.$emit('save', {
+        ...this.element.data,
+        caption: {
+          ...this.element.data.caption,
+          error: null
+        }
+      });
+      toggle();
     }
   },
   watch: {
@@ -116,13 +142,7 @@ export default {
     });
 
     this.$elementBus.on('error', ({ data }) => {
-      this.$emit('save', {
-        ...this.element.data,
-        video: {
-          ...this.element.data.video,
-          error: get(data, 'error.message', DEFAULT_ERROR_MSG)
-        }
-      });
+      this.error = get(data, 'error.message', DEFAULT_ERROR_MSG);
     });
   },
   components: { ElementPlaceholder, ErrorMessage, ProgressMessage }
