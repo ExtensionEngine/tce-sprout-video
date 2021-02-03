@@ -977,7 +977,7 @@ var script$7 = {
     }
   },
   methods: {
-    upload: function upload(e) {
+    uploadVideo: function uploadVideo(e) {
       var _e$target$files = _slicedToArray(e.target.files, 1),
           file = _e$target$files[0];
 
@@ -1054,7 +1054,7 @@ var __vue_render__$7 = function __vue_render__() {
       "accept": "video/*"
     },
     on: {
-      "change": _vm.upload
+      "change": _vm.uploadVideo
     }
   }) : _c('v-text-field', {
     attrs: {
@@ -1126,7 +1126,7 @@ var __vue_staticRenderFns__$7 = [];
 var __vue_inject_styles__$7 = undefined;
 /* scoped */
 
-var __vue_scope_id__$7 = "data-v-2f006932";
+var __vue_scope_id__$7 = "data-v-96c49fcc";
 /* module identifier */
 
 var __vue_module_identifier__$7 = undefined;

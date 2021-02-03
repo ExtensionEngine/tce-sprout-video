@@ -10,12 +10,12 @@ function beforeSave(asset, { config: { tce } }) {
     video: { id: videoId, playable },
     caption: { id: captionId, content, status }
   } = asset.data;
+  delete asset.data.caption.content;
   if (status === ELEMENT_STATE.DELETING) {
     return client.captions.delete(videoId, captionId)
       .then(() => {
         asset.data.caption.id = null;
         asset.data.caption.status = null;
-        delete asset.data.caption.content;
         return asset;
       })
       .catch(err => setAssetError(asset, err, 'caption'));
@@ -26,7 +26,6 @@ function beforeSave(asset, { config: { tce } }) {
     .then(({ id }) => {
       asset.data.caption.id = id;
       asset.data.caption.status = ELEMENT_STATE.UPLOADED;
-      delete asset.data.caption.content;
       return asset;
     })
     .catch(err => setAssetError(asset, err, 'caption'));

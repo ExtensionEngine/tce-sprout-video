@@ -7,7 +7,7 @@
     <v-toolbar-items class="mx-auto">
       <upload-btn
         v-if="!videoFileName"
-        @change="upload"
+        @change="uploadVideo"
         label="Upload Sprout video"
         accept="video/*"
         class="upload-btn" />
@@ -69,7 +69,7 @@ export default {
     }
   },
   methods: {
-    upload(e) {
+    uploadVideo(e) {
       const [file] = e.target.files;
       this.$elementBus.emit('save', {
         video: {
