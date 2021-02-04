@@ -907,7 +907,7 @@
     var _c = _vm._self._c || _h;
 
     return _c('v-btn', _vm._b({
-      staticClass: "text-uppercase",
+      staticClass: "upload-btn text-uppercase",
       attrs: {
         "color": "primary darken-3",
         "text": ""
@@ -943,7 +943,7 @@
   var __vue_inject_styles__$6 = undefined;
   /* scoped */
 
-  var __vue_scope_id__$6 = undefined;
+  var __vue_scope_id__$6 = "data-v-3efec3c0";
   /* module identifier */
 
   var __vue_module_identifier__$6 = undefined;
@@ -960,58 +960,40 @@
   }, __vue_inject_styles__$6, __vue_script__$6, __vue_scope_id__$6, __vue_is_functional_template__$6, __vue_module_identifier__$6, undefined, undefined);
 
   var script$7 = {
-    name: 'tce-sprout-video-toolbar',
-    inject: ['$elementBus'],
+    name: 'caption-upload',
     props: {
-      element: {
+      video: {
+        type: Object,
+        required: true
+      },
+      caption: {
         type: Object,
         required: true
       }
     },
     computed: {
-      videoFileName: function videoFileName(_ref) {
-        var _element$data$video;
-
-        var element = _ref.element;
-        return (_element$data$video = element.data.video) === null || _element$data$video === void 0 ? void 0 : _element$data$video.fileName;
-      },
-      captionFileName: function captionFileName(_ref2) {
-        var _element$data$caption;
-
-        var element = _ref2.element;
-        return (_element$data$caption = element.data.caption) === null || _element$data$caption === void 0 ? void 0 : _element$data$caption.fileName;
+      fileName: function fileName(_ref) {
+        var caption = _ref.caption;
+        return caption === null || caption === void 0 ? void 0 : caption.fileName;
       },
       isCaptionUploadDisabled: function isCaptionUploadDisabled() {
-        var _this$element$data$vi = this.element.data.video,
-            videoId = _this$element$data$vi.id,
-            playable = _this$element$data$vi.playable;
-        return !videoId || !playable || this.captionFileName;
+        var _this$video = this.video,
+            videoId = _this$video.id,
+            playable = _this$video.playable;
+        return !videoId || !playable || this.fileName;
       }
     },
     methods: {
-      uploadVideo: function uploadVideo(e) {
-        var _e$target$files = _slicedToArray(e.target.files, 1),
-            file = _e$target$files[0];
-
-        this.$elementBus.emit('save', {
-          video: {
-            file: file,
-            fileName: file.name,
-            status: shared.ELEMENT_STATE.UPLOADING,
-            error: null
-          }
-        });
-      },
-      uploadCaption: function uploadCaption(e) {
+      upload: function upload(e) {
         var _this = this;
 
-        var _e$target$files2 = _slicedToArray(e.target.files, 1),
-            file = _e$target$files2[0];
+        var _e$target$files = _slicedToArray(e.target.files, 1),
+            file = _e$target$files[0];
 
         var fileReader = new window.FileReader();
         fileReader.readAsText(file);
         fileReader.addEventListener('load', function (e) {
-          _this.$elementBus.emit('save', {
+          _this.$emit('save', {
             caption: {
               fileName: file.name,
               content: e.target.result,
@@ -1021,8 +1003,8 @@
           });
         });
       },
-      deleteCaption: function deleteCaption() {
-        this.$elementBus.emit('save', {
+      remove: function remove() {
+        this.$emit('save', {
           caption: {
             fileName: null,
             status: shared.ELEMENT_STATE.DELETING,
@@ -1048,52 +1030,18 @@
 
     var _c = _vm._self._c || _h;
 
-    return _c('v-toolbar', {
-      staticClass: "elevation-0",
-      attrs: {
-        "height": "72",
-        "color": "transparent"
-      }
-    }, [_c('v-toolbar-title', {
-      staticClass: "pl-1 text-left"
-    }, [_vm._v("Sprout Video")]), _vm._v(" "), _c('v-toolbar-items', {
-      staticClass: "mx-auto"
-    }, [!_vm.videoFileName ? _c('upload-btn', {
-      staticClass: "upload-btn",
-      attrs: {
-        "label": "Upload Sprout video",
-        "accept": "video/*"
-      },
-      on: {
-        "change": _vm.uploadVideo
-      }
-    }) : _c('v-text-field', {
-      attrs: {
-        "value": _vm.videoFileName,
-        "readonly": "",
-        "hide-details": "",
-        "filled": ""
-      },
-      scopedSlots: _vm._u([{
-        key: "prepend-inner",
-        fn: function fn() {
-          return [_c('v-icon', [_vm._v("mdi-video")])];
-        },
-        proxy: true
-      }])
-    }), _vm._v(" "), !_vm.captionFileName ? _c('upload-btn', {
-      staticClass: "upload-btn",
+    return _c('span', [!_vm.fileName ? _c('upload-btn', {
       attrs: {
         "disabled": _vm.isCaptionUploadDisabled,
         "label": "Upload caption",
         "accept": "text/vtt"
       },
       on: {
-        "change": _vm.uploadCaption
+        "change": _vm.upload
       }
-    }) : _vm._e(), _vm._v(" "), _vm.captionFileName ? _c('v-text-field', {
+    }) : _vm._e(), _vm._v(" "), _vm.fileName ? _c('v-text-field', {
       attrs: {
-        "value": _vm.captionFileName,
+        "value": _vm.fileName,
         "readonly": "",
         "hide-details": "",
         "filled": ""
@@ -1109,7 +1057,7 @@
         fn: function fn() {
           return [_c('confirmation-dialog', {
             on: {
-              "confirm": _vm.deleteCaption
+              "confirm": _vm.remove
             },
             scopedSlots: _vm._u([{
               key: "default",
@@ -1121,14 +1069,14 @@
                   attrs: {
                     "color": "error"
                   }
-                }, 'v-icon', attrs, false), on), [_vm._v("\n            mdi-delete\n          ")])];
+                }, 'v-icon', attrs, false), on), [_vm._v("\n          mdi-delete\n        ")])];
               }
-            }], null, false, 1871611032)
+            }], null, false, 3050330776)
           })];
         },
         proxy: true
-      }], null, false, 2709543325)
-    }) : _vm._e()], 1)], 1);
+      }], null, false, 3459883748)
+    }) : _vm._e()], 1);
   };
 
   var __vue_staticRenderFns__$7 = [];
@@ -1137,7 +1085,7 @@
   var __vue_inject_styles__$7 = undefined;
   /* scoped */
 
-  var __vue_scope_id__$7 = "data-v-19091db4";
+  var __vue_scope_id__$7 = "data-v-3f94b6ff";
   /* module identifier */
 
   var __vue_module_identifier__$7 = undefined;
@@ -1148,10 +1096,171 @@
 
   /* style inject SSR */
 
-  var Toolbar = normalizeComponent_1({
+  var CaptionUpload = normalizeComponent_1({
     render: __vue_render__$7,
     staticRenderFns: __vue_staticRenderFns__$7
   }, __vue_inject_styles__$7, __vue_script__$7, __vue_scope_id__$7, __vue_is_functional_template__$7, __vue_module_identifier__$7, undefined, undefined);
+
+  var script$8 = {
+    name: 'video-upload',
+    props: {
+      video: {
+        type: Object,
+        required: true
+      }
+    },
+    methods: {
+      upload: function upload(e) {
+        var _e$target$files = _slicedToArray(e.target.files, 1),
+            file = _e$target$files[0];
+
+        this.$emit('save', {
+          video: {
+            file: file,
+            fileName: file.name,
+            status: shared.ELEMENT_STATE.UPLOADING,
+            error: null
+          }
+        });
+      }
+    },
+    components: {
+      UploadBtn: UploadBtn
+    }
+  };
+
+  /* script */
+  var __vue_script__$8 = script$8;
+  /* template */
+
+  var __vue_render__$8 = function __vue_render__() {
+    var _vm = this;
+
+    var _h = _vm.$createElement;
+
+    var _c = _vm._self._c || _h;
+
+    return _c('span', [!_vm.video.fileName ? _c('upload-btn', {
+      attrs: {
+        "label": "Upload Sprout video",
+        "accept": "video/*"
+      },
+      on: {
+        "change": _vm.upload
+      }
+    }) : _c('v-text-field', {
+      attrs: {
+        "value": _vm.video.fileName,
+        "readonly": "",
+        "hide-details": "",
+        "filled": ""
+      },
+      scopedSlots: _vm._u([{
+        key: "prepend-inner",
+        fn: function fn() {
+          return [_c('v-icon', [_vm._v("mdi-video")])];
+        },
+        proxy: true
+      }])
+    })], 1);
+  };
+
+  var __vue_staticRenderFns__$8 = [];
+  /* style */
+
+  var __vue_inject_styles__$8 = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$8 = "data-v-728d3982";
+  /* module identifier */
+
+  var __vue_module_identifier__$8 = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$8 = false;
+  /* style inject */
+
+  /* style inject SSR */
+
+  var VideoUpload = normalizeComponent_1({
+    render: __vue_render__$8,
+    staticRenderFns: __vue_staticRenderFns__$8
+  }, __vue_inject_styles__$8, __vue_script__$8, __vue_scope_id__$8, __vue_is_functional_template__$8, __vue_module_identifier__$8, undefined, undefined);
+
+  //
+  var script$9 = {
+    name: 'tce-sprout-video-toolbar',
+    inject: ['$elementBus'],
+    props: {
+      element: {
+        type: Object,
+        required: true
+      }
+    },
+    methods: {
+      onSave: function onSave(payload) {
+        this.$elementBus.emit('save', payload);
+      }
+    },
+    components: {
+      VideoUpload: VideoUpload,
+      CaptionUpload: CaptionUpload
+    }
+  };
+
+  /* script */
+  var __vue_script__$9 = script$9;
+  /* template */
+
+  var __vue_render__$9 = function __vue_render__() {
+    var _vm = this;
+
+    var _h = _vm.$createElement;
+
+    var _c = _vm._self._c || _h;
+
+    return _c('v-toolbar', {
+      staticClass: "elevation-0",
+      attrs: {
+        "height": "72",
+        "color": "transparent"
+      }
+    }, [_c('v-toolbar-title', {
+      staticClass: "pl-1 text-left"
+    }, [_vm._v("Sprout Video")]), _vm._v(" "), _c('v-toolbar-items', {
+      staticClass: "mx-auto"
+    }, [_c('video-upload', _vm._b({
+      on: {
+        "save": _vm.onSave
+      }
+    }, 'video-upload', _vm.element.data, false)), _vm._v(" "), _c('caption-upload', _vm._b({
+      on: {
+        "save": _vm.onSave
+      }
+    }, 'caption-upload', _vm.element.data, false))], 1)], 1);
+  };
+
+  var __vue_staticRenderFns__$9 = [];
+  /* style */
+
+  var __vue_inject_styles__$9 = undefined;
+  /* scoped */
+
+  var __vue_scope_id__$9 = "data-v-6cc0b27c";
+  /* module identifier */
+
+  var __vue_module_identifier__$9 = undefined;
+  /* functional template */
+
+  var __vue_is_functional_template__$9 = false;
+  /* style inject */
+
+  /* style inject SSR */
+
+  var Toolbar = normalizeComponent_1({
+    render: __vue_render__$9,
+    staticRenderFns: __vue_staticRenderFns__$9
+  }, __vue_inject_styles__$9, __vue_script__$9, __vue_scope_id__$9, __vue_is_functional_template__$9, __vue_module_identifier__$9, undefined, undefined);
 
   var initState = function initState() {
     return {
