@@ -10,6 +10,7 @@ async function beforeSave(asset, { config: { tce } }) {
   const isVideoPlayable = videoId && playable;
   if (!isVideoPlayable) return asset;
   await processCaption(asset, client);
+  await processPosterFrame(asset, client);
   return asset;
 }
 
@@ -34,6 +35,14 @@ function processCaption(asset, client) {
       asset.data.caption.status = ELEMENT_STATE.UPLOADED;
     })
     .catch(err => setAssetError(asset, err, 'caption'));
+}
+
+function processPosterFrame(asset, client) {
+  const { id: videoId, customPosterFrame, posterFrameNumber } = asset.data.video;
+  delete asset.data.video.customPosterFrame;
+  delete asset.data.video.posterFrameNumber;
+  if (!customPosterFrame || !posterFrameNumber) return;
+  return client.videos.edit(videoId, { posterFrameNumber });
 }
 
 async function afterSave(asset, { config: { tce } }) {

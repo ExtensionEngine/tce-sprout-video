@@ -11,6 +11,10 @@ class Videos {
     return this._request.get(`v1/videos/${id}`);
   }
 
+  edit(id, { customPosterFrame, ...payload }) {
+    return this._request.put(`v1/videos/${id}`, payload);
+  }
+
   getDelegatedToken() {
     return this._request.post('v1/upload_tokens', { seconds_valid: TOKEN_TTL });
   }

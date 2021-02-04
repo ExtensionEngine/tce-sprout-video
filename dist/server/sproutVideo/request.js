@@ -26,6 +26,12 @@ class Request {
       .catch(toHttpError);
   }
 
+  put(url, data, options = {}) {
+    return this._client.put(url, data, options)
+      .then(getResponseData)
+      .catch(toHttpError);
+  }
+
   delete(url, options = {}) {
     return this._client.delete(url, options);
   }
