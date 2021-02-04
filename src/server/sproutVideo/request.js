@@ -47,7 +47,6 @@ function toHttpError(error) {
   const { response } = error;
   if (!response) return Promise.reject(error);
   const { status, data: { error: message } } = response;
-  console.log('Stringified error: ', stringifyError(message));
   return Promise.reject(httpError(status, stringifyError(message)));
 }
 

@@ -56,8 +56,7 @@ export default {
           caption: {
             fileName: file.name,
             content: e.target.result,
-            status: ELEMENT_STATE.UPLOADING,
-            error: null
+            status: ELEMENT_STATE.UPLOADING
           }
         });
       });
@@ -66,8 +65,7 @@ export default {
       this.$emit('save', {
         caption: {
           fileName: null,
-          status: ELEMENT_STATE.DELETING,
-          error: null
+          status: ELEMENT_STATE.DELETING
         }
       });
     }

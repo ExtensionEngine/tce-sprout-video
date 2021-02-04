@@ -1,14 +1,11 @@
 <template>
   <div class="tce-sprout-video">
     <v-alert
-      v-if="globalErrorMessage"
+      v-if="error"
       type="error"
       class="text-left"
       dismissible>
-      {{ globalErrorMessage }}
-      <template #close="{ toggle }">
-        <v-icon @click="clearGlobalError(toggle)">mdi-close-circle</v-icon>
-      </template>
+      {{ error }}
     </v-alert>
     <element-placeholder
       v-if="isEmpty"
@@ -69,10 +66,6 @@ export default {
     isPreparedToUpload() {
       const { token, uploadUrl } = this.element.data.video;
       return token && this.file && uploadUrl;
-    },
-    globalErrorMessage() {
-      const { error } = this.element.data.caption;
-      return this.error || error;
     }
   },
   methods: {
@@ -106,18 +99,6 @@ export default {
             }
           });
         });
-    },
-    clearGlobalError(toggle) {
-      this.error = null;
-      this.$emit('save', {
-        ...this.element.data,
-        caption: {
-          ...this.element.data.caption,
-          error: null,
-          status: null
-        }
-      });
-      toggle();
     }
   },
   watch: {
@@ -140,8 +121,8 @@ export default {
       this.$emit('save', data);
     });
 
-    this.$elementBus.on('error', ({ data }) => {
-      this.error = get(data, 'error.message', DEFAULT_ERROR_MSG);
+    this.$elementBus.on('error', error => {
+      this.error = get(error, 'response.data.error.message', DEFAULT_ERROR_MSG);
     });
   },
   components: { ElementPlaceholder, ErrorMessage, ProgressMessage }

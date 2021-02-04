@@ -13,8 +13,7 @@ const initState = () => ({
   caption: {
     id: null,
     fileName: null,
-    status: null,
-    error: null
+    status: null
   }
 });
 
