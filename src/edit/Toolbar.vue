@@ -1,8 +1,5 @@
 <template>
-  <v-toolbar
-    height="72"
-    color="transparent"
-    class="elevation-0">
+  <v-toolbar height="72" color="transparent" class="elevation-0">
     <v-toolbar-title class="pl-1 text-left">Sprout Video</v-toolbar-title>
     <v-toolbar-items class="mx-auto">
       <upload-btn
@@ -22,7 +19,7 @@
       <upload-btn
         v-if="!captionFileName"
         @change="uploadCaption"
-        :disabled="isCaptionUploadBtnDisabled"
+        :disabled="isCaptionUploadDisabled"
         label="Upload caption"
         accept="text/vtt"
         class="upload-btn" />
@@ -63,7 +60,7 @@ export default {
   computed: {
     videoFileName: ({ element }) => element.data.video?.fileName,
     captionFileName: ({ element }) => element.data.caption?.fileName,
-    isCaptionUploadBtnDisabled() {
+    isCaptionUploadDisabled() {
       const { id: videoId, playable } = this.element.data.video;
       return !videoId || !playable || this.captionFileName;
     }
