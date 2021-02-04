@@ -3,7 +3,7 @@
     <upload-btn
       v-if="!fileName"
       @change="upload"
-      :disabled="isCaptionUploadDisabled"
+      :disabled="isDisabled"
       label="Upload caption"
       accept="text/vtt" />
     <v-text-field
@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     fileName: ({ caption }) => caption?.fileName,
-    isCaptionUploadDisabled() {
+    isDisabled() {
       const { id: videoId, playable } = this.video;
       return !videoId || !playable || this.fileName;
     }

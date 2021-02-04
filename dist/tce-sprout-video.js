@@ -978,7 +978,7 @@ var script$7 = {
       var caption = _ref.caption;
       return caption === null || caption === void 0 ? void 0 : caption.fileName;
     },
-    isCaptionUploadDisabled: function isCaptionUploadDisabled() {
+    isDisabled: function isDisabled() {
       var _this$video = this.video,
           videoId = _this$video.id,
           playable = _this$video.playable;
@@ -1034,7 +1034,7 @@ var __vue_render__$7 = function __vue_render__() {
 
   return _c('span', [!_vm.fileName ? _c('upload-btn', {
     attrs: {
-      "disabled": _vm.isCaptionUploadDisabled,
+      "disabled": _vm.isDisabled,
       "label": "Upload caption",
       "accept": "text/vtt"
     },
@@ -1087,7 +1087,7 @@ var __vue_staticRenderFns__$7 = [];
 var __vue_inject_styles__$7 = undefined;
 /* scoped */
 
-var __vue_scope_id__$7 = "data-v-3f94b6ff";
+var __vue_scope_id__$7 = "data-v-1f6603eb";
 /* module identifier */
 
 var __vue_module_identifier__$7 = undefined;
@@ -1103,7 +1103,151 @@ var CaptionUpload = normalizeComponent_1({
   staticRenderFns: __vue_staticRenderFns__$7
 }, __vue_inject_styles__$7, __vue_script__$7, __vue_scope_id__$7, __vue_is_functional_template__$7, __vue_module_identifier__$7, undefined, undefined);
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var script$8 = {
+  name: 'poster-frame-upload',
+  props: {
+    video: {
+      type: Object,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      dialog: false
+    };
+  },
+  computed: {
+    isDisabled: function isDisabled() {
+      var _this$video = this.video,
+          videoId = _this$video.id,
+          playable = _this$video.playable;
+      return !videoId || !playable;
+    }
+  }
+};
+
+/* script */
+var __vue_script__$8 = script$8;
+/* template */
+
+var __vue_render__$8 = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c('v-dialog', {
+    attrs: {
+      "width": "600"
+    },
+    scopedSlots: _vm._u([{
+      key: "activator",
+      fn: function fn(ref) {
+        var on = ref.on;
+        var attrs = ref.attrs;
+        return [_c('v-btn', _vm._g(_vm._b({
+          attrs: {
+            "disabled": _vm.isDisabled,
+            "text": ""
+          }
+        }, 'v-btn', attrs, false), on), [_c('v-icon', {
+          staticClass: "mr-2"
+        }, [_vm._v("mdi-image-multiple")]), _vm._v("\n      Poster Frame\n    ")], 1)];
+      }
+    }]),
+    model: {
+      value: _vm.dialog,
+      callback: function callback($$v) {
+        _vm.dialog = $$v;
+      },
+      expression: "dialog"
+    }
+  }, [_vm._v(" "), _c('v-card', [_c('v-card-title', {
+    staticClass: "dialog-title primary darken-1",
+    attrs: {
+      "primary-title": ""
+    }
+  }, [_c('div', {
+    staticClass: "text-truncate white--text"
+  }, [_vm._v("Poster frame")])]), _vm._v(" "), _c('v-card-text', {
+    staticClass: "text-left pt-7 px-4 pb-2"
+  }, [_vm._v("\n      Select an image to display before video is played.\n    ")]), _vm._v(" "), _c('v-card-actions', {
+    staticClass: "px-4 pb-3"
+  }, [_c('v-spacer'), _vm._v(" "), _c('v-btn', {
+    attrs: {
+      "color": "primary",
+      "text": ""
+    },
+    on: {
+      "click": function click($event) {
+        _vm.dialog = false;
+      }
+    }
+  }, [_vm._v("Close")]), _vm._v(" "), _c('v-btn', {
+    attrs: {
+      "color": "success",
+      "text": ""
+    },
+    on: {
+      "click": function click($event) {
+        _vm.dialog = false;
+      }
+    }
+  }, [_vm._v("Save")])], 1)], 1)], 1);
+};
+
+var __vue_staticRenderFns__$8 = [];
+/* style */
+
+var __vue_inject_styles__$8 = undefined;
+/* scoped */
+
+var __vue_scope_id__$8 = undefined;
+/* module identifier */
+
+var __vue_module_identifier__$8 = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$8 = false;
+/* style inject */
+
+/* style inject SSR */
+
+var PosterFrameUpload = normalizeComponent_1({
+  render: __vue_render__$8,
+  staticRenderFns: __vue_staticRenderFns__$8
+}, __vue_inject_styles__$8, __vue_script__$8, __vue_scope_id__$8, __vue_is_functional_template__$8, __vue_module_identifier__$8, undefined, undefined);
+
+var script$9 = {
   name: 'video-upload',
   props: {
     video: {
@@ -1132,10 +1276,10 @@ var script$8 = {
 };
 
 /* script */
-var __vue_script__$8 = script$8;
+var __vue_script__$9 = script$9;
 /* template */
 
-var __vue_render__$8 = function __vue_render__() {
+var __vue_render__$9 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -1167,30 +1311,30 @@ var __vue_render__$8 = function __vue_render__() {
   })], 1);
 };
 
-var __vue_staticRenderFns__$8 = [];
+var __vue_staticRenderFns__$9 = [];
 /* style */
 
-var __vue_inject_styles__$8 = undefined;
+var __vue_inject_styles__$9 = undefined;
 /* scoped */
 
-var __vue_scope_id__$8 = "data-v-728d3982";
+var __vue_scope_id__$9 = "data-v-728d3982";
 /* module identifier */
 
-var __vue_module_identifier__$8 = undefined;
+var __vue_module_identifier__$9 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$8 = false;
+var __vue_is_functional_template__$9 = false;
 /* style inject */
 
 /* style inject SSR */
 
 var VideoUpload = normalizeComponent_1({
-  render: __vue_render__$8,
-  staticRenderFns: __vue_staticRenderFns__$8
-}, __vue_inject_styles__$8, __vue_script__$8, __vue_scope_id__$8, __vue_is_functional_template__$8, __vue_module_identifier__$8, undefined, undefined);
+  render: __vue_render__$9,
+  staticRenderFns: __vue_staticRenderFns__$9
+}, __vue_inject_styles__$9, __vue_script__$9, __vue_scope_id__$9, __vue_is_functional_template__$9, __vue_module_identifier__$9, undefined, undefined);
 
 //
-var script$9 = {
+var script$a = {
   name: 'tce-sprout-video-toolbar',
   inject: ['$elementBus'],
   props: {
@@ -1206,15 +1350,16 @@ var script$9 = {
   },
   components: {
     VideoUpload: VideoUpload,
-    CaptionUpload: CaptionUpload
+    CaptionUpload: CaptionUpload,
+    PosterFrameUpload: PosterFrameUpload
   }
 };
 
 /* script */
-var __vue_script__$9 = script$9;
+var __vue_script__$a = script$a;
 /* template */
 
-var __vue_render__$9 = function __vue_render__() {
+var __vue_render__$a = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -1239,30 +1384,34 @@ var __vue_render__$9 = function __vue_render__() {
     on: {
       "save": _vm.onSave
     }
-  }, 'caption-upload', _vm.element.data, false))], 1)], 1);
+  }, 'caption-upload', _vm.element.data, false)), _vm._v(" "), _c('poster-frame-upload', _vm._b({
+    on: {
+      "save": _vm.onSave
+    }
+  }, 'poster-frame-upload', _vm.element.data, false))], 1)], 1);
 };
 
-var __vue_staticRenderFns__$9 = [];
+var __vue_staticRenderFns__$a = [];
 /* style */
 
-var __vue_inject_styles__$9 = undefined;
+var __vue_inject_styles__$a = undefined;
 /* scoped */
 
-var __vue_scope_id__$9 = "data-v-6cc0b27c";
+var __vue_scope_id__$a = "data-v-0e7e195f";
 /* module identifier */
 
-var __vue_module_identifier__$9 = undefined;
+var __vue_module_identifier__$a = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$9 = false;
+var __vue_is_functional_template__$a = false;
 /* style inject */
 
 /* style inject SSR */
 
 var Toolbar = normalizeComponent_1({
-  render: __vue_render__$9,
-  staticRenderFns: __vue_staticRenderFns__$9
-}, __vue_inject_styles__$9, __vue_script__$9, __vue_scope_id__$9, __vue_is_functional_template__$9, __vue_module_identifier__$9, undefined, undefined);
+  render: __vue_render__$a,
+  staticRenderFns: __vue_staticRenderFns__$a
+}, __vue_inject_styles__$a, __vue_script__$a, __vue_scope_id__$a, __vue_is_functional_template__$a, __vue_module_identifier__$a, undefined, undefined);
 
 var initState = function initState() {
   return {
