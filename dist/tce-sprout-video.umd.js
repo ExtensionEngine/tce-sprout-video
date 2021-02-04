@@ -533,8 +533,8 @@
         })["catch"](function (err) {
           _this.$emit('save', Object.assign({}, _this.element.data, {
             video: Object.assign({}, _this.element.data.video, {
-              status: shared.ELEMENT_STATE.UPLOADED,
               error: get__default['default'](err, 'response.data.error', shared.DEFAULT_ERROR_MSG),
+              status: null,
               fileName: null
             })
           }));
@@ -605,7 +605,6 @@
       staticClass: "text-left",
       attrs: {
         "type": "error",
-        "close-text": "Close Alert",
         "dismissible": ""
       },
       scopedSlots: _vm._u([{
@@ -652,7 +651,7 @@
   var __vue_inject_styles__$4 = undefined;
   /* scoped */
 
-  var __vue_scope_id__$4 = "data-v-21da0e76";
+  var __vue_scope_id__$4 = "data-v-72dc5a8d";
   /* module identifier */
 
   var __vue_module_identifier__$4 = undefined;

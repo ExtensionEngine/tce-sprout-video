@@ -3,9 +3,8 @@
     <v-alert
       v-if="globalErrorMessage"
       type="error"
-      close-text="Close Alert"
-      dismissible
-      class="text-left">
+      class="text-left"
+      dismissible>
       {{ globalErrorMessage }}
       <template #close="{ toggle }">
         <v-icon @click="clearGlobalError(toggle)">mdi-close-circle</v-icon>
@@ -101,8 +100,8 @@ export default {
             ...this.element.data,
             video: {
               ...this.element.data.video,
-              status: ELEMENT_STATE.UPLOADED,
               error: get(err, 'response.data.error', DEFAULT_ERROR_MSG),
+              status: null,
               fileName: null
             }
           });
