@@ -3,11 +3,19 @@
 const { createClient } = require('./sproutVideo');
 const { ELEMENT_STATE } = require('../shared');
 
-function beforeSave(asset, { config: { tce } }) {
+async function beforeSave(asset, { config: { tce } }) {
   const { sproutVideoApiKey: apiKey } = tce;
   const client = createClient({ apiKey });
+  const { id: videoId, playable } = asset.data.video;
+  const isVideoPlayable = videoId && playable;
+  if (!isVideoPlayable) return asset;
+  await processCaption(asset, client);
+  return asset;
+}
+
+function processCaption(asset, client) {
   const {
-    video: { id: videoId, playable },
+    video: { id: videoId },
     caption: { id: captionId, content, status }
   } = asset.data;
   delete asset.data.caption.content;
@@ -16,17 +24,14 @@ function beforeSave(asset, { config: { tce } }) {
       .then(() => {
         asset.data.caption.id = null;
         asset.data.caption.status = null;
-        return asset;
       })
       .catch(err => setAssetError(asset, err, 'caption'));
   }
-  const isVideoPlayable = videoId && playable;
-  if (!isVideoPlayable || !content) return asset;
+  if (!content) return;
   return client.captions.create(videoId, { language: 'en', content })
     .then(({ id }) => {
       asset.data.caption.id = id;
       asset.data.caption.status = ELEMENT_STATE.UPLOADED;
-      return asset;
     })
     .catch(err => setAssetError(asset, err, 'caption'));
 }
