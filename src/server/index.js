@@ -24,16 +24,14 @@ function processCaption(asset, client) {
       .then(() => {
         asset.data.caption.id = null;
         asset.data.caption.status = null;
-      })
-      .catch(err => setAssetError(asset, err, 'caption'));
+      });
   }
   if (!content) return;
   return client.captions.create(videoId, { language: 'en', content })
     .then(({ id }) => {
       asset.data.caption.id = id;
       asset.data.caption.status = ELEMENT_STATE.UPLOADED;
-    })
-    .catch(err => setAssetError(asset, err, 'caption'));
+    });
 }
 
 async function afterSave(asset, { config: { tce } }) {
@@ -78,8 +76,8 @@ function afterLoaded(asset, { config: { tce } }) {
     .catch(error => setAssetError(asset, error));
 }
 
-function setAssetError(asset, error, prop = 'video') {
-  asset.data[prop].error = error.message;
+function setAssetError(asset, error) {
+  asset.data.video.error = error.message;
   return asset;
 }
 
