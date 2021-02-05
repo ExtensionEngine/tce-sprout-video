@@ -2,6 +2,7 @@
 
 const { createClient } = require('./sproutVideo');
 const { ELEMENT_STATE } = require('../shared');
+const isNil = require('lodash/isNil');
 
 async function beforeSave(asset, { config: { tce } }) {
   const { sproutVideoApiKey: apiKey } = tce;
@@ -11,6 +12,7 @@ async function beforeSave(asset, { config: { tce } }) {
   if (!isVideoPlayable) return asset;
   await processCaption(asset, client);
   await processPosterFrame(asset, client);
+  deleteNonPersistentAssetProps(asset);
   return asset;
 }
 
@@ -19,7 +21,6 @@ function processCaption(asset, client) {
     video: { id: videoId },
     caption: { id: captionId, content, status }
   } = asset.data;
-  delete asset.data.caption.content;
   if (status === ELEMENT_STATE.DELETING) {
     return client.captions.delete(videoId, captionId)
       .then(() => {
@@ -37,10 +38,18 @@ function processCaption(asset, client) {
 
 function processPosterFrame(asset, client) {
   const { id: videoId, customPosterFrame, posterFrameNumber } = asset.data.video;
+  const isPosterUpdated = customPosterFrame || !isNil(posterFrameNumber);
+  if (!isPosterUpdated) return;
+  return client.videos.edit(videoId, { posterframe_number: posterFrameNumber });
+}
+
+function deleteNonPersistentAssetProps(asset) {
+  delete asset.data.caption.content;
+  delete asset.data.video.embedCode;
   delete asset.data.video.customPosterFrame;
   delete asset.data.video.posterFrameNumber;
-  if (!customPosterFrame || !posterFrameNumber) return;
-  return client.videos.edit(videoId, { posterFrameNumber });
+  delete asset.data.video.posterFrames;
+  delete asset.data.video.selectedPosterFrameIndex;
 }
 
 async function afterSave(asset, { config: { tce } }) {
@@ -86,7 +95,7 @@ function afterLoaded(asset, { config: { tce } }) {
       } = video;
       asset.data.video.embedCode = embedCode.replace(/'/g, '"');
       asset.data.video.selectedPosterFrameIndex = selectedPosterFrameIndex;
-      asset.data.video.posterFrames = posterFrames;
+      asset.data.video.posterFrames = posterFrames.slice(0, 4);
       return asset;
     })
     .catch(error => setAssetError(asset, error));
