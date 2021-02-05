@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" width="600">
+  <tailor-dialog v-model="dialog" @click:outside="reset" width="700">
     <template #activator="{ on, attrs }">
       <v-btn
         v-on="on"
@@ -7,37 +7,100 @@
         :disabled="isDisabled"
         text>
         <v-icon class="mr-2">mdi-image-multiple</v-icon>
-        Poster Frame
+        Select poster
       </v-btn>
     </template>
-    <v-card>
-      <v-card-title primary-title class="dialog-title primary darken-1">
-        <div class="text-truncate white--text">Poster frame</div>
-      </v-card-title>
-      <v-card-text class="text-left pt-7 px-4 pb-2">
+    <template #header>
+      Select poster frame
+    </template>
+    <template #body>
+      <p class="px-2 text-left">
         Select an image to display before video is played.
-      </v-card-text>
-      <v-card-actions class="px-4 pb-3">
-        <v-spacer />
-        <v-btn @click="dialog = false" color="primary" text>Close</v-btn>
-        <v-btn @click="dialog = false" color="success" text>Save</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      </p>
+      <div class="poster-frames-container d-flex">
+        <poster-frame
+          v-for="(poster, index) in posterFrames"
+          :key="poster"
+          @click="selectedIndex = index"
+          :src="poster"
+          :is-selected="index === selectedIndex"
+          class="mr-2" />
+      </div>
+      <div class="my-4 px-2">
+        <upload-btn
+          @change="upload"
+          label="Upload custom"
+          accept="image/jpeg">
+          <template #icon>
+            <v-icon>mdi-upload</v-icon>
+          </template>
+        </upload-btn>
+        <p v-if="file" class="my-0">{{ file.name }}</p>
+      </div>
+    </template>
+    <template #actions>
+      <v-btn @click="reset" color="primary" text>Close</v-btn>
+      <v-btn @click="save" color="success" text>Save</v-btn>
+    </template>
+  </tailor-dialog>
 </template>
 
 <script>
+import PosterFrame from './PosterFrame.vue';
+import TailorDialog from '../tce-core/TailorDialog.vue';
+import UploadBtn from './UploadBtn.vue';
+
+const MAX_SIZE = 500000; // 500 KB
+
 export default {
   name: 'poster-frame-upload',
   props: {
-    video: { type: Object, required: true }
+    id: { type: String, default: null },
+    playable: { type: Boolean, default: false },
+    selectedPosterFrameIndex: { type: Number, default: 0 },
+    posterFrames: { type: Array, default: () => ([]) }
   },
-  data: () => ({ dialog: false }),
+  data() {
+    return {
+      dialog: false,
+      selectedIndex: this.selectedPosterFrameIndex,
+      file: null
+    };
+  },
   computed: {
     isDisabled() {
-      const { id: videoId, playable } = this.video;
+      const { id: videoId, playable } = this;
       return !videoId || !playable;
     }
-  }
+  },
+  methods: {
+    reset() {
+      this.dialog = false;
+      this.selectedIndex = this.selectedPosterFrameIndex;
+      this.file = null;
+    },
+    upload(e) {
+      this.file = null;
+      const [file] = e.target.files;
+      if (file.size > MAX_SIZE) return;
+      this.file = file;
+    },
+    save() {
+      this.$emit('save', {
+        video: {
+          posterFrameNumber: this.selectedIndex
+        }
+      });
+      this.dialog = false;
+      this.file = null;
+    }
+  },
+  components: { PosterFrame, UploadBtn, TailorDialog }
 };
 </script>
+
+<style lang="scss" scoped>
+.poster-frames-container {
+  justify-content: space-evenly;
+}
+</style>
