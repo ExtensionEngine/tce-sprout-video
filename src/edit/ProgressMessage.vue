@@ -1,6 +1,6 @@
 <template>
   <tce-overlay>
-    <div class="white--text message">
+    <div class="message white--text">
       <v-progress-circular color="white" class="mr-4" indeterminate />
       {{ message }}
     </div>
