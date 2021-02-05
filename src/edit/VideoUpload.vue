@@ -4,7 +4,9 @@
       v-if="!video.fileName"
       @change="upload"
       label="Upload Sprout video"
-      accept="video/*" />
+      accept="video/*"
+      class="upload-btn"
+      text />
     <v-text-field
       v-else
       :value="video.fileName"
@@ -46,5 +48,9 @@ export default {
 .v-text-field {
   min-width: 21.875rem;
   margin: 0.5rem 0.75rem 0 1.75rem;
+}
+
+.upload-btn {
+  height: 100% !important;
 }
 </style>

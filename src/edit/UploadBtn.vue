@@ -2,15 +2,14 @@
   <v-btn
     @click="$refs.uploadInput.click()"
     v-bind="$attrs"
-    color="primary darken-3"
-    text
-    class="upload-btn text-uppercase">
+    class="text-uppercase">
     <slot name="icon">
       <v-icon color="secondary darken-1" class="mr-2">mdi-cloud-upload-outline</v-icon>
     </slot>
     {{ label }}
     <input
       ref="uploadInput"
+      @click="$refs.uploadInput.value = null"
       @change="$emit('change', $event)"
       type="file"
       :accept="accept"
@@ -28,9 +27,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.upload-btn {
-  height: 100% !important;
-}
-</style>

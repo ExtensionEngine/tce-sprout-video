@@ -5,7 +5,9 @@
       @change="upload"
       :disabled="isDisabled"
       label="Upload caption"
-      accept="text/vtt" />
+      accept="text/vtt"
+      class="upload-btn"
+      text />
     <v-text-field
       v-if="fileName"
       :value="fileName"
@@ -78,5 +80,9 @@ export default {
 .v-text-field {
   min-width: 21.875rem;
   margin: 0.5rem 0.75rem 0 1.75rem;
+}
+
+.upload-btn {
+  height: 100% !important;
 }
 </style>

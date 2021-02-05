@@ -4,7 +4,7 @@
     <v-toolbar-items class="mx-auto">
       <video-upload @save="onSave" v-bind="element.data" />
       <caption-upload @save="onSave" v-bind="element.data" />
-      <poster-frame-upload @save="onSave" v-bind="element.data" />
+      <poster-frame-upload @save="onSave" v-bind="element.data.video" />
     </v-toolbar-items>
   </v-toolbar>
 </template>
