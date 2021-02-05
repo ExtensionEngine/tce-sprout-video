@@ -40,7 +40,10 @@ function processPosterFrame(asset, client) {
   const { id: videoId, customPosterFrame, posterFrameNumber } = asset.data.video;
   const isPosterUpdated = customPosterFrame || !isNil(posterFrameNumber);
   if (!isPosterUpdated) return;
-  return client.videos.edit(videoId, { posterframe_number: posterFrameNumber });
+  return client.videos.edit(videoId, {
+    customPosterFrame,
+    posterframe_number: posterFrameNumber
+  });
 }
 
 function deleteNonPersistentAssetProps(asset) {
