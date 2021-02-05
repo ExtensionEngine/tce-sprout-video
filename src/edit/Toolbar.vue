@@ -9,7 +9,6 @@
         v-if="!fileName"
         @change="upload"
         label="Upload Sprout video"
-        accept="video/*"
         class="upload-btn" />
       <v-text-field
         v-else

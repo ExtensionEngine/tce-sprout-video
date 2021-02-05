@@ -2,6 +2,7 @@
 
 const { createClient } = require('./sproutVideo');
 const { ELEMENT_STATE } = require('../shared');
+const omit = require('lodash/omit');
 
 async function afterSave(asset, { config: { tce } }) {
   const { videoId, playable, fileName, error, status } = asset.data;
@@ -20,10 +21,15 @@ async function startPollingPlayableStatus(asset, client) {
   const { videoId } = asset.data;
   const video = await client.videos.get(videoId);
   const isPlayable = video.state === 'deployed';
-  if (!isPlayable) return setTimeout(() => startPollingPlayableStatus(asset, client), 5000);
-  delete asset.data.token;
-  delete asset.data.uploadUrl;
-  asset.update({ data: { ...asset.data, playable: true } });
+  if (!isPlayable) {
+    return setTimeout(() => startPollingPlayableStatus(asset, client), 5000);
+  }
+  asset.update({
+    data: {
+      ...omit(asset.data, ['token', 'uploadUrl']),
+      playable: true
+    }
+  });
 }
 
 function afterLoaded(asset, { config: { tce } }) {

@@ -342,7 +342,7 @@ var __vue_render__$2 = function __vue_render__() {
   var _c = _vm._self._c || _h;
 
   return _c('tce-overlay', [_c('div', {
-    staticClass: "error--text message"
+    staticClass: "message error--text"
   }, [_c('v-icon', {
     attrs: {
       "color": "error"
@@ -356,7 +356,7 @@ var __vue_staticRenderFns__$2 = [];
 var __vue_inject_styles__$2 = undefined;
 /* scoped */
 
-var __vue_scope_id__$2 = "data-v-efb1aaa4";
+var __vue_scope_id__$2 = "data-v-576a2d2e";
 /* module identifier */
 
 var __vue_module_identifier__$2 = undefined;
@@ -398,7 +398,7 @@ var __vue_render__$3 = function __vue_render__() {
   var _c = _vm._self._c || _h;
 
   return _c('tce-overlay', [_c('div', {
-    staticClass: "white--text message"
+    staticClass: "message white--text"
   }, [_c('v-progress-circular', {
     staticClass: "mr-4",
     attrs: {
@@ -414,7 +414,7 @@ var __vue_staticRenderFns__$3 = [];
 var __vue_inject_styles__$3 = undefined;
 /* scoped */
 
-var __vue_scope_id__$3 = "data-v-d44aaaf6";
+var __vue_scope_id__$3 = "data-v-369b4705";
 /* module identifier */
 
 var __vue_module_identifier__$3 = undefined;
@@ -479,7 +479,7 @@ var script$4 = {
       if (status === shared.ELEMENT_STATE.UPLOADING) return UPLOADING_MSG;
       return playable ? '' : PROCESSING_MSG;
     },
-    isPreparedToUpload: function isPreparedToUpload() {
+    isReadyToUpload: function isReadyToUpload() {
       var _this$element$data3 = this.element.data,
           token = _this$element$data3.token,
           uploadUrl = _this$element$data3.uploadUrl;
@@ -500,7 +500,7 @@ var script$4 = {
       var _this$element$data5 = this.element.data,
           url = _this$element$data5.uploadUrl,
           token = _this$element$data5.token;
-      upload({
+      return upload({
         url: url,
         file: this.file,
         token: token
@@ -524,7 +524,7 @@ var script$4 = {
   watch: {
     'element.data.embedCode': 'appendVideo',
     'element.data.uploadUrl': function elementDataUploadUrl() {
-      if (this.isPreparedToUpload) this.upload();
+      if (this.isReadyToUpload) this.upload();
     }
   },
   mounted: function mounted() {
@@ -582,7 +582,7 @@ var __vue_render__$4 = function __vue_render__() {
     attrs: {
       "message": _vm.errorMessage
     }
-  }) : _vm._e(), _vm._v(" "), !_vm.errorMessage && _vm.infoMessage ? _c('progress-message', {
+  }) : _vm.infoMessage ? _c('progress-message', {
     attrs: {
       "message": _vm.infoMessage
     }
@@ -598,7 +598,7 @@ var __vue_staticRenderFns__$4 = [];
 var __vue_inject_styles__$4 = undefined;
 /* scoped */
 
-var __vue_scope_id__$4 = "data-v-76b15544";
+var __vue_scope_id__$4 = "data-v-7bc05490";
 /* module identifier */
 
 var __vue_module_identifier__$4 = undefined;
@@ -706,7 +706,7 @@ var script$5 = {
     },
     accept: {
       type: String,
-      "default": null
+      "default": 'video/*'
     }
   }
 };
@@ -742,8 +742,8 @@ var __vue_render__$5 = function __vue_render__() {
     ref: "uploadInput",
     staticClass: "d-none",
     attrs: {
-      "type": "file",
-      "accept": _vm.accept
+      "accept": _vm.accept,
+      "type": "file"
     },
     on: {
       "change": function change($event) {
@@ -831,8 +831,7 @@ var __vue_render__$6 = function __vue_render__() {
   }, [!_vm.fileName ? _c('upload-btn', {
     staticClass: "upload-btn",
     attrs: {
-      "label": "Upload Sprout video",
-      "accept": "video/*"
+      "label": "Upload Sprout video"
     },
     on: {
       "change": _vm.upload
@@ -853,7 +852,7 @@ var __vue_staticRenderFns__$6 = [];
 var __vue_inject_styles__$6 = undefined;
 /* scoped */
 
-var __vue_scope_id__$6 = "data-v-3b444bb4";
+var __vue_scope_id__$6 = "data-v-d869c812";
 /* module identifier */
 
 var __vue_module_identifier__$6 = undefined;
