@@ -1287,7 +1287,7 @@ var script$a = {
   data: function data() {
     return {
       dialog: false,
-      selectedIndex: this.selectedPosterFrameIndex,
+      selectedIndex: null,
       file: null
     };
   },
@@ -1314,13 +1314,35 @@ var script$a = {
       this.file = file;
     },
     save: function save() {
-      this.$emit('save', {
-        video: {
-          posterFrameNumber: this.selectedIndex
-        }
-      });
-      this.dialog = false;
-      this.file = null;
+      var _this = this;
+
+      if (this.file) {
+        var fileReader = new FileReader();
+        fileReader.readAsDataURL(this.file);
+        fileReader.addEventListener('load', function (e) {
+          _this.$emit('save', {
+            video: {
+              customPosterFrame: e.target.result
+            }
+          });
+        });
+      } else {
+        this.$emit('save', {
+          video: {
+            posterFrameNumber: this.selectedIndex
+          }
+        });
+      }
+
+      this.reset();
+    }
+  },
+  watch: {
+    selectedPosterFrameIndex: {
+      handler: function handler() {
+        this.selectedIndex = this.selectedPosterFrameIndex;
+      },
+      immediate: true
     }
   },
   components: {
@@ -1450,7 +1472,7 @@ var __vue_staticRenderFns__$a = [];
 var __vue_inject_styles__$a = undefined;
 /* scoped */
 
-var __vue_scope_id__$a = "data-v-28992a70";
+var __vue_scope_id__$a = "data-v-5cc651e6";
 /* module identifier */
 
 var __vue_module_identifier__$a = undefined;

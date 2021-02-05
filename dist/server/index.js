@@ -40,14 +40,17 @@ function processPosterFrame(asset, client) {
   const { id: videoId, customPosterFrame, posterFrameNumber } = asset.data.video;
   const isPosterUpdated = customPosterFrame || !isNil(posterFrameNumber);
   if (!isPosterUpdated) return;
-  return client.videos.edit(videoId, { posterframe_number: posterFrameNumber });
+  return client.videos.edit(videoId, {
+    customPosterFrame,
+    posterframe_number: posterFrameNumber
+  });
 }
 
 function deleteNonPersistentAssetProps(asset) {
   delete asset.data.caption.content;
+  delete asset.data.video.embedCode;
   delete asset.data.video.customPosterFrame;
   delete asset.data.video.posterFrameNumber;
-  delete asset.data.video.embedCode;
   delete asset.data.video.posterFrames;
   delete asset.data.video.selectedPosterFrameIndex;
 }

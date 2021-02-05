@@ -60,13 +60,7 @@ export default {
     selectedPosterFrameIndex: { type: Number, default: 0 },
     posterFrames: { type: Array, default: () => ([]) }
   },
-  data() {
-    return {
-      dialog: false,
-      selectedIndex: this.selectedPosterFrameIndex,
-      file: null
-    };
-  },
+  data: () => ({ dialog: false, selectedIndex: null, file: null }),
   computed: {
     isDisabled() {
       const { id: videoId, playable } = this;
@@ -86,13 +80,32 @@ export default {
       this.file = file;
     },
     save() {
-      this.$emit('save', {
-        video: {
-          posterFrameNumber: this.selectedIndex
-        }
-      });
-      this.dialog = false;
-      this.file = null;
+      if (this.file) {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(this.file);
+        fileReader.addEventListener('load', e => {
+          this.$emit('save', {
+            video: {
+              customPosterFrame: e.target.result
+            }
+          });
+        });
+      } else {
+        this.$emit('save', {
+          video: {
+            posterFrameNumber: this.selectedIndex
+          }
+        });
+      }
+      this.reset();
+    }
+  },
+  watch: {
+    selectedPosterFrameIndex: {
+      handler: function () {
+        this.selectedIndex = this.selectedPosterFrameIndex;
+      },
+      immediate: true
     }
   },
   components: { PosterFrame, UploadBtn, TailorDialog }
