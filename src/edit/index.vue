@@ -11,7 +11,7 @@
     <div v-else>
       <error-message v-if="errorMessage" :message="errorMessage" />
       <progress-message v-else-if="infoMessage" :message="infoMessage" />
-      <div ref="player" class="player d-flex align-center justify-center"></div>
+      <sprout-player v-bind="element.data" />
     </div>
   </div>
 </template>
@@ -23,6 +23,7 @@ import ElementPlaceholder from '../tce-core/ElementPlaceholder.vue';
 import ErrorMessage from './ErrorMessage.vue';
 import get from 'lodash/get';
 import ProgressMessage from './ProgressMessage.vue';
+import SproutPlayer from './SproutPlayer.vue';
 
 const DEFAULT_ERROR_MSG = 'Something went wrong.';
 const UPLOAD_FAILED_ERROR_MSG = 'Video upload failed. Please try again.';
@@ -54,7 +55,7 @@ export default {
     infoMessage() {
       const { status, playable } = this.element.data;
       if (status === ELEMENT_STATE.UPLOADING) return UPLOADING_MSG;
-      return playable ? '' : PROCESSING_MSG;
+      return !playable && PROCESSING_MSG;
     },
     isReadyToUpload() {
       const { token, uploadUrl } = this.element.data;
@@ -62,11 +63,6 @@ export default {
     }
   },
   methods: {
-    appendVideo() {
-      const { player } = this.$refs;
-      if (!player) return;
-      player.innerHTML = this.element.data?.embedCode;
-    },
     upload() {
       const { uploadUrl: url, token } = this.element.data;
       return createUpload({ url, file: this.file, token })
@@ -89,14 +85,11 @@ export default {
     }
   },
   watch: {
-    'element.data.embedCode': 'appendVideo',
     'element.data.uploadUrl'() {
       if (this.isReadyToUpload) this.upload();
     }
   },
   mounted() {
-    this.appendVideo();
-
     this.$elementBus.on('save', ({ file }) => {
       this.file = file;
       this.$emit('save', {
@@ -114,17 +107,17 @@ export default {
       });
     });
   },
-  components: { ElementPlaceholder, ErrorMessage, ProgressMessage }
+  components: {
+    ElementPlaceholder,
+    ErrorMessage,
+    ProgressMessage,
+    SproutPlayer
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .tce-sprout-video {
   position: relative;
-}
-
-.player {
-  min-height: 22.5rem;
-  background: #000;
 }
 </style>
