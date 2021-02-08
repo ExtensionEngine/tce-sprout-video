@@ -3,8 +3,8 @@
     @click="$refs.uploadInput.click()"
     v-bind="$attrs"
     color="primary darken-3"
-    class="text-uppercase"
-    text>
+    text
+    class="text-uppercase">
     <slot name="icon">
       <v-icon color="secondary darken-1" class="mr-2">mdi-cloud-upload-outline</v-icon>
     </slot>
