@@ -8,11 +8,11 @@ class Videos {
   }
 
   get(id) {
-    return this._request.get(`v1/videos/${id}`);
+    return this._request.get(`videos/${id}`);
   }
 
   getDelegatedToken() {
-    return this._request.post('v1/upload_tokens', { seconds_valid: TOKEN_TTL });
+    return this._request.post('upload_tokens', { seconds_valid: TOKEN_TTL });
   }
 
   getUploadUrl() {

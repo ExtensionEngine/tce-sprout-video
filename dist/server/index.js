@@ -25,10 +25,7 @@ async function startPollingPlayableStatus(asset, client) {
     return setTimeout(() => startPollingPlayableStatus(asset, client), 5000);
   }
   asset.update({
-    data: {
-      ...omit(asset.data, ['token', 'uploadUrl']),
-      playable: true
-    }
+    data: { ...omit(asset.data, ['token', 'uploadUrl']), playable: true }
   });
 }
 
