@@ -1278,7 +1278,8 @@ var script$a = {
     return {
       dialog: false,
       selectedIndex: null,
-      file: null
+      file: null,
+      isError: false
     };
   },
   computed: {
@@ -1293,14 +1294,20 @@ var script$a = {
       this.dialog = false;
       this.selectedIndex = this.selectedPosterFrameIndex;
       this.file = null;
+      this.isError = false;
     },
     upload: function upload(e) {
+      this.isError = false;
       this.file = null;
 
       var _e$target$files = _slicedToArray(e.target.files, 1),
           file = _e$target$files[0];
 
-      if (file.size > MAX_SIZE) return;
+      if (file.size > MAX_SIZE) {
+        this.isError = true;
+        return;
+      }
+
       this.file = file;
     },
     save: function save() {
@@ -1402,7 +1409,7 @@ var __vue_render__$a = function __vue_render__() {
             }
           });
         }), 1), _vm._v(" "), _c('div', {
-          staticClass: "my-4 px-2"
+          staticClass: "mt-6 mb-4 px-2"
         }, [_c('upload-btn', {
           attrs: {
             "label": "Upload custom",
@@ -1418,8 +1425,10 @@ var __vue_render__$a = function __vue_render__() {
             },
             proxy: true
           }])
-        }), _vm._v(" "), _vm.file ? _c('p', {
-          staticClass: "my-0"
+        }), _vm._v(" "), _vm.isError ? _c('p', {
+          staticClass: "my-1 text-xs-caption error--text"
+        }, [_vm._v("\n        Poster frame must be under 500 kilobytes\n      ")]) : _vm.file ? _c('p', {
+          staticClass: "my-1 text-xs-caption"
         }, [_vm._v(_vm._s(_vm.file.name))]) : _vm._e()], 1)];
       },
       proxy: true
@@ -1462,7 +1471,7 @@ var __vue_staticRenderFns__$a = [];
 var __vue_inject_styles__$a = undefined;
 /* scoped */
 
-var __vue_scope_id__$a = "data-v-5cc651e6";
+var __vue_scope_id__$a = "data-v-1f83c308";
 /* module identifier */
 
 var __vue_module_identifier__$a = undefined;

@@ -26,7 +26,7 @@
           :is-selected="index === selectedIndex"
           class="mr-2" />
       </div>
-      <div class="my-4 px-2">
+      <div class="mt-6 mb-4 px-2">
         <upload-btn
           @change="upload"
           label="Upload custom"
@@ -35,7 +35,10 @@
             <v-icon>mdi-upload</v-icon>
           </template>
         </upload-btn>
-        <p v-if="file" class="my-0">{{ file.name }}</p>
+        <p v-if="isError" class="my-1 text-xs-caption error--text">
+          Poster frame must be under 500 kilobytes
+        </p>
+        <p v-else-if="file" class="my-1 text-xs-caption">{{ file.name }}</p>
       </div>
     </template>
     <template #actions>
@@ -60,7 +63,12 @@ export default {
     selectedPosterFrameIndex: { type: Number, default: 0 },
     posterFrames: { type: Array, default: () => ([]) }
   },
-  data: () => ({ dialog: false, selectedIndex: null, file: null }),
+  data: () => ({
+    dialog: false,
+    selectedIndex: null,
+    file: null,
+    isError: false
+  }),
   computed: {
     isDisabled() {
       const { id: videoId, playable } = this;
@@ -72,11 +80,16 @@ export default {
       this.dialog = false;
       this.selectedIndex = this.selectedPosterFrameIndex;
       this.file = null;
+      this.isError = false;
     },
     upload(e) {
+      this.isError = false;
       this.file = null;
       const [file] = e.target.files;
-      if (file.size > MAX_SIZE) return;
+      if (file.size > MAX_SIZE) {
+        this.isError = true;
+        return;
+      }
       this.file = file;
     },
     save() {
