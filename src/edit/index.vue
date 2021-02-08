@@ -77,8 +77,8 @@ export default {
         .catch(err => {
           this.$emit('save', {
             ...this.element.data,
-            status: ELEMENT_STATE.UPLOADED,
             error: get(err, 'response.data.error', DEFAULT_ERROR_MSG),
+            status: null,
             fileName: null
           });
         });

@@ -5,12 +5,11 @@ const { ELEMENT_STATE } = require('../shared');
 const omit = require('lodash/omit');
 
 async function afterSave(asset, { config: { tce } }) {
-  const { videoId, playable, fileName, error, status } = asset.data;
-  if (!fileName || playable) return asset;
+  const { playable, fileName, error, status } = asset.data;
+  if (!fileName || playable || error) return asset;
   const { sproutVideoApiKey: apiKey } = tce;
   const client = createClient({ apiKey });
-  const isEmptyOrError = error || !videoId || status !== ELEMENT_STATE.UPLOADED;
-  if (!isEmptyOrError) startPollingPlayableStatus(asset, client);
+  if (status === ELEMENT_STATE.UPLOADED) startPollingPlayableStatus(asset, client);
   const { token } = await client.videos.getDelegatedToken();
   asset.data.token = token;
   asset.data.uploadUrl = client.videos.getUploadUrl();

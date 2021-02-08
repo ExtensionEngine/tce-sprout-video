@@ -440,11 +440,78 @@ var ProgressMessage = normalizeComponent_1({
 }, __vue_inject_styles__$3, __vue_script__$3, __vue_scope_id__$3, __vue_is_functional_template__$3, __vue_module_identifier__$3, undefined, undefined);
 
 //
+//
+//
+//
+var script$4 = {
+  name: 'sprout-player',
+  props: {
+    embedCode: {
+      type: String,
+      "default": null
+    }
+  },
+  methods: {
+    appendVideo: function appendVideo() {
+      console.log('Inside appendVideo');
+      var player = this.$refs.player;
+      if (!player) return;
+      player.innerHTML = this.embedCode;
+    }
+  },
+  watch: {
+    embedCode: 'appendVideo'
+  },
+  mounted: function mounted() {
+    this.appendVideo();
+  }
+};
+
+/* script */
+var __vue_script__$4 = script$4;
+/* template */
+
+var __vue_render__$4 = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c('div', {
+    ref: "player",
+    staticClass: "player d-flex align-center justify-center"
+  });
+};
+
+var __vue_staticRenderFns__$4 = [];
+/* style */
+
+var __vue_inject_styles__$4 = undefined;
+/* scoped */
+
+var __vue_scope_id__$4 = "data-v-a524bef0";
+/* module identifier */
+
+var __vue_module_identifier__$4 = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$4 = false;
+/* style inject */
+
+/* style inject SSR */
+
+var SproutPlayer = normalizeComponent_1({
+  render: __vue_render__$4,
+  staticRenderFns: __vue_staticRenderFns__$4
+}, __vue_inject_styles__$4, __vue_script__$4, __vue_scope_id__$4, __vue_is_functional_template__$4, __vue_module_identifier__$4, undefined, undefined);
+
+//
 var DEFAULT_ERROR_MSG = 'Something went wrong.';
 var UPLOAD_FAILED_ERROR_MSG = 'Video upload failed. Please try again.';
 var UPLOADING_MSG = 'Video is uploading... Do not leave the page.';
 var PROCESSING_MSG = 'Video is processing...';
-var script$4 = {
+var script$5 = {
   name: 'tce-sprout-video',
   inject: ['$elementBus'],
   props: {
@@ -486,7 +553,7 @@ var script$4 = {
           status = _this$element$data2.status,
           playable = _this$element$data2.playable;
       if (status === shared.ELEMENT_STATE.UPLOADING) return UPLOADING_MSG;
-      return playable ? '' : PROCESSING_MSG;
+      return !playable && PROCESSING_MSG;
     },
     isReadyToUpload: function isReadyToUpload() {
       var _this$element$data3 = this.element.data,
@@ -496,19 +563,12 @@ var script$4 = {
     }
   },
   methods: {
-    appendVideo: function appendVideo() {
-      var _this$element$data4;
-
-      var player = this.$refs.player;
-      if (!player) return;
-      player.innerHTML = (_this$element$data4 = this.element.data) === null || _this$element$data4 === void 0 ? void 0 : _this$element$data4.embedCode;
-    },
     upload: function upload$1() {
       var _this = this;
 
-      var _this$element$data5 = this.element.data,
-          url = _this$element$data5.uploadUrl,
-          token = _this$element$data5.token;
+      var _this$element$data4 = this.element.data,
+          url = _this$element$data4.uploadUrl,
+          token = _this$element$data4.token;
       return upload({
         url: url,
         file: this.file,
@@ -523,15 +583,14 @@ var script$4 = {
         }));
       })["catch"](function (err) {
         _this.$emit('save', Object.assign({}, _this.element.data, {
-          status: shared.ELEMENT_STATE.UPLOADED,
           error: get__default['default'](err, 'response.data.error', DEFAULT_ERROR_MSG),
+          status: null,
           fileName: null
         }));
       });
     }
   },
   watch: {
-    'element.data.embedCode': 'appendVideo',
     'element.data.uploadUrl': function elementDataUploadUrl() {
       if (this.isReadyToUpload) this.upload();
     }
@@ -539,7 +598,6 @@ var script$4 = {
   mounted: function mounted() {
     var _this2 = this;
 
-    this.appendVideo();
     this.$elementBus.on('save', function (_ref2) {
       var file = _ref2.file;
       _this2.file = file;
@@ -561,15 +619,16 @@ var script$4 = {
   components: {
     ElementPlaceholder: ElementPlaceholder,
     ErrorMessage: ErrorMessage,
-    ProgressMessage: ProgressMessage
+    ProgressMessage: ProgressMessage,
+    SproutPlayer: SproutPlayer
   }
 };
 
 /* script */
-var __vue_script__$4 = script$4;
+var __vue_script__$5 = script$5;
 /* template */
 
-var __vue_render__$4 = function __vue_render__() {
+var __vue_render__$5 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -595,33 +654,30 @@ var __vue_render__$4 = function __vue_render__() {
     attrs: {
       "message": _vm.infoMessage
     }
-  }) : _vm._e(), _vm._v(" "), _c('div', {
-    ref: "player",
-    staticClass: "player d-flex align-center justify-center"
-  })], 1)], 1);
+  }) : _vm._e(), _vm._v(" "), _c('sprout-player', _vm._b({}, 'sprout-player', _vm.element.data, false))], 1)], 1);
 };
 
-var __vue_staticRenderFns__$4 = [];
+var __vue_staticRenderFns__$5 = [];
 /* style */
 
-var __vue_inject_styles__$4 = undefined;
+var __vue_inject_styles__$5 = undefined;
 /* scoped */
 
-var __vue_scope_id__$4 = "data-v-7bc05490";
+var __vue_scope_id__$5 = "data-v-0c4c0293";
 /* module identifier */
 
-var __vue_module_identifier__$4 = undefined;
+var __vue_module_identifier__$5 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$4 = false;
+var __vue_is_functional_template__$5 = false;
 /* style inject */
 
 /* style inject SSR */
 
 var Edit = normalizeComponent_1({
-  render: __vue_render__$4,
-  staticRenderFns: __vue_staticRenderFns__$4
-}, __vue_inject_styles__$4, __vue_script__$4, __vue_scope_id__$4, __vue_is_functional_template__$4, __vue_module_identifier__$4, undefined, undefined);
+  render: __vue_render__$5,
+  staticRenderFns: __vue_staticRenderFns__$5
+}, __vue_inject_styles__$5, __vue_script__$5, __vue_scope_id__$5, __vue_is_functional_template__$5, __vue_module_identifier__$5, undefined, undefined);
 
 var info = {
   name: 'Sprout Video',
@@ -705,7 +761,7 @@ function _nonIterableRest() {
 //
 //
 //
-var script$5 = {
+var script$6 = {
   name: 'video-upload-btn',
   inheritAttrs: false,
   props: {
@@ -721,10 +777,10 @@ var script$5 = {
 };
 
 /* script */
-var __vue_script__$5 = script$5;
+var __vue_script__$6 = script$6;
 /* template */
 
-var __vue_render__$5 = function __vue_render__() {
+var __vue_render__$6 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -762,29 +818,29 @@ var __vue_render__$5 = function __vue_render__() {
   })], 2);
 };
 
-var __vue_staticRenderFns__$5 = [];
+var __vue_staticRenderFns__$6 = [];
 /* style */
 
-var __vue_inject_styles__$5 = undefined;
+var __vue_inject_styles__$6 = undefined;
 /* scoped */
 
-var __vue_scope_id__$5 = undefined;
+var __vue_scope_id__$6 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$5 = undefined;
+var __vue_module_identifier__$6 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$5 = false;
+var __vue_is_functional_template__$6 = false;
 /* style inject */
 
 /* style inject SSR */
 
 var UploadBtn = normalizeComponent_1({
-  render: __vue_render__$5,
-  staticRenderFns: __vue_staticRenderFns__$5
-}, __vue_inject_styles__$5, __vue_script__$5, __vue_scope_id__$5, __vue_is_functional_template__$5, __vue_module_identifier__$5, undefined, undefined);
+  render: __vue_render__$6,
+  staticRenderFns: __vue_staticRenderFns__$6
+}, __vue_inject_styles__$6, __vue_script__$6, __vue_scope_id__$6, __vue_is_functional_template__$6, __vue_module_identifier__$6, undefined, undefined);
 
-var script$6 = {
+var script$7 = {
   name: 'tce-sprout-video-toolbar',
   inject: ['$elementBus'],
   props: {
@@ -817,10 +873,10 @@ var script$6 = {
 };
 
 /* script */
-var __vue_script__$6 = script$6;
+var __vue_script__$7 = script$7;
 /* template */
 
-var __vue_render__$6 = function __vue_render__() {
+var __vue_render__$7 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -855,27 +911,27 @@ var __vue_render__$6 = function __vue_render__() {
   })], 1)], 1);
 };
 
-var __vue_staticRenderFns__$6 = [];
+var __vue_staticRenderFns__$7 = [];
 /* style */
 
-var __vue_inject_styles__$6 = undefined;
+var __vue_inject_styles__$7 = undefined;
 /* scoped */
 
-var __vue_scope_id__$6 = "data-v-d869c812";
+var __vue_scope_id__$7 = "data-v-d869c812";
 /* module identifier */
 
-var __vue_module_identifier__$6 = undefined;
+var __vue_module_identifier__$7 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$6 = false;
+var __vue_is_functional_template__$7 = false;
 /* style inject */
 
 /* style inject SSR */
 
 var Toolbar = normalizeComponent_1({
-  render: __vue_render__$6,
-  staticRenderFns: __vue_staticRenderFns__$6
-}, __vue_inject_styles__$6, __vue_script__$6, __vue_scope_id__$6, __vue_is_functional_template__$6, __vue_module_identifier__$6, undefined, undefined);
+  render: __vue_render__$7,
+  staticRenderFns: __vue_staticRenderFns__$7
+}, __vue_inject_styles__$7, __vue_script__$7, __vue_scope_id__$7, __vue_is_functional_template__$7, __vue_module_identifier__$7, undefined, undefined);
 
 var initState = function initState() {
   return {
