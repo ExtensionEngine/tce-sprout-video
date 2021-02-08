@@ -26,11 +26,12 @@
           :is-selected="index === selectedIndex"
           class="mr-2" />
       </div>
-      <div class="mt-6 mb-4 px-2">
+      <div class="mt-6 mb-4 px-2 text-left">
         <upload-btn
           @change="upload"
           label="Upload custom"
-          accept="image/jpeg">
+          accept="image/jpeg"
+          small>
           <template #icon>
             <v-icon>mdi-upload</v-icon>
           </template>

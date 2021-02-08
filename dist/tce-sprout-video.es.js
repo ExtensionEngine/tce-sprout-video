@@ -1389,11 +1389,12 @@ var __vue_render__$a = function __vue_render__() {
             }
           });
         }), 1), _vm._v(" "), _c('div', {
-          staticClass: "mt-6 mb-4 px-2"
+          staticClass: "mt-6 mb-4 px-2 text-left"
         }, [_c('upload-btn', {
           attrs: {
             "label": "Upload custom",
-            "accept": "image/jpeg"
+            "accept": "image/jpeg",
+            "small": ""
           },
           on: {
             "change": _vm.upload
@@ -1451,7 +1452,7 @@ var __vue_staticRenderFns__$a = [];
 var __vue_inject_styles__$a = undefined;
 /* scoped */
 
-var __vue_scope_id__$a = "data-v-1f83c308";
+var __vue_scope_id__$a = "data-v-9d2fa644";
 /* module identifier */
 
 var __vue_module_identifier__$a = undefined;
