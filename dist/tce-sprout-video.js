@@ -1303,7 +1303,7 @@ var script$a = {
     reset: function reset() {
       this.dialog = false;
       this.image = null;
-      this.selectedIndex = null;
+      this.selectedIndex = this.selectedPosterFrameIndex;
       this.isError = false;
     },
     upload: function upload(e) {
@@ -1419,7 +1419,7 @@ var __vue_render__$a = function __vue_render__() {
             key: poster,
             attrs: {
               "src": poster,
-              "is-selected": _vm.selectedIndex === index
+              "is-selected": !_vm.image && _vm.selectedIndex === index
             },
             on: {
               "click": function click($event) {
@@ -1493,7 +1493,7 @@ var __vue_staticRenderFns__$a = [];
 var __vue_inject_styles__$a = undefined;
 /* scoped */
 
-var __vue_scope_id__$a = "data-v-3faf9b2e";
+var __vue_scope_id__$a = "data-v-ffc2c0e6";
 /* module identifier */
 
 var __vue_module_identifier__$a = undefined;

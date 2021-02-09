@@ -28,7 +28,7 @@
           :key="poster"
           @click="selectedIndex = index"
           :src="poster"
-          :is-selected="selectedIndex === index" />
+          :is-selected="!image && (selectedIndex === index)" />
       </div>
       <div class="mt-3 text-left">
         <upload-btn
@@ -92,7 +92,7 @@ export default {
     reset() {
       this.dialog = false;
       this.image = null;
-      this.selectedIndex = null;
+      this.selectedIndex = this.selectedPosterFrameIndex;
       this.isError = false;
     },
     upload(e) {
