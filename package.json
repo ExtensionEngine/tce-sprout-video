@@ -12,7 +12,7 @@
   },
   "license": "MIT",
   "author": "ExtensionEngine <info@extensionengine.com>",
-  "main": "src/index.js",
+  "main": "dist/tce-sprout-video.umd.js",
   "files": [
     "dist"
   ],
