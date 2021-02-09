@@ -11,17 +11,20 @@
         :disabled="isDisabled"
         text>
         <v-icon class="mr-2">mdi-image-multiple</v-icon>
-        Select poster
+        Select poster frame
       </v-btn>
     </template>
     <template #header>
-      Select poster frame
+      Poster frame
     </template>
     <template #body>
-      <p class="mb-1 text-left">
-        Select an image to display before video is played.
+      <p class="mb-3 text-left">
+        Set an image that's displayed before the video is played.
       </p>
-      <v-img :src="currentPosterFrame" class="mb-2" />
+      <v-img :src="currentPosterFrame" class="frame" />
+      <p class="mt-7 mb-3 text-left">
+        Pick a frame from the video
+      </p>
       <div class="poster-frames-container">
         <poster-frame
           v-for="(poster, index) in generatedPosterFrames"
@@ -30,10 +33,13 @@
           :src="poster"
           :is-selected="!image && (selectedIndex === index)" />
       </div>
+      <p class="mt-3 mb-0 text-left">
+        or upload an image from your computer
+      </p>
       <div class="mt-3 text-left">
         <upload-btn
           @change="upload"
-          label="Upload custom"
+          label="Upload image"
           accept="image/jpeg"
           small
           class="mt-3">
@@ -41,8 +47,8 @@
             <v-icon>mdi-upload</v-icon>
           </template>
         </upload-btn>
-        <p :class="{ 'error--text': isError }" class="my-1 text-xs-caption">
-          Poster frame must be under 500 kilobytes
+        <p :class="{ 'error--text': isError }" class="mt-1 text-caption">
+          Poster frame must be under 500KB.
         </p>
       </div>
     </template>
