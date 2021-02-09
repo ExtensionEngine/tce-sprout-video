@@ -98,7 +98,7 @@ function afterLoaded(asset, { config: { tce } }) {
       } = video;
       asset.data.video.embedCode = embedCode.replace(/'/g, '"');
       asset.data.video.selectedPosterFrameIndex = selectedPosterFrameIndex;
-      asset.data.video.posterFrames = posterFrames.slice(0, 4);
+      asset.data.video.posterFrames = posterFrames;
       return asset;
     })
     .catch(error => setAssetError(asset, error));

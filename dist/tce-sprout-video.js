@@ -5,12 +5,16 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var cloneDeep = require('lodash/cloneDeep');
 var axios = require('axios');
 var get = require('lodash/get');
+var isNil = require('lodash/isNil');
+var take = require('lodash/take');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var cloneDeep__default = /*#__PURE__*/_interopDefaultLegacy(cloneDeep);
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
 var get__default = /*#__PURE__*/_interopDefaultLegacy(get);
+var isNil__default = /*#__PURE__*/_interopDefaultLegacy(isNil);
+var take__default = /*#__PURE__*/_interopDefaultLegacy(take);
 
 var name = "tce-sprout-video";
 var version = "0.0.1";
@@ -1224,7 +1228,7 @@ var __vue_staticRenderFns__$9 = [];
 var __vue_inject_styles__$9 = undefined;
 /* scoped */
 
-var __vue_scope_id__$9 = "data-v-a57abab6";
+var __vue_scope_id__$9 = "data-v-5d53df52";
 /* module identifier */
 
 var __vue_module_identifier__$9 = undefined;
@@ -1242,6 +1246,7 @@ var PosterFrame = normalizeComponent_1({
 
 var MAX_SIZE = 500000; // 500 KB
 
+var CUSTOM_POSTER_FRAME_INDEX = 4;
 var script$a = {
   name: 'poster-frame-upload',
   props: {
@@ -1268,27 +1273,44 @@ var script$a = {
     return {
       dialog: false,
       selectedIndex: null,
-      file: null,
+      image: null,
       isError: false
     };
   },
   computed: {
-    isDisabled: function isDisabled() {
-      var videoId = this.id,
-          playable = this.playable;
+    isDisabled: function isDisabled(_ref) {
+      var videoId = _ref.id,
+          playable = _ref.playable;
       return !videoId || !playable;
+    },
+    generatedPosterFrames: function generatedPosterFrames(_ref2) {
+      var posterFrames = _ref2.posterFrames;
+      return take__default['default'](posterFrames, 4);
+    },
+    customPosterFrame: function customPosterFrame(_ref3) {
+      var image = _ref3.image,
+          posterFrames = _ref3.posterFrames;
+      return image || posterFrames[CUSTOM_POSTER_FRAME_INDEX];
+    },
+    currentPosterFrame: function currentPosterFrame() {
+      var customPosterFrame = this.customPosterFrame,
+          posterFrames = this.posterFrames,
+          selectedPosterFrameIndex = this.selectedPosterFrameIndex;
+      return customPosterFrame || posterFrames[selectedPosterFrameIndex];
     }
   },
   methods: {
     reset: function reset() {
       this.dialog = false;
-      this.selectedIndex = this.selectedPosterFrameIndex;
-      this.file = null;
+      this.image = null;
+      this.selectedIndex = null;
       this.isError = false;
     },
     upload: function upload(e) {
+      var _this = this;
+
       this.isError = false;
-      this.file = null;
+      this.image = null;
 
       var _e$target$files = _slicedToArray(e.target.files, 1),
           file = _e$target$files[0];
@@ -1298,25 +1320,27 @@ var script$a = {
         return;
       }
 
-      this.file = file;
+      var fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.addEventListener('load', function (e) {
+        _this.image = e.target.result;
+      });
     },
     save: function save() {
-      var _this = this;
+      var image = this.image,
+          selectedIndex = this.selectedIndex,
+          selectedPosterFrameIndex = this.selectedPosterFrameIndex;
 
-      if (this.file) {
-        var fileReader = new FileReader();
-        fileReader.readAsDataURL(this.file);
-        fileReader.addEventListener('load', function (e) {
-          _this.$emit('save', {
-            video: {
-              customPosterFrame: e.target.result
-            }
-          });
+      if (image) {
+        this.$emit('save', {
+          video: {
+            customPosterFrame: image
+          }
         });
       } else {
         this.$emit('save', {
           video: {
-            posterFrameNumber: this.selectedIndex
+            posterFrameNumber: isNil__default['default'](selectedIndex) ? selectedPosterFrameIndex : selectedIndex
           }
         });
       }
@@ -1352,6 +1376,7 @@ var __vue_render__$a = function __vue_render__() {
 
   return _c('tailor-dialog', {
     attrs: {
+      "header-icon": "mdi-image-multiple",
       "width": "700"
     },
     on: {
@@ -1381,16 +1406,20 @@ var __vue_render__$a = function __vue_render__() {
       key: "body",
       fn: function fn() {
         return [_c('p', {
-          staticClass: "px-2 text-left"
-        }, [_vm._v("\n      Select an image to display before video is played.\n    ")]), _vm._v(" "), _c('div', {
-          staticClass: "poster-frames-container d-flex"
-        }, _vm._l(_vm.posterFrames, function (poster, index) {
+          staticClass: "mb-1 text-left"
+        }, [_vm._v("\n      Select an image to display before video is played.\n    ")]), _vm._v(" "), _c('v-img', {
+          staticClass: "mb-4",
+          attrs: {
+            "src": _vm.currentPosterFrame
+          }
+        }), _vm._v(" "), _c('div', {
+          staticClass: "poster-frames-container"
+        }, _vm._l(_vm.generatedPosterFrames, function (poster, index) {
           return _c('poster-frame', {
             key: poster,
-            staticClass: "mr-2",
             attrs: {
               "src": poster,
-              "is-selected": index === _vm.selectedIndex
+              "is-selected": _vm.selectedIndex === index
             },
             on: {
               "click": function click($event) {
@@ -1399,8 +1428,9 @@ var __vue_render__$a = function __vue_render__() {
             }
           });
         }), 1), _vm._v(" "), _c('div', {
-          staticClass: "mt-6 mb-4 px-2 text-left"
+          staticClass: "mt-3 text-left"
         }, [_c('upload-btn', {
+          staticClass: "mt-3",
           attrs: {
             "label": "Upload custom",
             "accept": "image/jpeg",
@@ -1416,11 +1446,12 @@ var __vue_render__$a = function __vue_render__() {
             },
             proxy: true
           }])
-        }), _vm._v(" "), _vm.isError ? _c('p', {
-          staticClass: "my-1 text-xs-caption error--text"
-        }, [_vm._v("\n        Poster frame must be under 500 kilobytes\n      ")]) : _vm.file ? _c('p', {
-          staticClass: "my-1 text-xs-caption"
-        }, [_vm._v(_vm._s(_vm.file.name))]) : _vm._e()], 1)];
+        }), _vm._v(" "), _c('p', {
+          staticClass: "my-1 text-xs-caption",
+          "class": {
+            'error--text': _vm.isError
+          }
+        }, [_vm._v("\n        Poster frame must be under 500 kilobytes\n      ")])], 1)];
       },
       proxy: true
     }, {
@@ -1462,7 +1493,7 @@ var __vue_staticRenderFns__$a = [];
 var __vue_inject_styles__$a = undefined;
 /* scoped */
 
-var __vue_scope_id__$a = "data-v-9d2fa644";
+var __vue_scope_id__$a = "data-v-3faf9b2e";
 /* module identifier */
 
 var __vue_module_identifier__$a = undefined;

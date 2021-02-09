@@ -1,5 +1,9 @@
 <template>
-  <tailor-dialog v-model="dialog" @click:outside="reset" width="700">
+  <tailor-dialog
+    v-model="dialog"
+    @click:outside="reset"
+    header-icon="mdi-image-multiple"
+    width="700">
     <template #activator="{ on, attrs }">
       <v-btn
         v-on="on"
@@ -14,32 +18,32 @@
       Select poster frame
     </template>
     <template #body>
-      <p class="px-2 text-left">
+      <p class="mb-1 text-left">
         Select an image to display before video is played.
       </p>
-      <div class="poster-frames-container d-flex">
+      <v-img :src="currentPosterFrame" class="mb-4" />
+      <div class="poster-frames-container">
         <poster-frame
-          v-for="(poster, index) in posterFrames"
+          v-for="(poster, index) in generatedPosterFrames"
           :key="poster"
           @click="selectedIndex = index"
           :src="poster"
-          :is-selected="index === selectedIndex"
-          class="mr-2" />
+          :is-selected="selectedIndex === index" />
       </div>
-      <div class="mt-6 mb-4 px-2 text-left">
+      <div class="mt-3 text-left">
         <upload-btn
           @change="upload"
           label="Upload custom"
           accept="image/jpeg"
-          small>
+          small
+          class="mt-3">
           <template #icon>
             <v-icon>mdi-upload</v-icon>
           </template>
         </upload-btn>
-        <p v-if="isError" class="my-1 text-xs-caption error--text">
+        <p :class="{ 'error--text': isError }" class="my-1 text-xs-caption">
           Poster frame must be under 500 kilobytes
         </p>
-        <p v-else-if="file" class="my-1 text-xs-caption">{{ file.name }}</p>
       </div>
     </template>
     <template #actions>
@@ -50,11 +54,14 @@
 </template>
 
 <script>
+import isNil from 'lodash/isNil';
 import PosterFrame from './PosterFrame.vue';
 import TailorDialog from '../tce-core/TailorDialog.vue';
+import take from 'lodash/take';
 import UploadBtn from './UploadBtn.vue';
 
 const MAX_SIZE = 500000; // 500 KB
+const CUSTOM_POSTER_FRAME_INDEX = 4;
 
 export default {
   name: 'poster-frame-upload',
@@ -67,47 +74,53 @@ export default {
   data: () => ({
     dialog: false,
     selectedIndex: null,
-    file: null,
+    image: null,
     isError: false
   }),
   computed: {
-    isDisabled() {
-      const { id: videoId, playable } = this;
-      return !videoId || !playable;
+    isDisabled: ({ id: videoId, playable }) => !videoId || !playable,
+    generatedPosterFrames: ({ posterFrames }) => take(posterFrames, 4),
+    customPosterFrame: ({ image, posterFrames }) => {
+      return image || posterFrames[CUSTOM_POSTER_FRAME_INDEX];
+    },
+    currentPosterFrame() {
+      const { customPosterFrame, posterFrames, selectedPosterFrameIndex } = this;
+      return customPosterFrame || posterFrames[selectedPosterFrameIndex];
     }
   },
   methods: {
     reset() {
       this.dialog = false;
-      this.selectedIndex = this.selectedPosterFrameIndex;
-      this.file = null;
+      this.image = null;
+      this.selectedIndex = null;
       this.isError = false;
     },
     upload(e) {
       this.isError = false;
-      this.file = null;
+      this.image = null;
       const [file] = e.target.files;
       if (file.size > MAX_SIZE) {
         this.isError = true;
         return;
       }
-      this.file = file;
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.addEventListener('load', e => {
+        this.image = e.target.result;
+      });
     },
     save() {
-      if (this.file) {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(this.file);
-        fileReader.addEventListener('load', e => {
-          this.$emit('save', {
-            video: {
-              customPosterFrame: e.target.result
-            }
-          });
+      const { image, selectedIndex, selectedPosterFrameIndex } = this;
+      if (image) {
+        this.$emit('save', {
+          video: {
+            customPosterFrame: image
+          }
         });
       } else {
         this.$emit('save', {
           video: {
-            posterFrameNumber: this.selectedIndex
+            posterFrameNumber: isNil(selectedIndex) ? selectedPosterFrameIndex : selectedIndex
           }
         });
       }
@@ -128,6 +141,8 @@ export default {
 
 <style lang="scss" scoped>
 .poster-frames-container {
-  justify-content: space-evenly;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 5px;
 }
 </style>

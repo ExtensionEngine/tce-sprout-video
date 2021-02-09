@@ -20,9 +20,8 @@ export default {
 
 <style lang="scss" scoped>
 .poster-frame {
-  max-width: 22%;
-  cursor: pointer;
   box-sizing: border-box;
+  cursor: pointer;
 
   &.selected {
     border: 3px solid var(--v-success-darken1);
