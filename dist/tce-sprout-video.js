@@ -1408,7 +1408,7 @@ var __vue_render__$a = function __vue_render__() {
         return [_c('p', {
           staticClass: "mb-1 text-left"
         }, [_vm._v("\n      Select an image to display before video is played.\n    ")]), _vm._v(" "), _c('v-img', {
-          staticClass: "mb-4",
+          staticClass: "mb-2",
           attrs: {
             "src": _vm.currentPosterFrame
           }
@@ -1493,7 +1493,7 @@ var __vue_staticRenderFns__$a = [];
 var __vue_inject_styles__$a = undefined;
 /* scoped */
 
-var __vue_scope_id__$a = "data-v-ffc2c0e6";
+var __vue_scope_id__$a = "data-v-7c50e362";
 /* module identifier */
 
 var __vue_module_identifier__$a = undefined;

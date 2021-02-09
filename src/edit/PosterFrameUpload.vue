@@ -21,7 +21,7 @@
       <p class="mb-1 text-left">
         Select an image to display before video is played.
       </p>
-      <v-img :src="currentPosterFrame" class="mb-4" />
+      <v-img :src="currentPosterFrame" class="mb-2" />
       <div class="poster-frames-container">
         <poster-frame
           v-for="(poster, index) in generatedPosterFrames"
