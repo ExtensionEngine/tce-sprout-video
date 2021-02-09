@@ -41,8 +41,7 @@
           @change="upload"
           label="Upload image"
           accept="image/jpeg"
-          small
-          class="mt-3">
+          small depressed>
           <template #icon>
             <v-icon>mdi-upload</v-icon>
           </template>
