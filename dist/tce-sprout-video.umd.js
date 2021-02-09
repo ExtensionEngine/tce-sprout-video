@@ -446,7 +446,7 @@
 
   //
   var UPLOAD_FAILED_ERROR_MSG = 'Video upload failed. Please try again.';
-  var UPLOADING_MSG = 'Video is uploading... Do not leave the page.';
+  var UPLOADING_MSG = 'Video is uploading. Please do not leave the page.';
   var PROCESSING_MSG = 'Video is processing...';
   var script$4 = {
     name: 'tce-sprout-video',
@@ -625,7 +625,7 @@
   var __vue_inject_styles__$4 = undefined;
   /* scoped */
 
-  var __vue_scope_id__$4 = "data-v-d3758d70";
+  var __vue_scope_id__$4 = "data-v-63348db2";
   /* module identifier */
 
   var __vue_module_identifier__$4 = undefined;
@@ -735,6 +735,8 @@
   //
   //
   //
+  //
+  //
   var script$5 = {
     name: 'tailor-dialog',
     props: {
@@ -776,7 +778,9 @@
           }
         };
       })], null, true)
-    }, 'v-dialog', _vm.$attrs, false), _vm.$listeners), [_vm._v(" "), _c('v-card', [_c('v-card-title', {
+    }, 'v-dialog', _vm.$attrs, false), _vm.$listeners), [_vm._v(" "), _c('v-card', {
+      staticClass: "dialog"
+    }, [_c('v-card-title', {
       staticClass: "dialog-title primary darken-1",
       attrs: {
         "primary-title": ""
@@ -794,6 +798,7 @@
     }, [_vm._v(_vm._s(_vm.headerIcon))])], 1) : _vm._e(), _vm._v(" "), _c('div', {
       staticClass: "text-truncate"
     }, [_vm._t("header")], 2)], 1), _vm._v(" "), _c('v-card-text', {
+      staticClass: "dialog-body",
       "class": [_vm.paddingless ? 'pa-0' : 'pt-7 px-4 pb-2']
     }, [_vm._t("body")], 2), _vm._v(" "), _vm.$slots.actions ? _c('v-card-actions', {
       staticClass: "px-4 pb-3"
@@ -806,7 +811,7 @@
   var __vue_inject_styles__$5 = undefined;
   /* scoped */
 
-  var __vue_scope_id__$5 = "data-v-6ebf236f";
+  var __vue_scope_id__$5 = "data-v-cfd2a3d2";
   /* module identifier */
 
   var __vue_module_identifier__$5 = undefined;
@@ -1224,7 +1229,7 @@
   var __vue_inject_styles__$9 = undefined;
   /* scoped */
 
-  var __vue_scope_id__$9 = "data-v-5d53df52";
+  var __vue_scope_id__$9 = "data-v-1db6dee5";
   /* module identifier */
 
   var __vue_module_identifier__$9 = undefined;
@@ -1373,7 +1378,7 @@
     return _c('tailor-dialog', {
       attrs: {
         "header-icon": "mdi-image-multiple",
-        "width": "700"
+        "width": "608"
       },
       on: {
         "click:outside": _vm.reset
@@ -1390,25 +1395,27 @@
             }
           }, 'v-btn', attrs, false), on), [_c('v-icon', {
             staticClass: "mr-2"
-          }, [_vm._v("mdi-image-multiple")]), _vm._v("\n      Select poster\n    ")], 1)];
+          }, [_vm._v("mdi-image-multiple")]), _vm._v("\n      Select poster frame\n    ")], 1)];
         }
       }, {
         key: "header",
         fn: function fn() {
-          return [_vm._v("\n    Select poster frame\n  ")];
+          return [_vm._v("\n    Poster frame\n  ")];
         },
         proxy: true
       }, {
         key: "body",
         fn: function fn() {
           return [_c('p', {
-            staticClass: "mb-1 text-left"
-          }, [_vm._v("\n      Select an image to display before video is played.\n    ")]), _vm._v(" "), _c('v-img', {
-            staticClass: "mb-2",
+            staticClass: "mb-3 text-left"
+          }, [_vm._v("\n      Set an image that's displayed before the video is played.\n    ")]), _vm._v(" "), _c('v-img', {
+            staticClass: "frame",
             attrs: {
               "src": _vm.currentPosterFrame
             }
-          }), _vm._v(" "), _c('div', {
+          }), _vm._v(" "), _c('p', {
+            staticClass: "mt-7 mb-3 text-left"
+          }, [_vm._v("\n      Pick a frame from the video\n    ")]), _vm._v(" "), _c('div', {
             staticClass: "poster-frames-container"
           }, _vm._l(_vm.generatedPosterFrames, function (poster, index) {
             return _c('poster-frame', {
@@ -1423,14 +1430,16 @@
                 }
               }
             });
-          }), 1), _vm._v(" "), _c('div', {
+          }), 1), _vm._v(" "), _c('p', {
+            staticClass: "mt-3 mb-0 text-left"
+          }, [_vm._v("\n      or upload an image from your computer\n    ")]), _vm._v(" "), _c('div', {
             staticClass: "mt-3 text-left"
           }, [_c('upload-btn', {
-            staticClass: "mt-3",
             attrs: {
-              "label": "Upload custom",
+              "label": "Upload image",
               "accept": "image/jpeg",
-              "small": ""
+              "small": "",
+              "depressed": ""
             },
             on: {
               "change": _vm.upload
@@ -1443,11 +1452,11 @@
               proxy: true
             }])
           }), _vm._v(" "), _c('p', {
-            staticClass: "my-1 text-xs-caption",
+            staticClass: "mt-1 text-caption",
             "class": {
               'error--text': _vm.isError
             }
-          }, [_vm._v("\n        Poster frame must be under 500 kilobytes\n      ")])], 1)];
+          }, [_vm._v("\n        Poster frame must be under 500KB.\n      ")])], 1)];
         },
         proxy: true
       }, {
@@ -1489,7 +1498,7 @@
   var __vue_inject_styles__$a = undefined;
   /* scoped */
 
-  var __vue_scope_id__$a = "data-v-7c50e362";
+  var __vue_scope_id__$a = "data-v-0994881f";
   /* module identifier */
 
   var __vue_module_identifier__$a = undefined;
