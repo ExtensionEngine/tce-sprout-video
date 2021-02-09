@@ -3,7 +3,7 @@
     v-model="dialog"
     @click:outside="reset"
     header-icon="mdi-image-multiple"
-    width="700">
+    width="608">
     <template #activator="{ on, attrs }">
       <v-btn
         v-on="on"
@@ -148,7 +148,8 @@ export default {
 .poster-frames-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 5px;
+  grid-gap: 0.5rem;
+}
 
 .frame {
   box-shadow: 0 0 0 1px #e1e1e1;
