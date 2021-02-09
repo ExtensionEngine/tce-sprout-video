@@ -150,5 +150,8 @@ export default {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 5px;
+
+.frame {
+  box-shadow: 0 0 0 1px #e1e1e1;
 }
 </style>
