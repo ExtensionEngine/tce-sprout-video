@@ -6,7 +6,7 @@
     <template v-for="(_, slot) in $scopedSlots" #[slot]="scope">
       <slot :name="slot" v-bind="scope"></slot>
     </template>
-    <v-card>
+    <v-card class="dialog">
       <v-card-title primary-title class="dialog-title primary darken-1">
         <v-avatar
           v-if="headerIcon"
@@ -19,7 +19,9 @@
           <slot name="header"></slot>
         </div>
       </v-card-title>
-      <v-card-text :class="[paddingless ? 'pa-0' : 'pt-7 px-4 pb-2']">
+      <v-card-text
+        :class="[paddingless ? 'pa-0' : 'pt-7 px-4 pb-2']"
+        class="dialog-body">
         <slot name="body"></slot>
       </v-card-text>
       <v-card-actions v-if="$slots.actions" class="px-4 pb-3">
@@ -42,6 +44,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.dialog {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  max-height: 86vh;
+  overflow: hidden;
+}
+
 .dialog-title {
   display: flex;
   color: #f1f1f1;
@@ -50,5 +59,9 @@ export default {
     flex: 1;
     text-align: left;
   }
+}
+
+.dialog-body {
+  overflow-y: scroll;
 }
 </style>
