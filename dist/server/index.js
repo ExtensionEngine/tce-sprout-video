@@ -15,7 +15,6 @@ async function beforeSave(asset, { config: { tce } }) {
 }
 
 function processCaption(asset, client) {
-  console.log('Inside process caption');
   const {
     video: { id: videoId },
     caption: { id: captionId, content, status }
@@ -29,9 +28,6 @@ function processCaption(asset, client) {
       });
   }
   if (!content) return;
-  console.log('Inside upload caption');
-  console.log('VideoId: ', videoId);
-  console.log('Content: ', content);
   return client.captions.create(videoId, { language: 'en', content })
     .then(({ id }) => {
       asset.data.caption.id = id;
