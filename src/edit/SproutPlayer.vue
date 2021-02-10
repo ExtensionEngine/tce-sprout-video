@@ -10,7 +10,6 @@ export default {
   },
   methods: {
     appendVideo() {
-      console.log('Inside appendVideo');
       const { player } = this.$refs;
       if (!player) return;
       player.innerHTML = this.embedCode;
