@@ -4,7 +4,7 @@ const Captions = require('./caption');
 const Request = require('./request');
 const Videos = require('./video');
 
-const SPROUT_API_URL = 'https://api.sproutvideo.com';
+const SPROUT_API_URL = 'https://api.sproutvideo.com/v1';
 
 function createClient({ apiKey }) {
   if (!apiKey) throw new Error('Sprout Api Key is required');

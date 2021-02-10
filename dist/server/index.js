@@ -2,6 +2,7 @@
 
 const { createClient } = require('./sproutVideo');
 const { ELEMENT_STATE } = require('../shared');
+const omit = require('lodash/omit');
 
 async function beforeSave(asset, { config: { tce } }) {
   const { sproutVideoApiKey: apiKey } = tce;
@@ -14,6 +15,7 @@ async function beforeSave(asset, { config: { tce } }) {
 }
 
 function processCaption(asset, client) {
+  console.log('Inside process caption');
   const {
     video: { id: videoId },
     caption: { id: captionId, content, status }
@@ -27,6 +29,9 @@ function processCaption(asset, client) {
       });
   }
   if (!content) return;
+  console.log('Inside upload caption');
+  console.log('VideoId: ', videoId);
+  console.log('Content: ', content);
   return client.captions.create(videoId, { language: 'en', content })
     .then(({ id }) => {
       asset.data.caption.id = id;
@@ -35,12 +40,11 @@ function processCaption(asset, client) {
 }
 
 async function afterSave(asset, { config: { tce } }) {
-  const { id: videoId, playable, fileName, error, status } = asset.data.video;
-  if (!fileName || playable) return asset;
+  const { playable, fileName, error, status } = asset.data.video;
+  if (!fileName || playable || error) return asset;
   const { sproutVideoApiKey: apiKey } = tce;
   const client = createClient({ apiKey });
-  const isEmptyOrError = error || !videoId || status !== ELEMENT_STATE.UPLOADED;
-  if (!isEmptyOrError) startPollingPlayableStatus(asset, client);
+  if (status === ELEMENT_STATE.UPLOADED) startPollingPlayableStatus(asset, client);
   const { token } = await client.videos.getDelegatedToken();
   asset.data.video.token = token;
   asset.data.video.uploadUrl = client.videos.getUploadUrl();
@@ -51,13 +55,16 @@ async function startPollingPlayableStatus(asset, client) {
   const { id: videoId } = asset.data.video;
   const video = await client.videos.get(videoId);
   const isPlayable = video.state === 'deployed';
-  if (!isPlayable) return setTimeout(() => startPollingPlayableStatus(asset, client), 5000);
-  delete asset.data.video.token;
-  delete asset.data.video.uploadUrl;
+  if (!isPlayable) {
+    return setTimeout(() => startPollingPlayableStatus(asset, client), 5000);
+  }
   asset.update({
     data: {
       ...asset.data,
-      video: { ...asset.data.video, playable: true }
+      video: {
+        ...omit(asset.data.video, ['token', 'uploadUrl']),
+        playable: true
+      }
     }
   });
 }
