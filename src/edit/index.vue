@@ -128,10 +128,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tce-sprout-video {
-  position: relative;
-}
-
 .player-container {
   position: relative;
 }
