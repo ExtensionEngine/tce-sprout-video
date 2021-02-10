@@ -3,8 +3,8 @@
     <v-alert
       v-if="error"
       type="error"
-      class="text-left"
-      dismissible>
+      dismissible
+      class="text-left">
       {{ error }}
     </v-alert>
     <element-placeholder
