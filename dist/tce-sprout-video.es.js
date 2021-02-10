@@ -444,7 +444,6 @@ var script$4 = {
   },
   methods: {
     appendVideo: function appendVideo() {
-      console.log('Inside appendVideo');
       var player = this.$refs.player;
       if (!player) return;
       player.innerHTML = this.embedCode;
@@ -481,7 +480,7 @@ var __vue_staticRenderFns__$4 = [];
 var __vue_inject_styles__$4 = undefined;
 /* scoped */
 
-var __vue_scope_id__$4 = "data-v-a524bef0";
+var __vue_scope_id__$4 = "data-v-3da78c9a";
 /* module identifier */
 
 var __vue_module_identifier__$4 = undefined;
