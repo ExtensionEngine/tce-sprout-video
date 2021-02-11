@@ -782,17 +782,28 @@ function _nonIterableRest() {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 var script$6 = {
-  name: 'confirmation-dialog',
-  data: function data() {
-    return {
-      dialog: false
-    };
-  },
-  methods: {
-    confirm: function confirm() {
-      this.dialog = false;
-      this.$emit('confirm');
+  name: 'tailor-dialog',
+  props: {
+    headerIcon: {
+      type: String,
+      "default": null
+    },
+    width: {
+      type: [Number, String],
+      "default": 500
+    },
+    paddingless: {
+      type: Boolean,
+      "default": false
     }
   }
 };
@@ -808,29 +819,24 @@ var __vue_render__$6 = function __vue_render__() {
 
   var _c = _vm._self._c || _h;
 
-  return _c('v-dialog', {
+  return _c('v-dialog', _vm._g(_vm._b({
     attrs: {
-      "width": "500"
+      "width": _vm.width
     },
-    scopedSlots: _vm._u([{
-      key: "activator",
-      fn: function fn(scope) {
-        return [_vm._t("default", null, null, scope)];
-      }
-    }], null, true),
-    model: {
-      value: _vm.dialog,
-      callback: function callback($$v) {
-        _vm.dialog = $$v;
-      },
-      expression: "dialog"
-    }
-  }, [_vm._v(" "), _c('v-card', [_c('v-card-title', {
+    scopedSlots: _vm._u([_vm._l(_vm.$scopedSlots, function (_, slot) {
+      return {
+        key: slot,
+        fn: function fn(scope) {
+          return [_vm._t(slot, null, null, scope)];
+        }
+      };
+    })], null, true)
+  }, 'v-dialog', _vm.$attrs, false), _vm.$listeners), [_vm._v(" "), _c('v-card', [_c('v-card-title', {
     staticClass: "dialog-title primary darken-1",
     attrs: {
       "primary-title": ""
     }
-  }, [_c('v-avatar', {
+  }, [_vm.headerIcon ? _c('v-avatar', {
     staticClass: "mr-3",
     attrs: {
       "color": "secondary",
@@ -840,31 +846,13 @@ var __vue_render__$6 = function __vue_render__() {
     attrs: {
       "dark": ""
     }
-  }, [_vm._v("mdi-alert")])], 1), _vm._v(" "), _c('div', {
-    staticClass: "text-truncate white--text"
-  }, [_vm._v("Delete caption?")])], 1), _vm._v(" "), _c('v-card-text', {
-    staticClass: "text-left pt-7 px-4 pb-2"
-  }, [_vm._v("\n      Are you sure you want to delete caption?\n    ")]), _vm._v(" "), _c('v-card-actions', {
+  }, [_vm._v(_vm._s(_vm.headerIcon))])], 1) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "text-truncate"
+  }, [_vm._t("header")], 2)], 1), _vm._v(" "), _c('v-card-text', {
+    "class": [_vm.paddingless ? 'pa-0' : 'pt-7 px-4 pb-2']
+  }, [_vm._t("body")], 2), _vm._v(" "), _vm.$slots.actions ? _c('v-card-actions', {
     staticClass: "px-4 pb-3"
-  }, [_c('v-spacer'), _vm._v(" "), _c('v-btn', {
-    attrs: {
-      "color": "primary",
-      "text": ""
-    },
-    on: {
-      "click": function click($event) {
-        _vm.dialog = false;
-      }
-    }
-  }, [_vm._v("Close")]), _vm._v(" "), _c('v-btn', {
-    attrs: {
-      "color": "error",
-      "text": ""
-    },
-    on: {
-      "click": _vm.confirm
-    }
-  }, [_vm._v("Delete caption")])], 1)], 1)], 1);
+  }, [_c('v-spacer'), _vm._v(" "), _vm._t("actions")], 2) : _vm._e()], 1)], 1);
 };
 
 var __vue_staticRenderFns__$6 = [];
@@ -873,7 +861,7 @@ var __vue_staticRenderFns__$6 = [];
 var __vue_inject_styles__$6 = undefined;
 /* scoped */
 
-var __vue_scope_id__$6 = undefined;
+var __vue_scope_id__$6 = "data-v-6ebf236f";
 /* module identifier */
 
 var __vue_module_identifier__$6 = undefined;
@@ -884,10 +872,121 @@ var __vue_is_functional_template__$6 = false;
 
 /* style inject SSR */
 
-var ConfirmationDialog = normalizeComponent_1({
+var TailorDialog = normalizeComponent_1({
   render: __vue_render__$6,
   staticRenderFns: __vue_staticRenderFns__$6
 }, __vue_inject_styles__$6, __vue_script__$6, __vue_scope_id__$6, __vue_is_functional_template__$6, __vue_module_identifier__$6, undefined, undefined);
+
+//
+var script$7 = {
+  name: 'confirmation-dialog',
+  data: function data() {
+    return {
+      dialog: false
+    };
+  },
+  methods: {
+    confirm: function confirm() {
+      this.dialog = false;
+      this.$emit('confirm');
+    }
+  },
+  components: {
+    TailorDialog: TailorDialog
+  }
+};
+
+/* script */
+var __vue_script__$7 = script$7;
+/* template */
+
+var __vue_render__$7 = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c('tailor-dialog', {
+    attrs: {
+      "header-icon": "mdi-alert",
+      "width": "500"
+    },
+    scopedSlots: _vm._u([{
+      key: "activator",
+      fn: function fn(scope) {
+        return [_vm._t("default", null, null, scope)];
+      }
+    }, {
+      key: "header",
+      fn: function fn() {
+        return [_vm._v("Delete caption?")];
+      },
+      proxy: true
+    }, {
+      key: "body",
+      fn: function fn() {
+        return [_c('div', {
+          staticClass: "text-left"
+        }, [_vm._v("Are you sure you want to delete caption?")])];
+      },
+      proxy: true
+    }, {
+      key: "actions",
+      fn: function fn() {
+        return [_c('v-btn', {
+          attrs: {
+            "color": "primary",
+            "text": ""
+          },
+          on: {
+            "click": function click($event) {
+              _vm.dialog = false;
+            }
+          }
+        }, [_vm._v("Close")]), _vm._v(" "), _c('v-btn', {
+          attrs: {
+            "color": "error",
+            "text": ""
+          },
+          on: {
+            "click": _vm.confirm
+          }
+        }, [_vm._v("Delete caption")])];
+      },
+      proxy: true
+    }], null, true),
+    model: {
+      value: _vm.dialog,
+      callback: function callback($$v) {
+        _vm.dialog = $$v;
+      },
+      expression: "dialog"
+    }
+  });
+};
+
+var __vue_staticRenderFns__$7 = [];
+/* style */
+
+var __vue_inject_styles__$7 = undefined;
+/* scoped */
+
+var __vue_scope_id__$7 = undefined;
+/* module identifier */
+
+var __vue_module_identifier__$7 = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$7 = false;
+/* style inject */
+
+/* style inject SSR */
+
+var ConfirmationDialog = normalizeComponent_1({
+  render: __vue_render__$7,
+  staticRenderFns: __vue_staticRenderFns__$7
+}, __vue_inject_styles__$7, __vue_script__$7, __vue_scope_id__$7, __vue_is_functional_template__$7, __vue_module_identifier__$7, undefined, undefined);
 
 //
 //
@@ -909,7 +1008,7 @@ var ConfirmationDialog = normalizeComponent_1({
 //
 //
 //
-var script$7 = {
+var script$8 = {
   name: 'video-upload-btn',
   inheritAttrs: false,
   props: {
@@ -925,10 +1024,10 @@ var script$7 = {
 };
 
 /* script */
-var __vue_script__$7 = script$7;
+var __vue_script__$8 = script$8;
 /* template */
 
-var __vue_render__$7 = function __vue_render__() {
+var __vue_render__$8 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -966,29 +1065,29 @@ var __vue_render__$7 = function __vue_render__() {
   })], 2);
 };
 
-var __vue_staticRenderFns__$7 = [];
+var __vue_staticRenderFns__$8 = [];
 /* style */
 
-var __vue_inject_styles__$7 = undefined;
+var __vue_inject_styles__$8 = undefined;
 /* scoped */
 
-var __vue_scope_id__$7 = undefined;
+var __vue_scope_id__$8 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$7 = undefined;
+var __vue_module_identifier__$8 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$7 = false;
+var __vue_is_functional_template__$8 = false;
 /* style inject */
 
 /* style inject SSR */
 
 var UploadBtn = normalizeComponent_1({
-  render: __vue_render__$7,
-  staticRenderFns: __vue_staticRenderFns__$7
-}, __vue_inject_styles__$7, __vue_script__$7, __vue_scope_id__$7, __vue_is_functional_template__$7, __vue_module_identifier__$7, undefined, undefined);
+  render: __vue_render__$8,
+  staticRenderFns: __vue_staticRenderFns__$8
+}, __vue_inject_styles__$8, __vue_script__$8, __vue_scope_id__$8, __vue_is_functional_template__$8, __vue_module_identifier__$8, undefined, undefined);
 
-var script$8 = {
+var script$9 = {
   name: 'tce-sprout-video-toolbar',
   inject: ['$elementBus'],
   props: {
@@ -1065,10 +1164,10 @@ var script$8 = {
 };
 
 /* script */
-var __vue_script__$8 = script$8;
+var __vue_script__$9 = script$9;
 /* template */
 
-var __vue_render__$8 = function __vue_render__() {
+var __vue_render__$9 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -1157,27 +1256,27 @@ var __vue_render__$8 = function __vue_render__() {
   }) : _vm._e()], 1)], 1);
 };
 
-var __vue_staticRenderFns__$8 = [];
+var __vue_staticRenderFns__$9 = [];
 /* style */
 
-var __vue_inject_styles__$8 = undefined;
+var __vue_inject_styles__$9 = undefined;
 /* scoped */
 
-var __vue_scope_id__$8 = "data-v-018b3ece";
+var __vue_scope_id__$9 = "data-v-018b3ece";
 /* module identifier */
 
-var __vue_module_identifier__$8 = undefined;
+var __vue_module_identifier__$9 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$8 = false;
+var __vue_is_functional_template__$9 = false;
 /* style inject */
 
 /* style inject SSR */
 
 var Toolbar = normalizeComponent_1({
-  render: __vue_render__$8,
-  staticRenderFns: __vue_staticRenderFns__$8
-}, __vue_inject_styles__$8, __vue_script__$8, __vue_scope_id__$8, __vue_is_functional_template__$8, __vue_module_identifier__$8, undefined, undefined);
+  render: __vue_render__$9,
+  staticRenderFns: __vue_staticRenderFns__$9
+}, __vue_inject_styles__$9, __vue_script__$9, __vue_scope_id__$9, __vue_is_functional_template__$9, __vue_module_identifier__$9, undefined, undefined);
 
 var initState = function initState() {
   return {

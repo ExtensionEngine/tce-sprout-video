@@ -3,4 +3,5 @@
 .message[data-v-2cf5ce5b]{font-size:1.125rem}
 .player[data-v-3da78c9a]{min-height:22.5rem;background:#000}
 .player-container[data-v-7ee7ea16]{position:relative}
+.dialog-title[data-v-6ebf236f]{display:flex;color:#f1f1f1}.dialog-title .text-truncate[data-v-6ebf236f]{flex:1;text-align:left}
 .v-toolbar__title[data-v-018b3ece]{min-width:23.875rem}.upload-btn[data-v-018b3ece]  .v-btn{height:100%}.upload-btn[data-v-018b3ece]  .v-btn__content{padding:1.5rem 0}.v-text-field[data-v-018b3ece]{min-width:21.875rem;margin:.5rem .75rem 0 1.75rem}
