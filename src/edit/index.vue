@@ -30,6 +30,7 @@ import createUpload from '../upload';
 import ElementPlaceholder from '../tce-core/ElementPlaceholder.vue';
 import ErrorMessage from './ErrorMessage.vue';
 import get from 'lodash/get';
+import omit from 'lodash/omit';
 import ProgressMessage from './ProgressMessage.vue';
 import SproutPlayer from './SproutPlayer.vue';
 
@@ -104,12 +105,9 @@ export default {
   },
   mounted() {
     this.$elementBus.on('save', ({ video, caption }) => {
-      if (video) {
-        this.file = video.file;
-        delete video.file;
-      }
+      this.file = get(video, 'file', null);
       const data = cloneDeep(this.element.data);
-      Object.assign(data.video, video);
+      Object.assign(data.video, omit(video, ['file']));
       Object.assign(data.caption, caption);
       this.$emit('save', data);
     });

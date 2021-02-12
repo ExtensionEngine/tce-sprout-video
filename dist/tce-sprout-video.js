@@ -5,12 +5,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var cloneDeep = require('lodash/cloneDeep');
 var axios = require('axios');
 var get = require('lodash/get');
+var omit = require('lodash/omit');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var cloneDeep__default = /*#__PURE__*/_interopDefaultLegacy(cloneDeep);
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
 var get__default = /*#__PURE__*/_interopDefaultLegacy(get);
+var omit__default = /*#__PURE__*/_interopDefaultLegacy(omit);
 
 var name = "tce-sprout-video";
 var version = "0.0.1";
@@ -609,14 +611,9 @@ var script$5 = {
     this.$elementBus.on('save', function (_ref2) {
       var video = _ref2.video,
           caption = _ref2.caption;
-
-      if (video) {
-        _this2.file = video.file;
-        delete video.file;
-      }
-
+      _this2.file = get__default['default'](video, 'file', null);
       var data = cloneDeep__default['default'](_this2.element.data);
-      Object.assign(data.video, video);
+      Object.assign(data.video, omit__default['default'](video, ['file']));
       Object.assign(data.caption, caption);
 
       _this2.$emit('save', data);
@@ -680,7 +677,7 @@ var __vue_staticRenderFns__$5 = [];
 var __vue_inject_styles__$5 = undefined;
 /* scoped */
 
-var __vue_scope_id__$5 = "data-v-7ee7ea16";
+var __vue_scope_id__$5 = "data-v-b76e29ce";
 /* module identifier */
 
 var __vue_module_identifier__$5 = undefined;

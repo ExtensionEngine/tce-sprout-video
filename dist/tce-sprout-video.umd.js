@@ -1,14 +1,15 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('lodash/cloneDeep'), require('axios'), require('lodash/get')) :
-  typeof define === 'function' && define.amd ? define(['exports', 'lodash/cloneDeep', 'axios', 'lodash/get'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global.__TAILOR_CONTENT_ELEMENTS__ = global.__TAILOR_CONTENT_ELEMENTS__ || {}, global.__TAILOR_CONTENT_ELEMENTS__['tce-sprout-video'] = {}), global.cloneDeep, global.axios, global.get));
-}(this, (function (exports, cloneDeep, axios, get) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('lodash/cloneDeep'), require('axios'), require('lodash/get'), require('lodash/omit')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'lodash/cloneDeep', 'axios', 'lodash/get', 'lodash/omit'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global.__TAILOR_CONTENT_ELEMENTS__ = global.__TAILOR_CONTENT_ELEMENTS__ || {}, global.__TAILOR_CONTENT_ELEMENTS__['tce-sprout-video'] = {}), global.cloneDeep, global.axios, global.get, global.omit));
+}(this, (function (exports, cloneDeep, axios, get, omit) { 'use strict';
 
   function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
   var cloneDeep__default = /*#__PURE__*/_interopDefaultLegacy(cloneDeep);
   var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
   var get__default = /*#__PURE__*/_interopDefaultLegacy(get);
+  var omit__default = /*#__PURE__*/_interopDefaultLegacy(omit);
 
   var name = "tce-sprout-video";
   var version = "0.0.1";
@@ -607,14 +608,9 @@
       this.$elementBus.on('save', function (_ref2) {
         var video = _ref2.video,
             caption = _ref2.caption;
-
-        if (video) {
-          _this2.file = video.file;
-          delete video.file;
-        }
-
+        _this2.file = get__default['default'](video, 'file', null);
         var data = cloneDeep__default['default'](_this2.element.data);
-        Object.assign(data.video, video);
+        Object.assign(data.video, omit__default['default'](video, ['file']));
         Object.assign(data.caption, caption);
 
         _this2.$emit('save', data);
@@ -678,7 +674,7 @@
   var __vue_inject_styles__$5 = undefined;
   /* scoped */
 
-  var __vue_scope_id__$5 = "data-v-7ee7ea16";
+  var __vue_scope_id__$5 = "data-v-b76e29ce";
   /* module identifier */
 
   var __vue_module_identifier__$5 = undefined;

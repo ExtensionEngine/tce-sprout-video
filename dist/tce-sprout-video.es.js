@@ -1,6 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 import axios from 'axios';
 import get from 'lodash/get';
+import omit from 'lodash/omit';
 
 var name = "tce-sprout-video";
 var version = "0.0.1";
@@ -599,14 +600,9 @@ var script$5 = {
     this.$elementBus.on('save', function (_ref2) {
       var video = _ref2.video,
           caption = _ref2.caption;
-
-      if (video) {
-        _this2.file = video.file;
-        delete video.file;
-      }
-
+      _this2.file = get(video, 'file', null);
       var data = cloneDeep(_this2.element.data);
-      Object.assign(data.video, video);
+      Object.assign(data.video, omit(video, ['file']));
       Object.assign(data.caption, caption);
 
       _this2.$emit('save', data);
@@ -670,7 +666,7 @@ var __vue_staticRenderFns__$5 = [];
 var __vue_inject_styles__$5 = undefined;
 /* scoped */
 
-var __vue_scope_id__$5 = "data-v-7ee7ea16";
+var __vue_scope_id__$5 = "data-v-b76e29ce";
 /* module identifier */
 
 var __vue_module_identifier__$5 = undefined;
