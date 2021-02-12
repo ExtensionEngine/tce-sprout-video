@@ -10,6 +10,7 @@ async function beforeSave(asset, { config: { tce } }) {
   const { id: videoId, playable } = asset.data.video;
   if (!videoId || !playable) return asset;
   await processCaption(asset, client);
+  deleteNonPersistentAssetProps(asset);
   return asset;
 }
 
@@ -18,7 +19,6 @@ function processCaption(asset, client) {
     video: { id: videoId },
     caption: { id: captionId, content, status }
   } = asset.data;
-  delete asset.data.caption.content;
   if (status === ELEMENT_STATE.DELETING) {
     return client.captions.delete(videoId, captionId)
       .then(() => {
@@ -32,6 +32,11 @@ function processCaption(asset, client) {
       asset.data.caption.id = id;
       asset.data.caption.status = ELEMENT_STATE.UPLOADED;
     });
+}
+
+function deleteNonPersistentAssetProps(asset) {
+  delete asset.data.caption.content;
+  delete asset.data.video.embedCode;
 }
 
 async function afterSave(asset, { config: { tce } }) {
