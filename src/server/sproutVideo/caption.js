@@ -1,6 +1,6 @@
 'use strict';
 
-class Captions {
+class Caption {
   constructor(request) {
     this._request = request;
   }
@@ -14,4 +14,4 @@ class Captions {
   }
 }
 
-module.exports = Captions;
+module.exports = Caption;

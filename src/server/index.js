@@ -8,8 +8,7 @@ async function beforeSave(asset, { config: { tce } }) {
   const { sproutVideoApiKey: apiKey } = tce;
   const client = createClient({ apiKey });
   const { id: videoId, playable } = asset.data.video;
-  const isVideoPlayable = videoId && playable;
-  if (!isVideoPlayable) return asset;
+  if (!videoId || !playable) return asset;
   await processCaption(asset, client);
   return asset;
 }
