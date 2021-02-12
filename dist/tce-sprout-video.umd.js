@@ -1102,11 +1102,11 @@
         var caption = _ref.caption;
         return caption === null || caption === void 0 ? void 0 : caption.fileName;
       },
-      isCaptionUploadDisabled: function isCaptionUploadDisabled() {
+      isVideoPlayable: function isVideoPlayable() {
         var _this$video = this.video,
             videoId = _this$video.id,
             playable = _this$video.playable;
-        return !videoId || !playable || this.fileName;
+        return videoId && playable;
       }
     },
     methods: {
@@ -1158,7 +1158,7 @@
 
     return _c('span', [!_vm.fileName ? _c('upload-btn', {
       attrs: {
-        "disabled": _vm.isCaptionUploadDisabled,
+        "disabled": !_vm.isVideoPlayable || _vm.fileName,
         "label": "Upload caption",
         "accept": "text/vtt"
       },
@@ -1211,7 +1211,7 @@
   var __vue_inject_styles__$9 = undefined;
   /* scoped */
 
-  var __vue_scope_id__$9 = "data-v-3f94b6ff";
+  var __vue_scope_id__$9 = "data-v-d9ef4840";
   /* module identifier */
 
   var __vue_module_identifier__$9 = undefined;
