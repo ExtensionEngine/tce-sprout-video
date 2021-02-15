@@ -4,13 +4,13 @@ const FormData = require('form-data');
 
 const TOKEN_TTL = 300; // time to live in seconds --> 5 minutes
 
-class Videos {
+class Video {
   constructor(request) {
     this._request = request;
   }
 
   get(id) {
-    return this._request.get(`v1/videos/${id}`);
+    return this._request.get(`videos/${id}`);
   }
 
   async edit(id, { customPosterFrame: content, ...payload }) {
@@ -28,7 +28,7 @@ class Videos {
   }
 
   getDelegatedToken() {
-    return this._request.post('v1/upload_tokens', { seconds_valid: TOKEN_TTL });
+    return this._request.post('upload_tokens', { seconds_valid: TOKEN_TTL });
   }
 
   getUploadUrl() {
@@ -44,4 +44,4 @@ function getContentLength(formData) {
   });
 }
 
-module.exports = Videos;
+module.exports = Video;

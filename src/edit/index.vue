@@ -3,8 +3,8 @@
     <v-alert
       v-if="error"
       type="error"
-      class="text-left"
-      dismissible>
+      dismissible
+      class="text-left">
       {{ error }}
     </v-alert>
     <element-placeholder
@@ -17,8 +17,8 @@
       active-icon="mdi-arrow-up" />
     <div v-else class="player-container">
       <error-message v-if="errorMessage" :message="errorMessage" />
-      <progress-message v-if="!errorMessage && infoMessage" :message="infoMessage" />
-      <div ref="player" class="player d-flex align-center justify-center"></div>
+      <progress-message v-else-if="infoMessage" :message="infoMessage" />
+      <sprout-player v-bind="element.data.video" />
     </div>
   </div>
 </template>
@@ -30,7 +30,9 @@ import createUpload from '../upload';
 import ElementPlaceholder from '../tce-core/ElementPlaceholder.vue';
 import ErrorMessage from './ErrorMessage.vue';
 import get from 'lodash/get';
+import omit from 'lodash/omit';
 import ProgressMessage from './ProgressMessage.vue';
+import SproutPlayer from './SproutPlayer.vue';
 
 const UPLOAD_FAILED_ERROR_MSG = 'Video upload failed. Please try again.';
 const UPLOADING_MSG = 'Video is uploading. Please do not leave the page.';
@@ -61,22 +63,17 @@ export default {
     infoMessage() {
       const { status, playable } = this.element.data.video;
       if (status === ELEMENT_STATE.UPLOADING) return UPLOADING_MSG;
-      return playable ? '' : PROCESSING_MSG;
+      return !playable && PROCESSING_MSG;
     },
-    isPreparedToUpload() {
+    isReadyToUpload() {
       const { token, uploadUrl } = this.element.data.video;
       return token && this.file && uploadUrl;
     }
   },
   methods: {
-    appendVideo() {
-      const { player } = this.$refs;
-      if (!player) return;
-      player.innerHTML = this.element.data.video?.embedCode;
-    },
     upload() {
       const { uploadUrl: url, token } = this.element.data.video;
-      createUpload({ url, file: this.file, token })
+      return createUpload({ url, file: this.file, token })
         .then(({ id }) => {
           this.file = null;
           this.$emit('save', {
@@ -102,21 +99,15 @@ export default {
     }
   },
   watch: {
-    'element.data.video.embedCode': 'appendVideo',
     'element.data.video.uploadUrl'() {
-      if (this.isPreparedToUpload) this.upload();
+      if (this.isReadyToUpload) this.upload();
     }
   },
   mounted() {
-    this.appendVideo();
-
     this.$elementBus.on('save', ({ video, caption }) => {
-      if (video) {
-        this.file = video.file;
-        delete video.file;
-      }
+      this.file = get(video, 'file', null);
       const data = cloneDeep(this.element.data);
-      Object.assign(data.video, video);
+      Object.assign(data.video, omit(video, ['file']));
       Object.assign(data.caption, caption);
       this.$emit('save', data);
     });
@@ -125,21 +116,17 @@ export default {
       this.error = get(error, 'response.data.error.message', DEFAULT_ERROR_MSG);
     });
   },
-  components: { ElementPlaceholder, ErrorMessage, ProgressMessage }
+  components: {
+    ElementPlaceholder,
+    ErrorMessage,
+    ProgressMessage,
+    SproutPlayer
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-.tce-sprout-video {
-  position: relative;
-}
-
 .player-container {
   position: relative;
-
-  .player {
-    min-height: 22.5rem;
-    background: #000;
-  }
 }
 </style>

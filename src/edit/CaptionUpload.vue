@@ -3,11 +3,9 @@
     <upload-btn
       v-if="!fileName"
       @change="upload"
-      :disabled="isDisabled"
+      :disabled="!isVideoPlayable || fileName"
       label="Upload caption"
-      accept="text/vtt"
-      class="upload-btn"
-      text />
+      accept="text/vtt" />
     <v-text-field
       v-if="fileName"
       :value="fileName"
@@ -17,11 +15,7 @@
       </template>
       <template #append>
         <confirmation-dialog v-slot="{ on, attrs }" @confirm="remove">
-          <v-icon
-            v-on="on"
-            v-bind="attrs"
-            class="delete-caption"
-            color="error">
+          <v-icon v-on="on" v-bind="attrs" class="delete-caption">
             mdi-delete
           </v-icon>
         </confirmation-dialog>
@@ -43,9 +37,9 @@ export default {
   },
   computed: {
     fileName: ({ caption }) => caption?.fileName,
-    isDisabled() {
+    isVideoPlayable() {
       const { id: videoId, playable } = this.video;
-      return !videoId || !playable || this.fileName;
+      return videoId && playable;
     }
   },
   methods: {
@@ -58,7 +52,8 @@ export default {
           caption: {
             fileName: file.name,
             content: e.target.result,
-            status: ELEMENT_STATE.UPLOADING
+            status: ELEMENT_STATE.UPLOADING,
+            error: null
           }
         });
       });
@@ -67,7 +62,8 @@ export default {
       this.$emit('save', {
         caption: {
           fileName: null,
-          status: ELEMENT_STATE.DELETING
+          status: ELEMENT_STATE.DELETING,
+          error: null
         }
       });
     }
@@ -80,9 +76,5 @@ export default {
 .v-text-field {
   min-width: 21.875rem;
   margin: 0.5rem 0.75rem 0 1.75rem;
-}
-
-.upload-btn {
-  height: 100% !important;
 }
 </style>

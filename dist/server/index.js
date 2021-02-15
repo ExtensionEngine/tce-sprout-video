@@ -8,12 +8,10 @@ async function beforeSave(asset, { config: { tce } }) {
   const { sproutVideoApiKey: apiKey } = tce;
   const client = createClient({ apiKey });
   const { id: videoId, playable } = asset.data.video;
-  const isVideoPlayable = videoId && playable;
-  if (!isVideoPlayable) return asset;
+  if (!videoId || !playable) return deleteTemporaryAssetProps(asset);
   await processCaption(asset, client);
   await processPosterFrame(asset, client);
-  deleteNonPersistentAssetProps(asset);
-  return asset;
+  return deleteTemporaryAssetProps(asset);
 }
 
 function processCaption(asset, client) {
@@ -46,22 +44,24 @@ function processPosterFrame(asset, client) {
   });
 }
 
-function deleteNonPersistentAssetProps(asset) {
+function deleteTemporaryAssetProps(asset) {
   delete asset.data.caption.content;
   delete asset.data.video.embedCode;
+  delete asset.data.video.token;
+  delete asset.data.video.uploadUrl;
   delete asset.data.video.customPosterFrame;
   delete asset.data.video.posterFrameNumber;
   delete asset.data.video.posterFrames;
   delete asset.data.video.selectedPosterFrameIndex;
+  return asset;
 }
 
 async function afterSave(asset, { config: { tce } }) {
-  const { id: videoId, playable, fileName, error, status } = asset.data.video;
-  if (!fileName || playable) return asset;
+  const { playable, fileName, error, status } = asset.data.video;
+  if (!fileName || playable || error) return asset;
   const { sproutVideoApiKey: apiKey } = tce;
   const client = createClient({ apiKey });
-  const isEmptyOrError = error || !videoId || status !== ELEMENT_STATE.UPLOADED;
-  if (!isEmptyOrError) startPollingPlayableStatus(asset, client);
+  if (status === ELEMENT_STATE.UPLOADED) startPollingPlayableStatus(asset, client);
   const { token } = await client.videos.getDelegatedToken();
   asset.data.video.token = token;
   asset.data.video.uploadUrl = client.videos.getUploadUrl();
@@ -72,9 +72,9 @@ async function startPollingPlayableStatus(asset, client) {
   const { id: videoId } = asset.data.video;
   const video = await client.videos.get(videoId);
   const isPlayable = video.state === 'deployed';
-  if (!isPlayable) return setTimeout(() => startPollingPlayableStatus(asset, client), 5000);
-  delete asset.data.video.token;
-  delete asset.data.video.uploadUrl;
+  if (!isPlayable) {
+    return setTimeout(() => startPollingPlayableStatus(asset, client), 5000);
+  }
   asset.update({
     data: {
       ...asset.data,

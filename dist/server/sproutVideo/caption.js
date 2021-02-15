@@ -1,17 +1,17 @@
 'use strict';
 
-class Captions {
+class Caption {
   constructor(request) {
     this._request = request;
   }
 
   create(videoId, payload) {
-    return this._request.post(`v1/videos/${videoId}/subtitles`, payload);
+    return this._request.post(`videos/${videoId}/subtitles`, payload);
   }
 
   delete(videoId, captionId) {
-    return this._request.delete(`v1/videos/${videoId}/subtitles/${captionId}`);
+    return this._request.delete(`videos/${videoId}/subtitles/${captionId}`);
   }
 }
 
-module.exports = Captions;
+module.exports = Caption;
