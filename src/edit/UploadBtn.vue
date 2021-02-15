@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.upload-btn {
-  height: 100% !important;
+.upload-btn.v-btn {
+  height: 100%;
 }
 </style>
