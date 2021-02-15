@@ -9,6 +9,9 @@
       active-placeholder="Use toolbar to upload the video"
       active-icon="mdi-arrow-up" />
     <div v-else>
+      <preview-overlay :show="showPreviewOverlay">
+        Double click to preview
+      </preview-overlay>
       <error-message v-if="errorMessage" :message="errorMessage" />
       <progress-message v-else-if="infoMessage" :message="infoMessage" />
       <sprout-player v-bind="element.data" />
@@ -22,6 +25,7 @@ import { ELEMENT_STATE } from '../shared';
 import ElementPlaceholder from '../tce-core/ElementPlaceholder.vue';
 import ErrorMessage from './ErrorMessage.vue';
 import get from 'lodash/get';
+import PreviewOverlay from '../tce-core/PreviewOverlay.vue';
 import ProgressMessage from './ProgressMessage.vue';
 import SproutPlayer from './SproutPlayer.vue';
 
@@ -60,6 +64,14 @@ export default {
     isReadyToUpload() {
       const { token, uploadUrl } = this.element.data;
       return token && this.file && uploadUrl;
+    },
+    isUnfocus() {
+      const { isDisabled, isFocused } = this;
+      return !isDisabled && !isFocused;
+    },
+    showPreviewOverlay() {
+      const { isUnfocus, errorMessage, infoMessage } = this;
+      return !errorMessage && !infoMessage && isUnfocus;
     }
   },
   methods: {
@@ -82,11 +94,18 @@ export default {
             fileName: null
           });
         });
+    },
+    reload() {
+      const { playable } = this.element.data;
+      if (playable) this.$emit('save', this.element.data);
     }
   },
   watch: {
     'element.data.uploadUrl'() {
       if (this.isReadyToUpload) this.upload();
+    },
+    'isUnfocus'(newValue, oldValue) {
+      if (newValue && !oldValue) this.reload();
     }
   },
   mounted() {
@@ -111,7 +130,8 @@ export default {
     ElementPlaceholder,
     ErrorMessage,
     ProgressMessage,
-    SproutPlayer
+    SproutPlayer,
+    PreviewOverlay
   }
 };
 </script>
