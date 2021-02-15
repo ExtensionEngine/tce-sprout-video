@@ -5,6 +5,7 @@
 <script>
 export default {
   name: 'sprout-player',
+  inject: ['$elementBus'],
   props: {
     embedCode: { type: String, default: null }
   },
@@ -20,6 +21,7 @@ export default {
   },
   mounted() {
     this.appendVideo();
+    this.$elementBus.on('reload', this.appendVideo);
   }
 };
 </script>

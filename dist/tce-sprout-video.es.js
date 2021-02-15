@@ -406,7 +406,7 @@ var __vue_render__$3 = function __vue_render__() {
 
   return _c('v-overlay', {
     attrs: {
-      "value": _vm.props.show,
+      "value": _vm.show,
       "opacity": "0.9",
       "absolute": ""
     }
@@ -421,7 +421,7 @@ var __vue_staticRenderFns__$3 = [];
 var __vue_inject_styles__$3 = undefined;
 /* scoped */
 
-var __vue_scope_id__$3 = "data-v-b2de80bc";
+var __vue_scope_id__$3 = "data-v-4e41c6e0";
 /* module identifier */
 
 var __vue_module_identifier__$3 = undefined;
@@ -501,6 +501,7 @@ var ProgressMessage = normalizeComponent_1({
 //
 var script$5 = {
   name: 'sprout-player',
+  inject: ['$elementBus'],
   props: {
     embedCode: {
       type: String,
@@ -519,6 +520,7 @@ var script$5 = {
   },
   mounted: function mounted() {
     this.appendVideo();
+    this.$elementBus.on('reload', this.appendVideo);
   }
 };
 
@@ -545,7 +547,7 @@ var __vue_staticRenderFns__$5 = [];
 var __vue_inject_styles__$5 = undefined;
 /* scoped */
 
-var __vue_scope_id__$5 = "data-v-3da78c9a";
+var __vue_scope_id__$5 = "data-v-948c977c";
 /* module identifier */
 
 var __vue_module_identifier__$5 = undefined;
@@ -654,10 +656,6 @@ var script$6 = {
           fileName: null
         }));
       });
-    },
-    reload: function reload() {
-      var playable = this.element.data.playable;
-      if (playable) this.$emit('save', this.element.data);
     }
   },
   watch: {
@@ -665,7 +663,7 @@ var script$6 = {
       if (this.isReadyToUpload) this.upload();
     },
     'isUnfocus': function isUnfocus(newValue, oldValue) {
-      if (newValue && !oldValue) this.reload();
+      if (newValue && !oldValue) this.$elementBus.emit('reload');
     }
   },
   mounted: function mounted() {
@@ -741,7 +739,7 @@ var __vue_staticRenderFns__$6 = [];
 var __vue_inject_styles__$6 = undefined;
 /* scoped */
 
-var __vue_scope_id__$6 = "data-v-5a838dff";
+var __vue_scope_id__$6 = "data-v-6313fdb3";
 /* module identifier */
 
 var __vue_module_identifier__$6 = undefined;

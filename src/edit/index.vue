@@ -91,10 +91,6 @@ export default {
             fileName: null
           });
         });
-    },
-    reload() {
-      const { playable } = this.element.data;
-      if (playable) this.$emit('save', this.element.data);
     }
   },
   watch: {
@@ -102,7 +98,7 @@ export default {
       if (this.isReadyToUpload) this.upload();
     },
     'isUnfocus'(newValue, oldValue) {
-      if (newValue && !oldValue) this.reload();
+      if (newValue && !oldValue) this.$elementBus.emit('reload');
     }
   },
   mounted() {
