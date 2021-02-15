@@ -405,8 +405,13 @@
   var __vue_script__$3 = script$3;
   /* template */
 
-  var __vue_render__$3 = function __vue_render__(_h, _vm) {
-    var _c = _vm._c;
+  var __vue_render__$3 = function __vue_render__() {
+    var _vm = this;
+
+    var _h = _vm.$createElement;
+
+    var _c = _vm._self._c || _h;
+
     return _c('v-overlay', {
       attrs: {
         "value": _vm.props.show,
@@ -424,13 +429,13 @@
   var __vue_inject_styles__$3 = undefined;
   /* scoped */
 
-  var __vue_scope_id__$3 = "data-v-4a66a576";
+  var __vue_scope_id__$3 = "data-v-b2de80bc";
   /* module identifier */
 
   var __vue_module_identifier__$3 = undefined;
   /* functional template */
 
-  var __vue_is_functional_template__$3 = true;
+  var __vue_is_functional_template__$3 = false;
   /* style inject */
 
   /* style inject SSR */

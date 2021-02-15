@@ -1,4 +1,4 @@
-<template functional>
+<template>
   <v-overlay
     :value="props.show"
     opacity="0.9"
