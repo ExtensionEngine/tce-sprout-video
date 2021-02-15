@@ -15,10 +15,7 @@
       </template>
       <template #append>
         <confirmation-dialog v-slot="{ on, attrs }" @confirm="remove">
-          <v-icon
-            v-on="on"
-            v-bind="attrs"
-            class="delete-caption">
+          <v-icon v-on="on" v-bind="attrs" class="delete-caption">
             mdi-delete
           </v-icon>
         </confirmation-dialog>
