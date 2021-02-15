@@ -9,7 +9,7 @@
       active-placeholder="Use toolbar to upload the video"
       active-icon="mdi-arrow-up" />
     <div v-else>
-      <preview-overlay :show="showPreviewOverlay">
+      <preview-overlay :show="shouldShowPreviewOverlay">
         Double click to preview
       </preview-overlay>
       <error-message v-if="errorMessage" :message="errorMessage" />
@@ -65,11 +65,8 @@ export default {
       const { token, uploadUrl } = this.element.data;
       return token && this.file && uploadUrl;
     },
-    isUnfocus() {
-      const { isDisabled, isFocused } = this;
-      return !isDisabled && !isFocused;
-    },
-    showPreviewOverlay() {
+    isUnfocus: ({ isDisabled, isFocused }) => !isDisabled && !isFocused,
+    shouldShowPreviewOverlay() {
       const { isUnfocus, errorMessage, infoMessage } = this;
       return !errorMessage && !infoMessage && isUnfocus;
     }

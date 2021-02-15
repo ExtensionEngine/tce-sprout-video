@@ -620,12 +620,12 @@ var script$6 = {
           uploadUrl = _this$element$data3.uploadUrl;
       return token && this.file && uploadUrl;
     },
-    isUnfocus: function isUnfocus() {
-      var isDisabled = this.isDisabled,
-          isFocused = this.isFocused;
+    isUnfocus: function isUnfocus(_ref) {
+      var isDisabled = _ref.isDisabled,
+          isFocused = _ref.isFocused;
       return !isDisabled && !isFocused;
     },
-    showPreviewOverlay: function showPreviewOverlay() {
+    shouldShowPreviewOverlay: function shouldShowPreviewOverlay() {
       var isUnfocus = this.isUnfocus,
           errorMessage = this.errorMessage,
           infoMessage = this.infoMessage;
@@ -643,8 +643,8 @@ var script$6 = {
         url: url,
         file: this.file,
         token: token
-      }).then(function (_ref) {
-        var id = _ref.id;
+      }).then(function (_ref2) {
+        var id = _ref2.id;
         _this.file = null;
 
         _this.$emit('save', Object.assign({}, _this.element.data, {
@@ -675,8 +675,8 @@ var script$6 = {
   mounted: function mounted() {
     var _this2 = this;
 
-    this.$elementBus.on('save', function (_ref2) {
-      var file = _ref2.file;
+    this.$elementBus.on('save', function (_ref3) {
+      var file = _ref3.file;
       _this2.file = file;
 
       _this2.$emit('save', Object.assign({}, _this2.element.data, {
@@ -685,8 +685,8 @@ var script$6 = {
         status: shared.ELEMENT_STATE.UPLOADING
       }));
     });
-    this.$elementBus.on('error', function (_ref3) {
-      var data = _ref3.data;
+    this.$elementBus.on('error', function (_ref4) {
+      var data = _ref4.data;
 
       _this2.$emit('save', Object.assign({}, _this2.element.data, {
         error: get__default['default'](data, 'error.message', DEFAULT_ERROR_MSG)
@@ -726,7 +726,7 @@ var __vue_render__$6 = function __vue_render__() {
     }
   }) : _c('div', [_c('preview-overlay', {
     attrs: {
-      "show": _vm.showPreviewOverlay
+      "show": _vm.shouldShowPreviewOverlay
     }
   }, [_vm._v("\n      Double click to preview\n    ")]), _vm._v(" "), _vm.errorMessage ? _c('error-message', {
     attrs: {
@@ -745,7 +745,7 @@ var __vue_staticRenderFns__$6 = [];
 var __vue_inject_styles__$6 = undefined;
 /* scoped */
 
-var __vue_scope_id__$6 = "data-v-19645b40";
+var __vue_scope_id__$6 = "data-v-5a838dff";
 /* module identifier */
 
 var __vue_module_identifier__$6 = undefined;
