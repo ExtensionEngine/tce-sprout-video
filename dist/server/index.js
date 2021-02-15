@@ -10,7 +10,7 @@ async function beforeSave(asset, { config: { tce } }) {
   const { id: videoId, playable } = asset.data.video;
   if (!videoId || !playable) return asset;
   await processCaption(asset, client);
-  deleteNonPersistentAssetProps(asset);
+  deleteTemporaryAssetProps(asset);
   return asset;
 }
 
@@ -34,7 +34,7 @@ function processCaption(asset, client) {
     });
 }
 
-function deleteNonPersistentAssetProps(asset) {
+function deleteTemporaryAssetProps(asset) {
   delete asset.data.caption.content;
   delete asset.data.video.embedCode;
 }

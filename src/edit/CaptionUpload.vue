@@ -18,8 +18,7 @@
           <v-icon
             v-on="on"
             v-bind="attrs"
-            class="delete-caption"
-            color="error">
+            class="delete-caption">
             mdi-delete
           </v-icon>
         </confirmation-dialog>

@@ -1187,17 +1187,14 @@
                 var on = ref.on;
                 var attrs = ref.attrs;
                 return [_c('v-icon', _vm._g(_vm._b({
-                  staticClass: "delete-caption",
-                  attrs: {
-                    "color": "error"
-                  }
+                  staticClass: "delete-caption"
                 }, 'v-icon', attrs, false), on), [_vm._v("\n          mdi-delete\n        ")])];
               }
-            }], null, false, 3050330776)
+            }], null, false, 1426420343)
           })];
         },
         proxy: true
-      }], null, false, 3459883748)
+      }], null, false, 1152848328)
     }) : _vm._e()], 1);
   };
 
@@ -1207,7 +1204,7 @@
   var __vue_inject_styles__$9 = undefined;
   /* scoped */
 
-  var __vue_scope_id__$9 = "data-v-d9ef4840";
+  var __vue_scope_id__$9 = "data-v-62a7f768";
   /* module identifier */
 
   var __vue_module_identifier__$9 = undefined;
@@ -1320,7 +1317,7 @@
       }
     },
     methods: {
-      onSave: function onSave(payload) {
+      emitSave: function emitSave(payload) {
         this.$elementBus.emit('save', payload);
       }
     },
@@ -1353,11 +1350,11 @@
       staticClass: "mx-auto"
     }, [_c('video-upload', _vm._b({
       on: {
-        "save": _vm.onSave
+        "save": _vm.emitSave
       }
     }, 'video-upload', _vm.element.data, false)), _vm._v(" "), _c('caption-upload', _vm._b({
       on: {
-        "save": _vm.onSave
+        "save": _vm.emitSave
       }
     }, 'caption-upload', _vm.element.data, false))], 1)], 1);
   };
@@ -1368,7 +1365,7 @@
   var __vue_inject_styles__$b = undefined;
   /* scoped */
 
-  var __vue_scope_id__$b = "data-v-6cc0b27c";
+  var __vue_scope_id__$b = "data-v-37103988";
   /* module identifier */
 
   var __vue_module_identifier__$b = undefined;

@@ -2,8 +2,8 @@
   <v-toolbar height="72" color="transparent" class="elevation-0">
     <v-toolbar-title class="pl-1 text-left">Sprout Video</v-toolbar-title>
     <v-toolbar-items class="mx-auto">
-      <video-upload @save="onSave" v-bind="element.data" />
-      <caption-upload @save="onSave" v-bind="element.data" />
+      <video-upload @save="emitSave" v-bind="element.data" />
+      <caption-upload @save="emitSave" v-bind="element.data" />
     </v-toolbar-items>
   </v-toolbar>
 </template>
@@ -19,7 +19,7 @@ export default {
     element: { type: Object, required: true }
   },
   methods: {
-    onSave(payload) {
+    emitSave(payload) {
       this.$elementBus.emit('save', payload);
     }
   },
