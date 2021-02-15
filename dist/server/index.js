@@ -2,16 +2,14 @@
 
 const { createClient } = require('./sproutVideo');
 const { ELEMENT_STATE } = require('../shared');
-const omit = require('lodash/omit');
 
 async function beforeSave(asset, { config: { tce } }) {
   const { sproutVideoApiKey: apiKey } = tce;
   const client = createClient({ apiKey });
   const { id: videoId, playable } = asset.data.video;
-  if (!videoId || !playable) return asset;
+  if (!videoId || !playable) return deleteTemporaryAssetProps(asset);
   await processCaption(asset, client);
-  deleteTemporaryAssetProps(asset);
-  return asset;
+  return deleteTemporaryAssetProps(asset);
 }
 
 function processCaption(asset, client) {
@@ -37,6 +35,9 @@ function processCaption(asset, client) {
 function deleteTemporaryAssetProps(asset) {
   delete asset.data.caption.content;
   delete asset.data.video.embedCode;
+  delete asset.data.video.token;
+  delete asset.data.video.uploadUrl;
+  return asset;
 }
 
 async function afterSave(asset, { config: { tce } }) {
@@ -61,10 +62,7 @@ async function startPollingPlayableStatus(asset, client) {
   asset.update({
     data: {
       ...asset.data,
-      video: {
-        ...omit(asset.data.video, ['token', 'uploadUrl']),
-        playable: true
-      }
+      video: { ...asset.data.video, playable: true }
     }
   });
 }
