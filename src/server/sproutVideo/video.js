@@ -14,7 +14,7 @@ class Video {
   }
 
   async edit(id, { customPosterFrame: content, ...payload }) {
-    if (!content) return this._request.put(`v1/videos/${id}`, payload);
+    if (!content) return this._request.put(`videos/${id}`, payload);
     const base64Pattern = /^data:image\/(\w+);base64,/;
     const buffer = Buffer.from(content.replace(base64Pattern, ''), 'base64');
     const formData = new FormData();
@@ -24,7 +24,7 @@ class Video {
       ...formData.getHeaders(),
       'Content-Length': contentLength
     };
-    return this._request.put(`v1/videos/${id}`, formData, { headers });
+    return this._request.put(`videos/${id}`, formData, { headers });
   }
 
   getDelegatedToken() {
