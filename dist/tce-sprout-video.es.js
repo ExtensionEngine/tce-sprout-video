@@ -618,16 +618,16 @@ var script$6 = {
           uploadUrl = _this$element$data3.uploadUrl;
       return token && this.file && uploadUrl;
     },
-    isUnfocus: function isUnfocus(_ref) {
+    isFocusedOrDisabled: function isFocusedOrDisabled(_ref) {
       var isDisabled = _ref.isDisabled,
           isFocused = _ref.isFocused;
-      return !isDisabled && !isFocused;
+      return isFocused || isDisabled;
     },
     shouldShowPreviewOverlay: function shouldShowPreviewOverlay() {
-      var isUnfocus = this.isUnfocus,
+      var isFocusedOrDisabled = this.isFocusedOrDisabled,
           errorMessage = this.errorMessage,
           infoMessage = this.infoMessage;
-      return !errorMessage && !infoMessage && isUnfocus;
+      return !errorMessage && !infoMessage && !isFocusedOrDisabled;
     }
   },
   methods: {
@@ -662,8 +662,8 @@ var script$6 = {
     'element.data.uploadUrl': function elementDataUploadUrl() {
       if (this.isReadyToUpload) this.upload();
     },
-    'isUnfocus': function isUnfocus(newValue, oldValue) {
-      if (newValue && !oldValue) this.$elementBus.emit('reload');
+    'isFocusedOrDisabled': function isFocusedOrDisabled(newValue, oldValue) {
+      if (!newValue && oldValue) this.$elementBus.emit('reload');
     }
   },
   mounted: function mounted() {
@@ -739,7 +739,7 @@ var __vue_staticRenderFns__$6 = [];
 var __vue_inject_styles__$6 = undefined;
 /* scoped */
 
-var __vue_scope_id__$6 = "data-v-6313fdb3";
+var __vue_scope_id__$6 = "data-v-25dd8f4c";
 /* module identifier */
 
 var __vue_module_identifier__$6 = undefined;

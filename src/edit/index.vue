@@ -65,10 +65,10 @@ export default {
       const { token, uploadUrl } = this.element.data;
       return token && this.file && uploadUrl;
     },
-    isUnfocus: ({ isDisabled, isFocused }) => !isDisabled && !isFocused,
+    isFocusedOrDisabled: ({ isDisabled, isFocused }) => isFocused || isDisabled,
     shouldShowPreviewOverlay() {
-      const { isUnfocus, errorMessage, infoMessage } = this;
-      return !errorMessage && !infoMessage && isUnfocus;
+      const { isFocusedOrDisabled, errorMessage, infoMessage } = this;
+      return !errorMessage && !infoMessage && !isFocusedOrDisabled;
     }
   },
   methods: {
@@ -97,8 +97,8 @@ export default {
     'element.data.uploadUrl'() {
       if (this.isReadyToUpload) this.upload();
     },
-    'isUnfocus'(newValue, oldValue) {
-      if (newValue && !oldValue) this.$elementBus.emit('reload');
+    'isFocusedOrDisabled'(newValue, oldValue) {
+      if (!newValue && oldValue) this.$elementBus.emit('reload');
     }
   },
   mounted() {
