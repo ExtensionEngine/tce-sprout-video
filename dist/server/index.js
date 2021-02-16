@@ -4,13 +4,13 @@ const { createClient } = require('./sproutVideo');
 const { ELEMENT_STATE } = require('../shared');
 const omit = require('lodash/omit');
 
-async function afterSave(asset, { config: { tce } }, context) {
+async function afterSave(asset, { config: { tce } }, options = {}) {
   const { playable, fileName, error, status } = asset.data;
   if (!fileName || playable || error) return asset;
   const { sproutVideoApiKey: apiKey } = tce;
   const client = createClient({ apiKey });
   if (status === ELEMENT_STATE.UPLOADED) {
-    startPollingPlayableStatus(asset, client, context);
+    startPollingPlayableStatus(asset, client, options.context);
   }
   const { token } = await client.videos.getDelegatedToken();
   asset.data.token = token;
