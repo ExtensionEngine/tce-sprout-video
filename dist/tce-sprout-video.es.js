@@ -509,18 +509,18 @@ var script$5 = {
     }
   },
   methods: {
-    appendVideo: function appendVideo() {
+    setVideo: function setVideo() {
       var player = this.$refs.player;
       if (!player) return;
       player.innerHTML = this.embedCode;
     }
   },
   watch: {
-    embedCode: 'appendVideo'
+    embedCode: 'setVideo'
   },
   mounted: function mounted() {
-    this.appendVideo();
-    this.$elementBus.on('reload', this.appendVideo);
+    this.setVideo();
+    this.$elementBus.on('reload', this.setVideo);
   }
 };
 
@@ -547,7 +547,7 @@ var __vue_staticRenderFns__$5 = [];
 var __vue_inject_styles__$5 = undefined;
 /* scoped */
 
-var __vue_scope_id__$5 = "data-v-948c977c";
+var __vue_scope_id__$5 = "data-v-7b05bb44";
 /* module identifier */
 
 var __vue_module_identifier__$5 = undefined;
