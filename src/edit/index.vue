@@ -93,7 +93,7 @@ export default {
     'element.data.uploadUrl'() {
       if (this.isReadyToUpload) this.upload();
     },
-    'isFocusedOrDisabled'(value) {
+    isFocusedOrDisabled(value) {
       if (!value) this.$elementBus.emit('reload');
     }
   },

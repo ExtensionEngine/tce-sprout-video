@@ -656,7 +656,7 @@ var script$6 = {
     'element.data.uploadUrl': function elementDataUploadUrl() {
       if (this.isReadyToUpload) this.upload();
     },
-    'isFocusedOrDisabled': function isFocusedOrDisabled(value) {
+    isFocusedOrDisabled: function isFocusedOrDisabled(value) {
       if (!value) this.$elementBus.emit('reload');
     }
   },
@@ -733,7 +733,7 @@ var __vue_staticRenderFns__$6 = [];
 var __vue_inject_styles__$6 = undefined;
 /* scoped */
 
-var __vue_scope_id__$6 = "data-v-f4d2eefe";
+var __vue_scope_id__$6 = "data-v-ae909b6a";
 /* module identifier */
 
 var __vue_module_identifier__$6 = undefined;
