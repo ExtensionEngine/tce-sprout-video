@@ -631,12 +631,6 @@ var script$6 = {
       var isDisabled = _ref.isDisabled,
           isFocused = _ref.isFocused;
       return isFocused || isDisabled;
-    },
-    shouldShowPreviewOverlay: function shouldShowPreviewOverlay() {
-      var isFocusedOrDisabled = this.isFocusedOrDisabled,
-          errorMessage = this.errorMessage,
-          infoMessage = this.infoMessage;
-      return !errorMessage && !infoMessage && !isFocusedOrDisabled;
     }
   },
   methods: {
@@ -671,9 +665,8 @@ var script$6 = {
     'element.data.uploadUrl': function elementDataUploadUrl() {
       if (this.isReadyToUpload) this.upload();
     },
-    'isFocusedOrDisabled': function isFocusedOrDisabled() {
-      if (this.isFocusedOrDisabled) return;
-      this.$elementBus.emit('reload');
+    'isFocusedOrDisabled': function isFocusedOrDisabled(value) {
+      if (!value) this.$elementBus.emit('reload');
     }
   },
   mounted: function mounted() {
@@ -728,11 +721,7 @@ var __vue_render__$6 = function __vue_render__() {
       "active-placeholder": "Use toolbar to upload the video",
       "active-icon": "mdi-arrow-up"
     }
-  }) : _c('div', [_c('preview-overlay', {
-    attrs: {
-      "show": _vm.shouldShowPreviewOverlay
-    }
-  }, [_vm._v("\n      Double click to preview\n    ")]), _vm._v(" "), _vm.errorMessage ? _c('error-message', {
+  }) : _c('div', [_vm.errorMessage ? _c('error-message', {
     attrs: {
       "message": _vm.errorMessage
     }
@@ -740,7 +729,11 @@ var __vue_render__$6 = function __vue_render__() {
     attrs: {
       "message": _vm.infoMessage
     }
-  }) : _vm._e(), _vm._v(" "), _c('sprout-player', _vm._b({}, 'sprout-player', _vm.element.data, false))], 1)], 1);
+  }) : _c('preview-overlay', {
+    attrs: {
+      "show": !_vm.isFocusedOrDisabled
+    }
+  }, [_vm._v("\n      Double click to preview\n    ")]), _vm._v(" "), _c('sprout-player', _vm._b({}, 'sprout-player', _vm.element.data, false))], 1)], 1);
 };
 
 var __vue_staticRenderFns__$6 = [];
@@ -749,7 +742,7 @@ var __vue_staticRenderFns__$6 = [];
 var __vue_inject_styles__$6 = undefined;
 /* scoped */
 
-var __vue_scope_id__$6 = "data-v-b4fc99d4";
+var __vue_scope_id__$6 = "data-v-f4d2eefe";
 /* module identifier */
 
 var __vue_module_identifier__$6 = undefined;

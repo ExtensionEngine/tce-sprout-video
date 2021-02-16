@@ -9,11 +9,11 @@
       active-placeholder="Use toolbar to upload the video"
       active-icon="mdi-arrow-up" />
     <div v-else>
-      <preview-overlay :show="shouldShowPreviewOverlay">
-        Double click to preview
-      </preview-overlay>
       <error-message v-if="errorMessage" :message="errorMessage" />
       <progress-message v-else-if="infoMessage" :message="infoMessage" />
+      <preview-overlay v-else :show="!isFocusedOrDisabled">
+        Double click to preview
+      </preview-overlay>
       <sprout-player v-bind="element.data" />
     </div>
   </div>
@@ -65,11 +65,7 @@ export default {
       const { token, uploadUrl } = this.element.data;
       return token && this.file && uploadUrl;
     },
-    isFocusedOrDisabled: ({ isDisabled, isFocused }) => isFocused || isDisabled,
-    shouldShowPreviewOverlay() {
-      const { isFocusedOrDisabled, errorMessage, infoMessage } = this;
-      return !errorMessage && !infoMessage && !isFocusedOrDisabled;
-    }
+    isFocusedOrDisabled: ({ isDisabled, isFocused }) => isFocused || isDisabled
   },
   methods: {
     upload() {
@@ -97,9 +93,8 @@ export default {
     'element.data.uploadUrl'() {
       if (this.isReadyToUpload) this.upload();
     },
-    'isFocusedOrDisabled'() {
-      if (this.isFocusedOrDisabled) return;
-      this.$elementBus.emit('reload');
+    'isFocusedOrDisabled'(value) {
+      if (!value) this.$elementBus.emit('reload');
     }
   },
   mounted() {
