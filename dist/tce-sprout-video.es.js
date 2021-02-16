@@ -662,8 +662,9 @@ var script$6 = {
     'element.data.uploadUrl': function elementDataUploadUrl() {
       if (this.isReadyToUpload) this.upload();
     },
-    'isFocusedOrDisabled': function isFocusedOrDisabled(newValue, oldValue) {
-      if (!newValue && oldValue) this.$elementBus.emit('reload');
+    'isFocusedOrDisabled': function isFocusedOrDisabled() {
+      if (this.isFocusedOrDisabled) return;
+      this.$elementBus.emit('reload');
     }
   },
   mounted: function mounted() {
@@ -739,7 +740,7 @@ var __vue_staticRenderFns__$6 = [];
 var __vue_inject_styles__$6 = undefined;
 /* scoped */
 
-var __vue_scope_id__$6 = "data-v-25dd8f4c";
+var __vue_scope_id__$6 = "data-v-b4fc99d4";
 /* module identifier */
 
 var __vue_module_identifier__$6 = undefined;
