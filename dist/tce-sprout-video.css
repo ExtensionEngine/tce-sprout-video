@@ -1,8 +1,9 @@
 .overlay[data-v-28420ade]{position:absolute;z-index:3;width:100%;height:100%;background:rgba(16,16,16,.85)}
 .message[data-v-576a2d2e]{font-size:1.125rem}
+.message[data-v-4e41c6e0]{border-radius:2px;font-size:1.125rem}
 .message[data-v-2cf5ce5b]{font-size:1.125rem}
-.player[data-v-3da78c9a]{min-height:22.5rem;background:#000}
-.player-container[data-v-6423954b]{position:relative}
+.player[data-v-7b05bb44]{min-height:22.5rem;background:#000}
+.player-container[data-v-0dca1939]{position:relative}
 .dialog[data-v-cfd2a3d2]{display:grid;grid-template-rows:auto 1fr auto;max-height:86vh;overflow:hidden}.dialog-title[data-v-cfd2a3d2]{display:flex;color:#f1f1f1}.dialog-title .text-truncate[data-v-cfd2a3d2]{flex:1;text-align:left}.dialog-body[data-v-cfd2a3d2]{overflow-y:scroll}
 .upload-btn.v-btn[data-v-522ae9ea]{height:100%}
 .v-text-field[data-v-53991dd2]{min-width:21.875rem;margin:.5rem .75rem 0 1.75rem}
