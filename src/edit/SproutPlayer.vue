@@ -5,21 +5,23 @@
 <script>
 export default {
   name: 'sprout-player',
+  inject: ['$elementBus'],
   props: {
     embedCode: { type: String, default: null }
   },
   methods: {
-    appendVideo() {
+    setVideo() {
       const { player } = this.$refs;
       if (!player) return;
       player.innerHTML = this.embedCode;
     }
   },
   watch: {
-    embedCode: 'appendVideo'
+    embedCode: 'setVideo'
   },
   mounted() {
-    this.appendVideo();
+    this.setVideo();
+    this.$elementBus.on('reload', this.setVideo);
   }
 };
 </script>

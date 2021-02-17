@@ -18,6 +18,9 @@
     <div v-else class="player-container">
       <error-message v-if="errorMessage" :message="errorMessage" />
       <progress-message v-else-if="infoMessage" :message="infoMessage" />
+      <preview-overlay v-else :show="!isFocusedOrDisabled">
+        Double click to preview
+      </preview-overlay>
       <sprout-player v-bind="element.data.video" />
     </div>
   </div>
@@ -31,6 +34,7 @@ import ElementPlaceholder from '../tce-core/ElementPlaceholder.vue';
 import ErrorMessage from './ErrorMessage.vue';
 import get from 'lodash/get';
 import omit from 'lodash/omit';
+import PreviewOverlay from '../tce-core/PreviewOverlay.vue';
 import ProgressMessage from './ProgressMessage.vue';
 import SproutPlayer from './SproutPlayer.vue';
 
@@ -68,7 +72,8 @@ export default {
     isReadyToUpload() {
       const { token, uploadUrl } = this.element.data.video;
       return token && this.file && uploadUrl;
-    }
+    },
+    isFocusedOrDisabled: ({ isDisabled, isFocused }) => isFocused || isDisabled
   },
   methods: {
     upload() {
@@ -101,6 +106,9 @@ export default {
   watch: {
     'element.data.video.uploadUrl'() {
       if (this.isReadyToUpload) this.upload();
+    },
+    isFocusedOrDisabled(value) {
+      if (!value) this.$elementBus.emit('reload');
     }
   },
   mounted() {
@@ -120,7 +128,8 @@ export default {
     ElementPlaceholder,
     ErrorMessage,
     ProgressMessage,
-    SproutPlayer
+    SproutPlayer,
+    PreviewOverlay
   }
 };
 </script>
