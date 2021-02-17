@@ -66,8 +66,6 @@ async function startPollingPlayableStatus(asset, client, context) {
       ...asset.data,
       video: { ...asset.data.video, playable: true }
     }
-  // });
-  // }, { context: { userId: context.userId } });
   }, { context });
 }
 
