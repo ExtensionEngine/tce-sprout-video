@@ -1617,7 +1617,7 @@
 
   var CUSTOM_POSTER_FRAME_INDEX = 4;
   var script$f = {
-    name: 'poster-frame-upload',
+    name: 'poster-frame-dialog',
     props: {
       id: {
         type: String,
@@ -1834,7 +1834,7 @@
 
   /* style inject SSR */
 
-  var PosterFrameUpload = normalizeComponent_1({
+  var PosterFrameDialog = normalizeComponent_1({
     render: __vue_render__$f,
     staticRenderFns: __vue_staticRenderFns__$f
   }, __vue_inject_styles__$f, __vue_script__$f, __vue_scope_id__$f, __vue_is_functional_template__$f, __vue_module_identifier__$f, undefined, undefined);
@@ -1942,7 +1942,7 @@
     components: {
       VideoUpload: VideoUpload,
       CaptionUpload: CaptionUpload,
-      PosterFrameUpload: PosterFrameUpload
+      PosterFrameDialog: PosterFrameDialog
     }
   };
 
@@ -1975,11 +1975,11 @@
       on: {
         "save": _vm.emitSave
       }
-    }, 'caption-upload', _vm.element.data, false)), _vm._v(" "), _c('poster-frame-upload', _vm._b({
+    }, 'caption-upload', _vm.element.data, false)), _vm._v(" "), _c('poster-frame-dialog', _vm._b({
       on: {
         "save": _vm.emitSave
       }
-    }, 'poster-frame-upload', _vm.element.data.video, false))], 1)], 1);
+    }, 'poster-frame-dialog', _vm.element.data.video, false))], 1)], 1);
   };
 
   var __vue_staticRenderFns__$h = [];
@@ -1988,7 +1988,7 @@
   var __vue_inject_styles__$h = undefined;
   /* scoped */
 
-  var __vue_scope_id__$h = "data-v-e5e87e90";
+  var __vue_scope_id__$h = "data-v-0401d55c";
   /* module identifier */
 
   var __vue_module_identifier__$h = undefined;

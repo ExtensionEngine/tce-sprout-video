@@ -37,7 +37,7 @@ const MAX_SIZE = 500000; // 500 KB
 const CUSTOM_POSTER_FRAME_INDEX = 4;
 
 export default {
-  name: 'poster-frame-upload',
+  name: 'poster-frame-dialog',
   props: {
     id: { type: String, default: null },
     playable: { type: Boolean, default: false },
