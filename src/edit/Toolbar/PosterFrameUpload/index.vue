@@ -5,14 +5,7 @@
     header-icon="mdi-image-multiple"
     width="608">
     <template #activator="{ on, attrs }">
-      <v-btn
-        v-on="on"
-        v-bind="attrs"
-        :disabled="isDisabled"
-        text>
-        <v-icon class="mr-2">mdi-image-multiple</v-icon>
-        Select poster frame
-      </v-btn>
+      <select-poster-btn v-on="on" v-bind="attrs" :is-disabled="isDisabled" />
     </template>
     <template #header>
       Poster frame
@@ -45,6 +38,7 @@
 <script>
 import CustomPosterUpload from './CustomPosterUpload.vue';
 import PosterFrame from './PosterFrame.vue';
+import SelectPosterBtn from './SelectPosterBtn.vue';
 import TailorDialog from '../../../tce-core/TailorDialog.vue';
 import take from 'lodash/take';
 
@@ -116,7 +110,12 @@ export default {
       }
     }
   },
-  components: { PosterFrame, CustomPosterUpload, TailorDialog }
+  components: {
+    PosterFrame,
+    CustomPosterUpload,
+    TailorDialog,
+    SelectPosterBtn
+  }
 };
 </script>
 
