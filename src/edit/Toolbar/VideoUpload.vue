@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { ELEMENT_STATE } from '../shared';
+import { ELEMENT_STATE } from '../../shared';
 import UploadBtn from './UploadBtn.vue';
 
 export default {

@@ -1,6 +1,6 @@
 import Edit from './edit/index.vue';
 import info from './info';
-import Toolbar from './edit/Toolbar.vue';
+import Toolbar from './edit/Toolbar/index.vue';
 
 const initState = () => ({
   video: {

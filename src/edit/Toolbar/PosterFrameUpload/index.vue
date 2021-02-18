@@ -60,9 +60,9 @@
 
 <script>
 import PosterFrame from './PosterFrame.vue';
-import TailorDialog from '../tce-core/TailorDialog.vue';
+import TailorDialog from '../../../tce-core/TailorDialog.vue';
 import take from 'lodash/take';
-import UploadBtn from './UploadBtn.vue';
+import UploadBtn from '../UploadBtn.vue';
 
 const MAX_SIZE = 500000; // 500 KB
 const CUSTOM_POSTER_FRAME_INDEX = 4;

@@ -11,7 +11,7 @@
 
 <script>
 import CaptionUpload from './CaptionUpload.vue';
-import PosterFrameUpload from './PosterFrameUpload.vue';
+import PosterFrameUpload from './PosterFrameUpload/index.vue';
 import VideoUpload from './VideoUpload.vue';
 
 export default {
