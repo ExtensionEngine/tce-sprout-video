@@ -33,23 +33,7 @@
           :src="poster"
           :is-selected="!image && (selectedIndex === index)" />
       </div>
-      <p class="mt-3 mb-0 text-left">
-        or upload an image from your computer
-      </p>
-      <div class="mt-3 text-left">
-        <upload-btn
-          @change="upload"
-          label="Upload image"
-          accept="image/jpeg"
-          small depressed>
-          <template #icon>
-            <v-icon>mdi-upload</v-icon>
-          </template>
-        </upload-btn>
-        <p :class="{ 'error--text': isError }" class="mt-1 text-caption">
-          Poster frame must be under 500KB.
-        </p>
-      </div>
+      <custom-poster-upload @upload="upload" :is-error="isError" />
     </template>
     <template #actions>
       <v-btn @click="reset" color="primary" text>Close</v-btn>
@@ -59,10 +43,10 @@
 </template>
 
 <script>
+import CustomPosterUpload from './CustomPosterUpload.vue';
 import PosterFrame from './PosterFrame.vue';
 import TailorDialog from '../../../tce-core/TailorDialog.vue';
 import take from 'lodash/take';
-import UploadBtn from '../UploadBtn.vue';
 
 const MAX_SIZE = 500000; // 500 KB
 const CUSTOM_POSTER_FRAME_INDEX = 4;
@@ -132,7 +116,7 @@ export default {
       }
     }
   },
-  components: { PosterFrame, UploadBtn, TailorDialog }
+  components: { PosterFrame, CustomPosterUpload, TailorDialog }
 };
 </script>
 

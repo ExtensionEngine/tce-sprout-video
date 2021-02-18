@@ -1303,15 +1303,93 @@ var CaptionUpload = normalizeComponent_1({
 }, __vue_inject_styles__$a, __vue_script__$a, __vue_scope_id__$a, __vue_is_functional_template__$a, __vue_module_identifier__$a, undefined, undefined);
 
 //
-//
-//
-//
-//
-//
-//
-//
-//
 var script$b = {
+  name: 'custom-poster-upload',
+  props: {
+    isError: {
+      type: Boolean,
+      "default": false
+    }
+  },
+  components: {
+    UploadBtn: UploadBtn
+  }
+};
+
+/* script */
+var __vue_script__$b = script$b;
+/* template */
+
+var __vue_render__$b = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c('div', {
+    staticClass: "text-left"
+  }, [_c('p', {
+    staticClass: "my-3"
+  }, [_vm._v("or upload an image from your computer")]), _vm._v(" "), _c('upload-btn', {
+    attrs: {
+      "label": "Upload image",
+      "accept": "image/jpeg",
+      "small": "",
+      "depressed": ""
+    },
+    on: {
+      "change": function change($event) {
+        return _vm.$emit('upload', $event);
+      }
+    },
+    scopedSlots: _vm._u([{
+      key: "icon",
+      fn: function fn() {
+        return [_c('v-icon', [_vm._v("mdi-upload")])];
+      },
+      proxy: true
+    }])
+  }), _vm._v(" "), _c('p', {
+    staticClass: "mt-1 text-caption",
+    "class": {
+      'error--text': _vm.isError
+    }
+  }, [_vm._v("\n    Poster frame must be under 500KB.\n  ")])], 1);
+};
+
+var __vue_staticRenderFns__$b = [];
+/* style */
+
+var __vue_inject_styles__$b = undefined;
+/* scoped */
+
+var __vue_scope_id__$b = undefined;
+/* module identifier */
+
+var __vue_module_identifier__$b = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$b = false;
+/* style inject */
+
+/* style inject SSR */
+
+var CustomPosterUpload = normalizeComponent_1({
+  render: __vue_render__$b,
+  staticRenderFns: __vue_staticRenderFns__$b
+}, __vue_inject_styles__$b, __vue_script__$b, __vue_scope_id__$b, __vue_is_functional_template__$b, __vue_module_identifier__$b, undefined, undefined);
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var script$c = {
   name: 'poster-frame',
   inheritAttrs: false,
   props: {
@@ -1327,10 +1405,10 @@ var script$b = {
 };
 
 /* script */
-var __vue_script__$b = script$b;
+var __vue_script__$c = script$c;
 /* template */
 
-var __vue_render__$b = function __vue_render__() {
+var __vue_render__$c = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -1348,32 +1426,32 @@ var __vue_render__$b = function __vue_render__() {
   }, 'v-img', _vm.$attrs, false), _vm.$listeners));
 };
 
-var __vue_staticRenderFns__$b = [];
+var __vue_staticRenderFns__$c = [];
 /* style */
 
-var __vue_inject_styles__$b = undefined;
+var __vue_inject_styles__$c = undefined;
 /* scoped */
 
-var __vue_scope_id__$b = "data-v-1db6dee5";
+var __vue_scope_id__$c = "data-v-1db6dee5";
 /* module identifier */
 
-var __vue_module_identifier__$b = undefined;
+var __vue_module_identifier__$c = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$b = false;
+var __vue_is_functional_template__$c = false;
 /* style inject */
 
 /* style inject SSR */
 
 var PosterFrame = normalizeComponent_1({
-  render: __vue_render__$b,
-  staticRenderFns: __vue_staticRenderFns__$b
-}, __vue_inject_styles__$b, __vue_script__$b, __vue_scope_id__$b, __vue_is_functional_template__$b, __vue_module_identifier__$b, undefined, undefined);
+  render: __vue_render__$c,
+  staticRenderFns: __vue_staticRenderFns__$c
+}, __vue_inject_styles__$c, __vue_script__$c, __vue_scope_id__$c, __vue_is_functional_template__$c, __vue_module_identifier__$c, undefined, undefined);
 
 var MAX_SIZE = 500000; // 500 KB
 
 var CUSTOM_POSTER_FRAME_INDEX = 4;
-var script$c = {
+var script$d = {
   name: 'poster-frame-upload',
   props: {
     id: {
@@ -1474,16 +1552,16 @@ var script$c = {
   },
   components: {
     PosterFrame: PosterFrame,
-    UploadBtn: UploadBtn,
+    CustomPosterUpload: CustomPosterUpload,
     TailorDialog: TailorDialog
   }
 };
 
 /* script */
-var __vue_script__$c = script$c;
+var __vue_script__$d = script$d;
 /* template */
 
-var __vue_render__$c = function __vue_render__() {
+var __vue_render__$d = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -1545,33 +1623,14 @@ var __vue_render__$c = function __vue_render__() {
               }
             }
           });
-        }), 1), _vm._v(" "), _c('p', {
-          staticClass: "mt-3 mb-0 text-left"
-        }, [_vm._v("\n      or upload an image from your computer\n    ")]), _vm._v(" "), _c('div', {
-          staticClass: "mt-3 text-left"
-        }, [_c('upload-btn', {
+        }), 1), _vm._v(" "), _c('custom-poster-upload', {
           attrs: {
-            "label": "Upload image",
-            "accept": "image/jpeg",
-            "small": "",
-            "depressed": ""
+            "is-error": _vm.isError
           },
           on: {
-            "change": _vm.upload
-          },
-          scopedSlots: _vm._u([{
-            key: "icon",
-            fn: function fn() {
-              return [_c('v-icon', [_vm._v("mdi-upload")])];
-            },
-            proxy: true
-          }])
-        }), _vm._v(" "), _c('p', {
-          staticClass: "mt-1 text-caption",
-          "class": {
-            'error--text': _vm.isError
+            "upload": _vm.upload
           }
-        }, [_vm._v("\n        Poster frame must be under 500KB.\n      ")])], 1)];
+        })];
       },
       proxy: true
     }, {
@@ -1607,29 +1666,29 @@ var __vue_render__$c = function __vue_render__() {
   });
 };
 
-var __vue_staticRenderFns__$c = [];
+var __vue_staticRenderFns__$d = [];
 /* style */
 
-var __vue_inject_styles__$c = undefined;
+var __vue_inject_styles__$d = undefined;
 /* scoped */
 
-var __vue_scope_id__$c = "data-v-3ad97fb6";
+var __vue_scope_id__$d = "data-v-7600725e";
 /* module identifier */
 
-var __vue_module_identifier__$c = undefined;
+var __vue_module_identifier__$d = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$c = false;
+var __vue_is_functional_template__$d = false;
 /* style inject */
 
 /* style inject SSR */
 
 var PosterFrameUpload = normalizeComponent_1({
-  render: __vue_render__$c,
-  staticRenderFns: __vue_staticRenderFns__$c
-}, __vue_inject_styles__$c, __vue_script__$c, __vue_scope_id__$c, __vue_is_functional_template__$c, __vue_module_identifier__$c, undefined, undefined);
+  render: __vue_render__$d,
+  staticRenderFns: __vue_staticRenderFns__$d
+}, __vue_inject_styles__$d, __vue_script__$d, __vue_scope_id__$d, __vue_is_functional_template__$d, __vue_module_identifier__$d, undefined, undefined);
 
-var script$d = {
+var script$e = {
   name: 'video-upload',
   props: {
     video: {
@@ -1658,10 +1717,10 @@ var script$d = {
 };
 
 /* script */
-var __vue_script__$d = script$d;
+var __vue_script__$e = script$e;
 /* template */
 
-var __vue_render__$d = function __vue_render__() {
+var __vue_render__$e = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -1692,30 +1751,30 @@ var __vue_render__$d = function __vue_render__() {
   })], 1);
 };
 
-var __vue_staticRenderFns__$d = [];
+var __vue_staticRenderFns__$e = [];
 /* style */
 
-var __vue_inject_styles__$d = undefined;
+var __vue_inject_styles__$e = undefined;
 /* scoped */
 
-var __vue_scope_id__$d = "data-v-31f40e01";
+var __vue_scope_id__$e = "data-v-31f40e01";
 /* module identifier */
 
-var __vue_module_identifier__$d = undefined;
+var __vue_module_identifier__$e = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$d = false;
+var __vue_is_functional_template__$e = false;
 /* style inject */
 
 /* style inject SSR */
 
 var VideoUpload = normalizeComponent_1({
-  render: __vue_render__$d,
-  staticRenderFns: __vue_staticRenderFns__$d
-}, __vue_inject_styles__$d, __vue_script__$d, __vue_scope_id__$d, __vue_is_functional_template__$d, __vue_module_identifier__$d, undefined, undefined);
+  render: __vue_render__$e,
+  staticRenderFns: __vue_staticRenderFns__$e
+}, __vue_inject_styles__$e, __vue_script__$e, __vue_scope_id__$e, __vue_is_functional_template__$e, __vue_module_identifier__$e, undefined, undefined);
 
 //
-var script$e = {
+var script$f = {
   name: 'tce-sprout-video-toolbar',
   inject: ['$elementBus'],
   props: {
@@ -1737,10 +1796,10 @@ var script$e = {
 };
 
 /* script */
-var __vue_script__$e = script$e;
+var __vue_script__$f = script$f;
 /* template */
 
-var __vue_render__$e = function __vue_render__() {
+var __vue_render__$f = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -1772,27 +1831,27 @@ var __vue_render__$e = function __vue_render__() {
   }, 'poster-frame-upload', _vm.element.data.video, false))], 1)], 1);
 };
 
-var __vue_staticRenderFns__$e = [];
+var __vue_staticRenderFns__$f = [];
 /* style */
 
-var __vue_inject_styles__$e = undefined;
+var __vue_inject_styles__$f = undefined;
 /* scoped */
 
-var __vue_scope_id__$e = "data-v-e5e87e90";
+var __vue_scope_id__$f = "data-v-e5e87e90";
 /* module identifier */
 
-var __vue_module_identifier__$e = undefined;
+var __vue_module_identifier__$f = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$e = false;
+var __vue_is_functional_template__$f = false;
 /* style inject */
 
 /* style inject SSR */
 
 var Toolbar = normalizeComponent_1({
-  render: __vue_render__$e,
-  staticRenderFns: __vue_staticRenderFns__$e
-}, __vue_inject_styles__$e, __vue_script__$e, __vue_scope_id__$e, __vue_is_functional_template__$e, __vue_module_identifier__$e, undefined, undefined);
+  render: __vue_render__$f,
+  staticRenderFns: __vue_staticRenderFns__$f
+}, __vue_inject_styles__$f, __vue_script__$f, __vue_scope_id__$f, __vue_is_functional_template__$f, __vue_module_identifier__$f, undefined, undefined);
 
 var initState = function initState() {
   return {
