@@ -11,21 +11,12 @@
       Poster frame
     </template>
     <template #body>
-      <p class="mb-3 text-left">
-        Set an image that's displayed before the video is played.
-      </p>
-      <v-img :src="currentPosterFrame" class="frame" />
-      <p class="mt-7 mb-3 text-left">
-        Pick a frame from the video
-      </p>
-      <div class="poster-frames-container">
-        <poster-frame
-          v-for="(poster, index) in generatedPosterFrames"
-          :key="poster"
-          @click="selectedIndex = index"
-          :src="poster"
-          :is-selected="!image && (selectedIndex === index)" />
-      </div>
+      <select-poster
+        @select="selectedIndex = $event"
+        :current-poster-frame="currentPosterFrame"
+        :generated-poster-frames="generatedPosterFrames"
+        :selected-index="selectedIndex"
+        :is-custom="!!image" />
       <custom-poster-upload @upload="upload" :is-error="isError" />
     </template>
     <template #actions>
@@ -37,7 +28,7 @@
 
 <script>
 import CustomPosterUpload from './CustomPosterUpload.vue';
-import PosterFrame from './PosterFrame.vue';
+import SelectPoster from './SelectPoster.vue';
 import SelectPosterBtn from './SelectPosterBtn.vue';
 import TailorDialog from '../../../tce-core/TailorDialog.vue';
 import take from 'lodash/take';
@@ -111,22 +102,10 @@ export default {
     }
   },
   components: {
-    PosterFrame,
     CustomPosterUpload,
     TailorDialog,
-    SelectPosterBtn
+    SelectPosterBtn,
+    SelectPoster
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.poster-frames-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 0.5rem;
-}
-
-.frame {
-  box-shadow: 0 0 0 1px #e1e1e1;
-}
-</style>
