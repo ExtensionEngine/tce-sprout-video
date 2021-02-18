@@ -1,5 +1,6 @@
 'use strict';
 
+const camelCaseKeys = require('camelcase-keys');
 const FormData = require('form-data');
 
 const TOKEN_TTL = 300; // time to live in seconds --> 5 minutes
@@ -10,7 +11,8 @@ class Video {
   }
 
   get(id) {
-    return this._request.get(`videos/${id}`);
+    return this._request.get(`videos/${id}`)
+      .then(res => camelCaseKeys(res, { deep: true }));
   }
 
   async edit(id, { customPosterFrame: content, ...payload }) {

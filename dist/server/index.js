@@ -99,15 +99,10 @@ function afterLoaded(asset, { config: { tce } }) {
   const { sproutVideoApiKey: apiKey } = tce;
   const client = createClient({ apiKey });
   return client.videos.get(videoId)
-    .then(video => {
-      const {
-        embed_code: embedCode,
-        selected_poster_frame_number: selectedPosterFrameIndex,
-        assets: { poster_frames: posterFrames }
-      } = video;
+    .then(({ embedCode, selectedPosterFrameNumber, assets }) => {
       asset.data.video.embedCode = embedCode.replace(/'/g, '"');
-      asset.data.video.selectedPosterFrameIndex = selectedPosterFrameIndex;
-      asset.data.video.posterFrames = posterFrames;
+      asset.data.video.selectedPosterFrameIndex = selectedPosterFrameNumber;
+      asset.data.video.posterFrames = assets.posterFrames;
       return asset;
     })
     .catch(error => setAssetError(asset, error));
