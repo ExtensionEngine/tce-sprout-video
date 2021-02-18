@@ -8,10 +8,14 @@ async function beforeSave(asset, { config: { tce } }) {
   const { sproutVideoApiKey: apiKey } = tce;
   const client = createClient({ apiKey });
   const { id: videoId, playable } = asset.data.video;
-  if (!videoId || !playable) return deleteTemporaryAssetProps(asset);
+  if (!videoId || !playable) {
+    deleteTemporaryAssetProps(asset);
+    return asset;
+  }
   await processCaption(asset, client);
-  await processPosterFrame(asset, client);
-  return deleteTemporaryAssetProps(asset);
+  await updatePosterFrame(asset, client);
+  deleteTemporaryAssetProps(asset);
+  return asset;
 }
 
 function processCaption(asset, client) {
@@ -34,7 +38,7 @@ function processCaption(asset, client) {
     });
 }
 
-function processPosterFrame(asset, client) {
+function updatePosterFrame(asset, client) {
   const { id: videoId, customPosterFrame, posterFrameNumber } = asset.data.video;
   const isPosterUpdated = customPosterFrame || !isNil(posterFrameNumber);
   if (!isPosterUpdated) return;
@@ -53,7 +57,6 @@ function deleteTemporaryAssetProps(asset) {
   delete asset.data.video.posterFrameNumber;
   delete asset.data.video.posterFrames;
   delete asset.data.video.selectedPosterFrameIndex;
-  return asset;
 }
 
 async function afterSave(asset, { config: { tce } }, options = {}) {
