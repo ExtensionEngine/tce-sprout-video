@@ -3,6 +3,7 @@
 const { createClient } = require('./sproutVideo');
 const { ELEMENT_STATE } = require('../shared');
 const isNil = require('lodash/isNil');
+const unset = require('lodash/unset');
 
 async function beforeSave(asset, { config: { tce } }) {
   const { sproutVideoApiKey: apiKey } = tce;
@@ -49,14 +50,17 @@ function updatePosterFrame(asset, client) {
 }
 
 function deleteTemporaryAssetProps(asset) {
-  delete asset.data.caption.content;
-  delete asset.data.video.embedCode;
-  delete asset.data.video.token;
-  delete asset.data.video.uploadUrl;
-  delete asset.data.video.customPosterFrame;
-  delete asset.data.video.posterFrameNumber;
-  delete asset.data.video.posterFrames;
-  delete asset.data.video.selectedPosterFrameIndex;
+  const temporaryProps = [
+    'caption.content',
+    'video.embedCode',
+    'video.token',
+    'video.uploadUrl',
+    'video.customPosterFrame',
+    'video.posterFrameNumber',
+    'video.posterFrames',
+    'video.selectedPosterFrameIndex'
+  ];
+  temporaryProps.map(path => unset(asset.data, path));
 }
 
 async function afterSave(asset, { config: { tce } }, options = {}) {
