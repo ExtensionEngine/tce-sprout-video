@@ -6,7 +6,6 @@ var cloneDeep = require('lodash/cloneDeep');
 var axios = require('axios');
 var get = require('lodash/get');
 var omit = require('lodash/omit');
-var isNil = require('lodash/isNil');
 var take = require('lodash/take');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -15,7 +14,6 @@ var cloneDeep__default = /*#__PURE__*/_interopDefaultLegacy(cloneDeep);
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
 var get__default = /*#__PURE__*/_interopDefaultLegacy(get);
 var omit__default = /*#__PURE__*/_interopDefaultLegacy(omit);
-var isNil__default = /*#__PURE__*/_interopDefaultLegacy(isNil);
 var take__default = /*#__PURE__*/_interopDefaultLegacy(take);
 
 var name = "tce-sprout-video";
@@ -1412,8 +1410,8 @@ var script$c = {
   data: function data() {
     return {
       dialog: false,
-      selectedIndex: null,
       image: null,
+      selectedIndex: this.selectedPosterFrameIndex,
       isError: false
     };
   },
@@ -1468,23 +1466,14 @@ var script$c = {
     },
     save: function save() {
       var image = this.image,
-          selectedIndex = this.selectedIndex,
-          selectedPosterFrameIndex = this.selectedPosterFrameIndex;
-
-      if (image) {
-        this.$emit('save', {
-          video: {
-            customPosterFrame: image
-          }
-        });
-      } else {
-        this.$emit('save', {
-          video: {
-            posterFrameNumber: isNil__default['default'](selectedIndex) ? selectedPosterFrameIndex : selectedIndex
-          }
-        });
-      }
-
+          selectedIndex = this.selectedIndex;
+      this.$emit('save', {
+        video: Object.assign({}, image ? {
+          customPosterFrame: image
+        } : {
+          posterFrameNumber: selectedIndex
+        })
+      });
       this.reset();
     }
   },
@@ -1492,8 +1481,7 @@ var script$c = {
     selectedPosterFrameIndex: {
       handler: function handler() {
         this.selectedIndex = this.selectedPosterFrameIndex;
-      },
-      immediate: true
+      }
     }
   },
   components: {
@@ -1637,7 +1625,7 @@ var __vue_staticRenderFns__$c = [];
 var __vue_inject_styles__$c = undefined;
 /* scoped */
 
-var __vue_scope_id__$c = "data-v-0994881f";
+var __vue_scope_id__$c = "data-v-98c3a554";
 /* module identifier */
 
 var __vue_module_identifier__$c = undefined;

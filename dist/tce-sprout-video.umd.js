@@ -1,8 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('lodash/cloneDeep'), require('axios'), require('lodash/get'), require('lodash/omit'), require('lodash/isNil'), require('lodash/take')) :
-  typeof define === 'function' && define.amd ? define(['exports', 'lodash/cloneDeep', 'axios', 'lodash/get', 'lodash/omit', 'lodash/isNil', 'lodash/take'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global.__TAILOR_CONTENT_ELEMENTS__ = global.__TAILOR_CONTENT_ELEMENTS__ || {}, global.__TAILOR_CONTENT_ELEMENTS__['tce-sprout-video'] = {}), global.cloneDeep, global.axios, global.get, global.omit, global.isNil, global.take));
-}(this, (function (exports, cloneDeep, axios, get, omit, isNil, take) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('lodash/cloneDeep'), require('axios'), require('lodash/get'), require('lodash/omit'), require('lodash/take')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'lodash/cloneDeep', 'axios', 'lodash/get', 'lodash/omit', 'lodash/take'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global.__TAILOR_CONTENT_ELEMENTS__ = global.__TAILOR_CONTENT_ELEMENTS__ || {}, global.__TAILOR_CONTENT_ELEMENTS__['tce-sprout-video'] = {}), global.cloneDeep, global.axios, global.get, global.omit, global.take));
+}(this, (function (exports, cloneDeep, axios, get, omit, take) { 'use strict';
 
   function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -10,7 +10,6 @@
   var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
   var get__default = /*#__PURE__*/_interopDefaultLegacy(get);
   var omit__default = /*#__PURE__*/_interopDefaultLegacy(omit);
-  var isNil__default = /*#__PURE__*/_interopDefaultLegacy(isNil);
   var take__default = /*#__PURE__*/_interopDefaultLegacy(take);
 
   var name = "tce-sprout-video";
@@ -1407,8 +1406,8 @@
     data: function data() {
       return {
         dialog: false,
-        selectedIndex: null,
         image: null,
+        selectedIndex: this.selectedPosterFrameIndex,
         isError: false
       };
     },
@@ -1463,23 +1462,14 @@
       },
       save: function save() {
         var image = this.image,
-            selectedIndex = this.selectedIndex,
-            selectedPosterFrameIndex = this.selectedPosterFrameIndex;
-
-        if (image) {
-          this.$emit('save', {
-            video: {
-              customPosterFrame: image
-            }
-          });
-        } else {
-          this.$emit('save', {
-            video: {
-              posterFrameNumber: isNil__default['default'](selectedIndex) ? selectedPosterFrameIndex : selectedIndex
-            }
-          });
-        }
-
+            selectedIndex = this.selectedIndex;
+        this.$emit('save', {
+          video: Object.assign({}, image ? {
+            customPosterFrame: image
+          } : {
+            posterFrameNumber: selectedIndex
+          })
+        });
         this.reset();
       }
     },
@@ -1487,8 +1477,7 @@
       selectedPosterFrameIndex: {
         handler: function handler() {
           this.selectedIndex = this.selectedPosterFrameIndex;
-        },
-        immediate: true
+        }
       }
     },
     components: {
@@ -1632,7 +1621,7 @@
   var __vue_inject_styles__$c = undefined;
   /* scoped */
 
-  var __vue_scope_id__$c = "data-v-0994881f";
+  var __vue_scope_id__$c = "data-v-98c3a554";
   /* module identifier */
 
   var __vue_module_identifier__$c = undefined;

@@ -2,7 +2,6 @@ import cloneDeep from 'lodash/cloneDeep';
 import axios from 'axios';
 import get from 'lodash/get';
 import omit from 'lodash/omit';
-import isNil from 'lodash/isNil';
 import take from 'lodash/take';
 
 var name = "tce-sprout-video";
@@ -1399,8 +1398,8 @@ var script$c = {
   data: function data() {
     return {
       dialog: false,
-      selectedIndex: null,
       image: null,
+      selectedIndex: this.selectedPosterFrameIndex,
       isError: false
     };
   },
@@ -1455,23 +1454,14 @@ var script$c = {
     },
     save: function save() {
       var image = this.image,
-          selectedIndex = this.selectedIndex,
-          selectedPosterFrameIndex = this.selectedPosterFrameIndex;
-
-      if (image) {
-        this.$emit('save', {
-          video: {
-            customPosterFrame: image
-          }
-        });
-      } else {
-        this.$emit('save', {
-          video: {
-            posterFrameNumber: isNil(selectedIndex) ? selectedPosterFrameIndex : selectedIndex
-          }
-        });
-      }
-
+          selectedIndex = this.selectedIndex;
+      this.$emit('save', {
+        video: Object.assign({}, image ? {
+          customPosterFrame: image
+        } : {
+          posterFrameNumber: selectedIndex
+        })
+      });
       this.reset();
     }
   },
@@ -1479,8 +1469,7 @@ var script$c = {
     selectedPosterFrameIndex: {
       handler: function handler() {
         this.selectedIndex = this.selectedPosterFrameIndex;
-      },
-      immediate: true
+      }
     }
   },
   components: {
@@ -1624,7 +1613,7 @@ var __vue_staticRenderFns__$c = [];
 var __vue_inject_styles__$c = undefined;
 /* scoped */
 
-var __vue_scope_id__$c = "data-v-0994881f";
+var __vue_scope_id__$c = "data-v-98c3a554";
 /* module identifier */
 
 var __vue_module_identifier__$c = undefined;

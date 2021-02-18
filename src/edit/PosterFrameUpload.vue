@@ -59,7 +59,6 @@
 </template>
 
 <script>
-import isNil from 'lodash/isNil';
 import PosterFrame from './PosterFrame.vue';
 import TailorDialog from '../tce-core/TailorDialog.vue';
 import take from 'lodash/take';
@@ -76,12 +75,14 @@ export default {
     selectedPosterFrameIndex: { type: Number, default: 0 },
     posterFrames: { type: Array, default: () => ([]) }
   },
-  data: () => ({
-    dialog: false,
-    selectedIndex: null,
-    image: null,
-    isError: false
-  }),
+  data() {
+    return {
+      dialog: false,
+      image: null,
+      selectedIndex: this.selectedPosterFrameIndex,
+      isError: false
+    };
+  },
   computed: {
     isDisabled: ({ id: videoId, playable }) => !videoId || !playable,
     generatedPosterFrames: ({ posterFrames }) => take(posterFrames, 4),
@@ -115,20 +116,12 @@ export default {
       });
     },
     save() {
-      const { image, selectedIndex, selectedPosterFrameIndex } = this;
-      if (image) {
-        this.$emit('save', {
-          video: {
-            customPosterFrame: image
-          }
-        });
-      } else {
-        this.$emit('save', {
-          video: {
-            posterFrameNumber: isNil(selectedIndex) ? selectedPosterFrameIndex : selectedIndex
-          }
-        });
-      }
+      const { image, selectedIndex } = this;
+      this.$emit('save', {
+        video: {
+          ...image ? { customPosterFrame: image } : { posterFrameNumber: selectedIndex }
+        }
+      });
       this.reset();
     }
   },
@@ -136,8 +129,7 @@ export default {
     selectedPosterFrameIndex: {
       handler: function () {
         this.selectedIndex = this.selectedPosterFrameIndex;
-      },
-      immediate: true
+      }
     }
   },
   components: { PosterFrame, UploadBtn, TailorDialog }
