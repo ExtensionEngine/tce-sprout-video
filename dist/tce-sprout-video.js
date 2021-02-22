@@ -1321,6 +1321,10 @@ var script$b = {
     isError: {
       type: Boolean,
       "default": false
+    },
+    fileSizeMessage: {
+      type: String,
+      "default": null
     }
   },
   components: {
@@ -1367,7 +1371,7 @@ var __vue_render__$b = function __vue_render__() {
     "class": {
       'error--text': _vm.isError
     }
-  }, [_vm._v("\n    Poster frame must be under 500KB.\n  ")])], 1);
+  }, [_vm._v("\n    " + _vm._s(_vm.fileSizeMessage) + "\n  ")])], 1);
 };
 
 var __vue_staticRenderFns__$b = [];
@@ -1620,6 +1624,7 @@ var SelectPosterBtn = normalizeComponent_1({
 var MAX_SIZE = 500000; // 500 KB
 
 var CUSTOM_POSTER_FRAME_INDEX = 4;
+var FILE_SIZE_ERROR_MSG = 'Poster frame must be under 500KB.';
 var script$f = {
   name: 'poster-frame-dialog',
   props: {
@@ -1647,7 +1652,8 @@ var script$f = {
       dialog: false,
       image: null,
       selectedIndex: this.selectedPosterFrameIndex,
-      isError: false
+      isError: false,
+      errorMsg: FILE_SIZE_ERROR_MSG
     };
   },
   computed: {
@@ -1780,7 +1786,8 @@ var __vue_render__$f = function __vue_render__() {
           }
         }), _vm._v(" "), _c('custom-poster-upload', {
           attrs: {
-            "is-error": _vm.isError
+            "is-error": _vm.isError,
+            "file-size-message": _vm.errorMsg
           },
           on: {
             "upload": _vm.upload

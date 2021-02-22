@@ -11,7 +11,7 @@
       </template>
     </upload-btn>
     <p :class="{ 'error--text': isError }" class="mt-1 text-caption">
-      Poster frame must be under 500KB.
+      {{ fileSizeMessage }}
     </p>
   </div>
 </template>
@@ -22,7 +22,8 @@ import UploadBtn from '../UploadBtn.vue';
 export default {
   name: 'custom-poster-upload',
   props: {
-    isError: { type: Boolean, default: false }
+    isError: { type: Boolean, default: false },
+    fileSizeMessage: { type: String, default: null }
   },
   components: { UploadBtn }
 };

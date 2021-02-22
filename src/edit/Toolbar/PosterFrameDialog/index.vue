@@ -17,7 +17,10 @@
         :generated-poster-frames="generatedPosterFrames"
         :selected-index="selectedIndex"
         :is-custom="!!image" />
-      <custom-poster-upload @upload="upload" :is-error="isError" />
+      <custom-poster-upload
+        @upload="upload"
+        :is-error="isError"
+        :file-size-message="errorMsg" />
     </template>
     <template #actions>
       <v-btn @click="reset" color="primary" text>Close</v-btn>
@@ -35,6 +38,7 @@ import take from 'lodash/take';
 
 const MAX_SIZE = 500000; // 500 KB
 const CUSTOM_POSTER_FRAME_INDEX = 4;
+const FILE_SIZE_ERROR_MSG = 'Poster frame must be under 500KB.';
 
 export default {
   name: 'poster-frame-dialog',
@@ -49,7 +53,8 @@ export default {
       dialog: false,
       image: null,
       selectedIndex: this.selectedPosterFrameIndex,
-      isError: false
+      isError: false,
+      errorMsg: FILE_SIZE_ERROR_MSG
     };
   },
   computed: {
