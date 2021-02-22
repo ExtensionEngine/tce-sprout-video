@@ -1,9 +1,5 @@
 <template>
   <div>
-    <p class="mb-3 text-left">
-      Set an image that's displayed before the video is played.
-    </p>
-    <v-img :src="currentPosterFrame" class="frame" />
     <p class="mt-7 mb-3 text-left">
       Pick a frame from the video
     </p>
@@ -24,7 +20,6 @@ import PosterFrame from './PosterFrame.vue';
 export default {
   name: 'select-poster',
   props: {
-    currentPosterFrame: { type: String, default: null },
     generatedPosterFrames: { type: Array, default: () => ([]) },
     isSelected: { type: Boolean, default: false },
     selectedIndex: { type: Number, default: 0 },
@@ -39,9 +34,5 @@ export default {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 0.5rem;
-}
-
-.frame {
-  box-shadow: 0 0 0 1px #e1e1e1;
 }
 </style>

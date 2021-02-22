@@ -11,9 +11,12 @@
       Poster frame
     </template>
     <template #body>
+      <p class="mb-3 text-left">
+        Set an image that's displayed before the video is played.
+      </p>
+      <v-img :src="currentPosterFrame" class="frame" />
       <select-poster
         @select="selectedIndex = $event"
-        :current-poster-frame="currentPosterFrame"
         :generated-poster-frames="generatedPosterFrames"
         :selected-index="selectedIndex"
         :is-custom="!!image" />
@@ -114,3 +117,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.frame {
+  box-shadow: 0 0 0 1px #e1e1e1;
+}
+</style>

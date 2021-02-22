@@ -1464,10 +1464,6 @@
   var script$d = {
     name: 'select-poster',
     props: {
-      currentPosterFrame: {
-        type: String,
-        "default": null
-      },
       generatedPosterFrames: {
         type: Array,
         "default": function _default() {
@@ -1504,13 +1500,6 @@
     var _c = _vm._self._c || _h;
 
     return _c('div', [_c('p', {
-      staticClass: "mb-3 text-left"
-    }, [_vm._v("\n    Set an image that's displayed before the video is played.\n  ")]), _vm._v(" "), _c('v-img', {
-      staticClass: "frame",
-      attrs: {
-        "src": _vm.currentPosterFrame
-      }
-    }), _vm._v(" "), _c('p', {
       staticClass: "mt-7 mb-3 text-left"
     }, [_vm._v("\n    Pick a frame from the video\n  ")]), _vm._v(" "), _c('div', {
       staticClass: "poster-frames-container"
@@ -1527,7 +1516,7 @@
           }
         }
       });
-    }), 1)], 1);
+    }), 1)]);
   };
 
   var __vue_staticRenderFns__$d = [];
@@ -1536,7 +1525,7 @@
   var __vue_inject_styles__$d = undefined;
   /* scoped */
 
-  var __vue_scope_id__$d = "data-v-61d9fa3c";
+  var __vue_scope_id__$d = "data-v-6d86e47a";
   /* module identifier */
 
   var __vue_module_identifier__$d = undefined;
@@ -1768,9 +1757,15 @@
       }, {
         key: "body",
         fn: function fn() {
-          return [_c('select-poster', {
+          return [_c('p', {
+            staticClass: "mb-3 text-left"
+          }, [_vm._v("\n      Set an image that's displayed before the video is played.\n    ")]), _vm._v(" "), _c('v-img', {
+            staticClass: "frame",
             attrs: {
-              "current-poster-frame": _vm.currentPosterFrame,
+              "src": _vm.currentPosterFrame
+            }
+          }), _vm._v(" "), _c('select-poster', {
+            attrs: {
               "generated-poster-frames": _vm.generatedPosterFrames,
               "selected-index": _vm.selectedIndex,
               "is-custom": !!_vm.image
@@ -1830,7 +1825,7 @@
   var __vue_inject_styles__$f = undefined;
   /* scoped */
 
-  var __vue_scope_id__$f = undefined;
+  var __vue_scope_id__$f = "data-v-73304874";
   /* module identifier */
 
   var __vue_module_identifier__$f = undefined;
