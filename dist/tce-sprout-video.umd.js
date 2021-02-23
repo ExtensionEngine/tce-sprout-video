@@ -1696,10 +1696,8 @@
       }
     },
     watch: {
-      selectedPosterFrameIndex: {
-        handler: function handler() {
-          this.selectedIndex = this.selectedPosterFrameIndex;
-        }
+      selectedPosterFrameIndex: function selectedPosterFrameIndex(selectedIndex) {
+        this.selectedIndex = selectedIndex;
       }
     },
     components: {
@@ -1819,7 +1817,7 @@
   var __vue_inject_styles__$f = undefined;
   /* scoped */
 
-  var __vue_scope_id__$f = "data-v-4d7ae43d";
+  var __vue_scope_id__$f = "data-v-5fa95842";
   /* module identifier */
 
   var __vue_module_identifier__$f = undefined;

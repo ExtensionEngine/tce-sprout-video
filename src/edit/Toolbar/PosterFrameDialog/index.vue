@@ -103,10 +103,8 @@ export default {
     }
   },
   watch: {
-    selectedPosterFrameIndex: {
-      handler: function () {
-        this.selectedIndex = this.selectedPosterFrameIndex;
-      }
+    selectedPosterFrameIndex(selectedIndex) {
+      this.selectedIndex = selectedIndex;
     }
   },
   components: {
