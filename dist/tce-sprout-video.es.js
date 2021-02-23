@@ -1458,10 +1458,6 @@ var script$d = {
         return [];
       }
     },
-    isSelected: {
-      type: Boolean,
-      "default": false
-    },
     selectedIndex: {
       type: Number,
       "default": 0
@@ -1513,7 +1509,7 @@ var __vue_staticRenderFns__$d = [];
 var __vue_inject_styles__$d = undefined;
 /* scoped */
 
-var __vue_scope_id__$d = "data-v-6d86e47a";
+var __vue_scope_id__$d = "data-v-490a24ef";
 /* module identifier */
 
 var __vue_module_identifier__$d = undefined;

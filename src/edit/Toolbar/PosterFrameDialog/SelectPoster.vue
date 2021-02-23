@@ -20,8 +20,7 @@ import PosterFrame from './PosterFrame.vue';
 export default {
   name: 'select-poster',
   props: {
-    generatedPosterFrames: { type: Array, default: () => ([]) },
-    isSelected: { type: Boolean, default: false },
+    generatedPosterFrames: { type: Array, default: () => [] },
     selectedIndex: { type: Number, default: 0 },
     isCustom: { type: Boolean, default: false }
   },
