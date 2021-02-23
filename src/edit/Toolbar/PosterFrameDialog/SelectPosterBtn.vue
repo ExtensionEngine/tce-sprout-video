@@ -12,7 +12,6 @@
 <script>
 export default {
   name: 'select-poster-btn',
-  inheritAttrs: false,
   props: {
     isDisabled: { type: Boolean, default: false }
   }

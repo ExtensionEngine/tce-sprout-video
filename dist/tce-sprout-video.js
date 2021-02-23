@@ -1095,7 +1095,6 @@ var ConfirmationDialog = normalizeComponent_1({
 //
 var script$9 = {
   name: 'video-upload-btn',
-  inheritAttrs: false,
   props: {
     label: {
       type: String,
@@ -1159,7 +1158,7 @@ var __vue_staticRenderFns__$9 = [];
 var __vue_inject_styles__$9 = undefined;
 /* scoped */
 
-var __vue_scope_id__$9 = "data-v-522ae9ea";
+var __vue_scope_id__$9 = "data-v-535c72a8";
 /* module identifier */
 
 var __vue_module_identifier__$9 = undefined;
@@ -1405,7 +1404,6 @@ var CustomPosterUpload = normalizeComponent_1({
 //
 var script$c = {
   name: 'poster-frame',
-  inheritAttrs: false,
   props: {
     src: {
       type: String,
@@ -1446,7 +1444,7 @@ var __vue_staticRenderFns__$c = [];
 var __vue_inject_styles__$c = undefined;
 /* scoped */
 
-var __vue_scope_id__$c = "data-v-1db6dee5";
+var __vue_scope_id__$c = "data-v-50db9999";
 /* module identifier */
 
 var __vue_module_identifier__$c = undefined;
@@ -1556,7 +1554,6 @@ var SelectPoster = normalizeComponent_1({
 //
 var script$e = {
   name: 'select-poster-btn',
-  inheritAttrs: false,
   props: {
     isDisabled: {
       type: Boolean,

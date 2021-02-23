@@ -10,7 +10,6 @@
 <script>
 export default {
   name: 'poster-frame',
-  inheritAttrs: false,
   props: {
     src: { type: String, required: true },
     isSelected: { type: Boolean, default: false }
