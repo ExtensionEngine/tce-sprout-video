@@ -10,7 +10,7 @@
       </template>
     </upload-btn>
     <p :class="{ 'error--text': isError }" class="mt-1 text-caption">
-      {{ error }}
+      {{ errorMessage }}
     </p>
   </div>
 </template>
@@ -22,7 +22,7 @@ export default {
   name: 'custom-poster-upload',
   props: {
     isError: { type: Boolean, default: false },
-    error: { type: String, default: null }
+    errorMessage: { type: String, default: null }
   },
   components: { UploadBtn }
 };

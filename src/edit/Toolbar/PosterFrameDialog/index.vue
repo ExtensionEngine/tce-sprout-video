@@ -24,7 +24,7 @@
       <custom-poster-upload
         @upload="upload"
         :is-error="isError"
-        :error="errorMsg" />
+        :error-message="errorMessage" />
     </template>
     <template #actions>
       <v-btn @click="reset" color="primary" text>Close</v-btn>
@@ -58,7 +58,7 @@ export default {
       image: null,
       selectedIndex: this.selectedPosterFrameIndex,
       isError: false,
-      errorMsg: FILE_SIZE_ERROR_MSG
+      errorMessage: FILE_SIZE_ERROR_MSG
     };
   },
   computed: {
