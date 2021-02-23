@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import TailorDialog from '../../tce-core/TailorDialog.vue';
+import TailorDialog from '@/tce-core/TailorDialog.vue';
 
 export default {
   name: 'confirmation-dialog',

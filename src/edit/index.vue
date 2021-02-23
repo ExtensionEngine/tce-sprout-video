@@ -27,14 +27,14 @@
 </template>
 
 <script>
-import { DEFAULT_ERROR_MSG, ELEMENT_STATE } from '../shared';
+import { DEFAULT_ERROR_MSG, ELEMENT_STATE } from '@/shared';
 import cloneDeep from 'lodash/cloneDeep';
 import createUpload from '../upload';
-import ElementPlaceholder from '../tce-core/ElementPlaceholder.vue';
+import ElementPlaceholder from '@/tce-core/ElementPlaceholder.vue';
 import ErrorMessage from './ErrorMessage.vue';
 import get from 'lodash/get';
 import omit from 'lodash/omit';
-import PreviewOverlay from '../tce-core/PreviewOverlay.vue';
+import PreviewOverlay from '@/tce-core/PreviewOverlay.vue';
 import ProgressMessage from './ProgressMessage.vue';
 import SproutPlayer from './SproutPlayer.vue';
 

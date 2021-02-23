@@ -36,7 +36,7 @@
 import CustomPosterUpload from './CustomPosterUpload.vue';
 import SelectPoster from './SelectPoster.vue';
 import SelectPosterBtn from './SelectPosterBtn.vue';
-import TailorDialog from '../../../tce-core/TailorDialog.vue';
+import TailorDialog from '@/tce-core/TailorDialog.vue';
 import take from 'lodash/take';
 
 const MAX_SIZE = 500000; // 500 KB
