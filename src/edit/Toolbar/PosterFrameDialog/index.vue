@@ -95,11 +95,10 @@ export default {
     },
     save() {
       const { image, selectedIndex } = this;
-      this.$emit('save', {
-        video: {
-          ...image ? { customPosterFrame: image } : { posterFrameNumber: selectedIndex }
-        }
-      });
+      const video = image
+        ? { customPosterFrame: image }
+        : { posterFrameNumber: selectedIndex };
+      this.$emit('save', { video });
       this.reset();
     }
   },

@@ -1684,12 +1684,13 @@
       save: function save() {
         var image = this.image,
             selectedIndex = this.selectedIndex;
+        var video = image ? {
+          customPosterFrame: image
+        } : {
+          posterFrameNumber: selectedIndex
+        };
         this.$emit('save', {
-          video: Object.assign({}, image ? {
-            customPosterFrame: image
-          } : {
-            posterFrameNumber: selectedIndex
-          })
+          video: video
         });
         this.reset();
       }
@@ -1818,7 +1819,7 @@
   var __vue_inject_styles__$f = undefined;
   /* scoped */
 
-  var __vue_scope_id__$f = "data-v-4609c14d";
+  var __vue_scope_id__$f = "data-v-4d7ae43d";
   /* module identifier */
 
   var __vue_module_identifier__$f = undefined;
