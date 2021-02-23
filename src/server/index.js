@@ -40,13 +40,10 @@ function processCaption(asset, client) {
 }
 
 function updatePosterFrame(asset, client) {
-  const { id: videoId, customPosterFrame, posterFrameNumber } = asset.data.video;
-  const isPosterUpdated = customPosterFrame || !isNil(posterFrameNumber);
+  const { id: videoId, customPosterFrame, posterframeNumber } = asset.data.video;
+  const isPosterUpdated = customPosterFrame || !isNil(posterframeNumber);
   if (!isPosterUpdated) return;
-  return client.videos.edit(videoId, {
-    customPosterFrame,
-    posterframe_number: posterFrameNumber
-  });
+  return client.videos.edit(videoId, { customPosterFrame, posterframeNumber });
 }
 
 function deleteTemporaryAssetProps(asset) {
@@ -56,7 +53,7 @@ function deleteTemporaryAssetProps(asset) {
     'video.token',
     'video.uploadUrl',
     'video.customPosterFrame',
-    'video.posterFrameNumber',
+    'video.posterframeNumber',
     'video.posterFrames',
     'video.selectedPosterFrameIndex'
   ];

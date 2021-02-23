@@ -2,6 +2,7 @@
 
 const camelCaseKeys = require('camelcase-keys');
 const FormData = require('form-data');
+const snakeCaseKeys = require('snakecase-keys');
 
 const TOKEN_TTL = 300; // time to live in seconds --> 5 minutes
 
@@ -16,6 +17,7 @@ class Video {
   }
 
   async edit(id, { customPosterFrame: content, ...payload }) {
+    payload = snakeCaseKeys(payload);
     if (!content) return this._request.put(`videos/${id}`, payload);
     const base64Pattern = /^data:image\/(\w+);base64,/;
     const buffer = Buffer.from(content.replace(base64Pattern, ''), 'base64');
