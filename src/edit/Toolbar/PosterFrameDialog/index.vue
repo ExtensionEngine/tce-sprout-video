@@ -24,7 +24,7 @@
       <custom-poster-upload
         @upload="upload"
         :is-error="isError"
-        :file-size-message="errorMsg" />
+        :error="errorMsg" />
     </template>
     <template #actions>
       <v-btn @click="reset" color="primary" text>Close</v-btn>

@@ -1318,7 +1318,7 @@
         type: Boolean,
         "default": false
       },
-      fileSizeMessage: {
+      error: {
         type: String,
         "default": null
       }
@@ -1365,7 +1365,7 @@
       "class": {
         'error--text': _vm.isError
       }
-    }, [_vm._v("\n    " + _vm._s(_vm.fileSizeMessage) + "\n  ")])], 1);
+    }, [_vm._v("\n    " + _vm._s(_vm.error) + "\n  ")])], 1);
   };
 
   var __vue_staticRenderFns__$b = [];
@@ -1778,7 +1778,7 @@
           }, [_vm._v("or upload an image from your computer")]), _vm._v(" "), _c('custom-poster-upload', {
             attrs: {
               "is-error": _vm.isError,
-              "file-size-message": _vm.errorMsg
+              "error": _vm.errorMsg
             },
             on: {
               "upload": _vm.upload
@@ -1825,7 +1825,7 @@
   var __vue_inject_styles__$f = undefined;
   /* scoped */
 
-  var __vue_scope_id__$f = "data-v-001f1137";
+  var __vue_scope_id__$f = "data-v-5dba7ed3";
   /* module identifier */
 
   var __vue_module_identifier__$f = undefined;
