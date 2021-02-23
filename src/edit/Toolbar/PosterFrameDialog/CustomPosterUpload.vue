@@ -1,6 +1,5 @@
 <template>
   <div class="text-left">
-    <p class="my-3">or upload an image from your computer</p>
     <upload-btn
       @change="$emit('upload', $event)"
       label="Upload image"

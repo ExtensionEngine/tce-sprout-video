@@ -1345,9 +1345,7 @@ var __vue_render__$b = function __vue_render__() {
 
   return _c('div', {
     staticClass: "text-left"
-  }, [_c('p', {
-    staticClass: "my-3"
-  }, [_vm._v("or upload an image from your computer")]), _vm._v(" "), _c('upload-btn', {
+  }, [_c('upload-btn', {
     attrs: {
       "label": "Upload image",
       "accept": "image/jpeg",
@@ -1779,7 +1777,9 @@ var __vue_render__$f = function __vue_render__() {
               _vm.selectedIndex = $event;
             }
           }
-        }), _vm._v(" "), _c('custom-poster-upload', {
+        }), _vm._v(" "), _c('p', {
+          staticClass: "my-3 text-left"
+        }, [_vm._v("or upload an image from your computer")]), _vm._v(" "), _c('custom-poster-upload', {
           attrs: {
             "is-error": _vm.isError,
             "file-size-message": _vm.errorMsg
@@ -1829,7 +1829,7 @@ var __vue_staticRenderFns__$f = [];
 var __vue_inject_styles__$f = undefined;
 /* scoped */
 
-var __vue_scope_id__$f = "data-v-65eee41e";
+var __vue_scope_id__$f = "data-v-001f1137";
 /* module identifier */
 
 var __vue_module_identifier__$f = undefined;

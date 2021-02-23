@@ -20,6 +20,7 @@
         :generated-poster-frames="generatedPosterFrames"
         :selected-index="selectedIndex"
         :is-custom="!!image" />
+      <p class="my-3 text-left">or upload an image from your computer</p>
       <custom-poster-upload
         @upload="upload"
         :is-error="isError"
