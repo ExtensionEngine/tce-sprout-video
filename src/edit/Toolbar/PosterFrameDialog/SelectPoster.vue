@@ -1,28 +1,33 @@
 <template>
   <div>
-    <p class="mt-7 mb-3 text-left">
+    <p class="mb-3 text-left">
       Pick a frame from the video
     </p>
     <div class="poster-frames-container">
       <poster-frame
-        v-for="(poster, index) in generatedPosterFrames"
+        v-for="(poster, index) in options"
         :key="poster"
         @click="$emit('select', index)"
         :src="poster"
-        :is-selected="!isCustom && (selectedIndex === index)" />
+        :is-selected="isSelected(index)" />
     </div>
   </div>
 </template>
 
 <script>
+import isNil from 'lodash/isNil';
 import PosterFrame from './PosterFrame.vue';
 
 export default {
   name: 'select-poster',
   props: {
-    generatedPosterFrames: { type: Array, default: () => [] },
-    selectedIndex: { type: Number, default: 0 },
-    isCustom: { type: Boolean, default: false }
+    options: { type: Array, default: () => [] },
+    value: { type: Number, default: null }
+  },
+  methods: {
+    isSelected(index) {
+      return isNil(index) ? false : (this.value === index);
+    }
   },
   components: { PosterFrame }
 };

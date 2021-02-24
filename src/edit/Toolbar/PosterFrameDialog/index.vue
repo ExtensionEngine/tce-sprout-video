@@ -16,14 +16,14 @@
       </p>
       <v-img :src="currentPosterFrame" class="frame" />
       <select-poster
-        @select="selectedIndex = $event"
-        :generated-poster-frames="generatedPosterFrames"
-        :selected-index="selectedIndex"
-        :is-custom="!!image" />
+        @select="selectFrame"
+        :options="generatedPosterFrames"
+        :value="selectedFrame"
+        class="mt-7" />
       <p class="my-3 text-left">or upload an image from your computer</p>
       <custom-poster-upload
         ref="posterUpload"
-        @upload="image = $event"
+        @upload="setCustomPoster"
         :max-size="maxSize" />
     </template>
     <template #actions>
@@ -55,7 +55,7 @@ export default {
     return {
       dialog: false,
       image: null,
-      selectedIndex: this.selectedPosterFrameIndex,
+      selectedFrame: this.selectedPosterFrameIndex,
       maxSize: MAX_SIZE
     };
   },
@@ -66,29 +66,37 @@ export default {
       return image || posterFrames[CUSTOM_POSTER_FRAME_INDEX];
     },
     currentPosterFrame() {
-      const { customPosterFrame, posterFrames, selectedPosterFrameIndex } = this;
-      return customPosterFrame || posterFrames[selectedPosterFrameIndex];
+      const { customPosterFrame, posterFrames, selectedFrame } = this;
+      return posterFrames[selectedFrame] || customPosterFrame;
     }
   },
   methods: {
     reset() {
       this.dialog = false;
       this.image = null;
-      this.selectedIndex = this.selectedPosterFrameIndex;
+      this.selectedFrame = this.selectedPosterFrameIndex;
       this.$refs.posterUpload.reset();
     },
     save() {
-      const { image, selectedIndex } = this;
+      const { image, selectedFrame } = this;
       const video = image
         ? { customPosterFrame: image }
-        : { posterframeNumber: selectedIndex };
+        : { posterframeNumber: selectedFrame };
       this.$emit('save', { video });
       this.reset();
+    },
+    selectFrame(index) {
+      this.image = null;
+      this.selectedFrame = index;
+    },
+    setCustomPoster(image) {
+      this.selectedFrame = null;
+      this.image = image;
     }
   },
   watch: {
-    selectedPosterFrameIndex(selectedIndex) {
-      this.selectedIndex = selectedIndex;
+    selectedPosterFrameIndex(selectedFrame) {
+      this.selectedFrame = selectedFrame;
     }
   },
   components: {

@@ -6,6 +6,7 @@ var cloneDeep = require('lodash/cloneDeep');
 var axios = require('axios');
 var get = require('lodash/get');
 var omit = require('lodash/omit');
+var isNil = require('lodash/isNil');
 var take = require('lodash/take');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -14,6 +15,7 @@ var cloneDeep__default = /*#__PURE__*/_interopDefaultLegacy(cloneDeep);
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
 var get__default = /*#__PURE__*/_interopDefaultLegacy(get);
 var omit__default = /*#__PURE__*/_interopDefaultLegacy(omit);
+var isNil__default = /*#__PURE__*/_interopDefaultLegacy(isNil);
 var take__default = /*#__PURE__*/_interopDefaultLegacy(take);
 
 var name = "tce-sprout-video";
@@ -1491,19 +1493,20 @@ var PosterFrame = normalizeComponent_1({
 var script$d = {
   name: 'select-poster',
   props: {
-    generatedPosterFrames: {
+    options: {
       type: Array,
       "default": function _default() {
         return [];
       }
     },
-    selectedIndex: {
+    value: {
       type: Number,
-      "default": 0
-    },
-    isCustom: {
-      type: Boolean,
-      "default": false
+      "default": null
+    }
+  },
+  methods: {
+    isSelected: function isSelected(index) {
+      return isNil__default['default'](index) ? false : this.value === index;
     }
   },
   components: {
@@ -1523,15 +1526,15 @@ var __vue_render__$d = function __vue_render__() {
   var _c = _vm._self._c || _h;
 
   return _c('div', [_c('p', {
-    staticClass: "mt-7 mb-3 text-left"
+    staticClass: "mb-3 text-left"
   }, [_vm._v("\n    Pick a frame from the video\n  ")]), _vm._v(" "), _c('div', {
     staticClass: "poster-frames-container"
-  }, _vm._l(_vm.generatedPosterFrames, function (poster, index) {
+  }, _vm._l(_vm.options, function (poster, index) {
     return _c('poster-frame', {
       key: poster,
       attrs: {
         "src": poster,
-        "is-selected": !_vm.isCustom && _vm.selectedIndex === index
+        "is-selected": _vm.isSelected(index)
       },
       on: {
         "click": function click($event) {
@@ -1548,7 +1551,7 @@ var __vue_staticRenderFns__$d = [];
 var __vue_inject_styles__$d = undefined;
 /* scoped */
 
-var __vue_scope_id__$d = "data-v-490a24ef";
+var __vue_scope_id__$d = "data-v-3ba49965";
 /* module identifier */
 
 var __vue_module_identifier__$d = undefined;
@@ -1658,7 +1661,7 @@ var script$f = {
     return {
       dialog: false,
       image: null,
-      selectedIndex: this.selectedPosterFrameIndex,
+      selectedFrame: this.selectedPosterFrameIndex,
       maxSize: MAX_SIZE
     };
   },
@@ -1680,34 +1683,42 @@ var script$f = {
     currentPosterFrame: function currentPosterFrame() {
       var customPosterFrame = this.customPosterFrame,
           posterFrames = this.posterFrames,
-          selectedPosterFrameIndex = this.selectedPosterFrameIndex;
-      return customPosterFrame || posterFrames[selectedPosterFrameIndex];
+          selectedFrame = this.selectedFrame;
+      return posterFrames[selectedFrame] || customPosterFrame;
     }
   },
   methods: {
     reset: function reset() {
       this.dialog = false;
       this.image = null;
-      this.selectedIndex = this.selectedPosterFrameIndex;
+      this.selectedFrame = this.selectedPosterFrameIndex;
       this.$refs.posterUpload.reset();
     },
     save: function save() {
       var image = this.image,
-          selectedIndex = this.selectedIndex;
+          selectedFrame = this.selectedFrame;
       var video = image ? {
         customPosterFrame: image
       } : {
-        posterframeNumber: selectedIndex
+        posterframeNumber: selectedFrame
       };
       this.$emit('save', {
         video: video
       });
       this.reset();
+    },
+    selectFrame: function selectFrame(index) {
+      this.image = null;
+      this.selectedFrame = index;
+    },
+    setCustomPoster: function setCustomPoster(image) {
+      this.selectedFrame = null;
+      this.image = image;
     }
   },
   watch: {
-    selectedPosterFrameIndex: function selectedPosterFrameIndex(selectedIndex) {
-      this.selectedIndex = selectedIndex;
+    selectedPosterFrameIndex: function selectedPosterFrameIndex(selectedFrame) {
+      this.selectedFrame = selectedFrame;
     }
   },
   components: {
@@ -1765,15 +1776,13 @@ var __vue_render__$f = function __vue_render__() {
             "src": _vm.currentPosterFrame
           }
         }), _vm._v(" "), _c('select-poster', {
+          staticClass: "mt-7",
           attrs: {
-            "generated-poster-frames": _vm.generatedPosterFrames,
-            "selected-index": _vm.selectedIndex,
-            "is-custom": !!_vm.image
+            "options": _vm.generatedPosterFrames,
+            "value": _vm.selectedFrame
           },
           on: {
-            "select": function select($event) {
-              _vm.selectedIndex = $event;
-            }
+            "select": _vm.selectFrame
           }
         }), _vm._v(" "), _c('p', {
           staticClass: "my-3 text-left"
@@ -1783,9 +1792,7 @@ var __vue_render__$f = function __vue_render__() {
             "max-size": _vm.maxSize
           },
           on: {
-            "upload": function upload($event) {
-              _vm.image = $event;
-            }
+            "upload": _vm.setCustomPoster
           }
         })];
       },
@@ -1829,7 +1836,7 @@ var __vue_staticRenderFns__$f = [];
 var __vue_inject_styles__$f = undefined;
 /* scoped */
 
-var __vue_scope_id__$f = "data-v-735b6145";
+var __vue_scope_id__$f = "data-v-622b175e";
 /* module identifier */
 
 var __vue_module_identifier__$f = undefined;
