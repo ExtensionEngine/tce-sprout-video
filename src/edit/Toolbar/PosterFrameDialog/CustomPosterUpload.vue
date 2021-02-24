@@ -1,7 +1,7 @@
 <template>
   <div class="text-left">
     <upload-btn
-      @change="$emit('upload', $event)"
+      @change="validateSize"
       label="Upload image"
       accept="image/jpeg"
       small depressed>
@@ -11,7 +11,7 @@
     </upload-btn>
     <p
       v-if="maxSize"
-      :class="{ 'error--text': isError }"
+      :class="{ 'error--text': isOverMaxSize }"
       class="mt-1 text-caption">
       Poster frame must be under {{ maxSizeInKb }}KB.
     </p>
@@ -26,16 +26,16 @@ export default {
   props: {
     maxSize: { type: Number, default: null }
   },
-  data: () => ({ isError: false }),
+  data: () => ({ isOverMaxSize: false }),
   computed: {
     maxSizeInKb: vm => vm.maxSize && vm.maxSize / 1000
   },
   methods: {
     validateSize(e) {
-      this.isError = false;
+      this.reset();
       const [file] = e.target.files;
       if (this.maxSize && file.size > this.maxSize) {
-        this.isError = true;
+        this.isOverMaxSize = true;
         return;
       }
       const fileReader = new FileReader();
@@ -43,6 +43,9 @@ export default {
       fileReader.addEventListener('load', e => {
         this.$emit('upload', e.target.result);
       });
+    },
+    reset() {
+      this.isOverMaxSize = false;
     }
   },
   components: { UploadBtn }

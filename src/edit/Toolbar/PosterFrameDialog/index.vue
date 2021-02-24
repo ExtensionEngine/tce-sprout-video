@@ -21,7 +21,10 @@
         :selected-index="selectedIndex"
         :is-custom="!!image" />
       <p class="my-3 text-left">or upload an image from your computer</p>
-      <custom-poster-upload @upload="image = $event" :max-size="maxSize" />
+      <custom-poster-upload
+        ref="posterUpload"
+        @upload="image = $event"
+        :max-size="maxSize" />
     </template>
     <template #actions>
       <v-btn @click="reset" color="primary" text>Close</v-btn>
@@ -72,7 +75,7 @@ export default {
       this.dialog = false;
       this.image = null;
       this.selectedIndex = this.selectedPosterFrameIndex;
-      this.isError = false;
+      this.$refs.posterUpload.reset();
     },
     save() {
       const { image, selectedIndex } = this;

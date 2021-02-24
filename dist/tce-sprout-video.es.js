@@ -1311,7 +1311,7 @@ var script$b = {
   },
   data: function data() {
     return {
-      isError: false
+      isOverMaxSize: false
     };
   },
   computed: {
@@ -1323,13 +1323,13 @@ var script$b = {
     validateSize: function validateSize(e) {
       var _this = this;
 
-      this.isError = false;
+      this.reset();
 
       var _e$target$files = _slicedToArray(e.target.files, 1),
           file = _e$target$files[0];
 
       if (this.maxSize && file.size > this.maxSize) {
-        this.isError = true;
+        this.isOverMaxSize = true;
         return;
       }
 
@@ -1338,6 +1338,9 @@ var script$b = {
       fileReader.addEventListener('load', function (e) {
         _this.$emit('upload', e.target.result);
       });
+    },
+    reset: function reset() {
+      this.isOverMaxSize = false;
     }
   },
   components: {
@@ -1366,9 +1369,7 @@ var __vue_render__$b = function __vue_render__() {
       "depressed": ""
     },
     on: {
-      "change": function change($event) {
-        return _vm.$emit('upload', $event);
-      }
+      "change": _vm.validateSize
     },
     scopedSlots: _vm._u([{
       key: "icon",
@@ -1380,7 +1381,7 @@ var __vue_render__$b = function __vue_render__() {
   }), _vm._v(" "), _vm.maxSize ? _c('p', {
     staticClass: "mt-1 text-caption",
     "class": {
-      'error--text': _vm.isError
+      'error--text': _vm.isOverMaxSize
     }
   }, [_vm._v("\n    Poster frame must be under " + _vm._s(_vm.maxSizeInKb) + "KB.\n  ")]) : _vm._e()], 1);
 };
@@ -1676,7 +1677,7 @@ var script$f = {
       this.dialog = false;
       this.image = null;
       this.selectedIndex = this.selectedPosterFrameIndex;
-      this.isError = false;
+      this.$refs.posterUpload.reset();
     },
     save: function save() {
       var image = this.image,
@@ -1765,6 +1766,7 @@ var __vue_render__$f = function __vue_render__() {
         }), _vm._v(" "), _c('p', {
           staticClass: "my-3 text-left"
         }, [_vm._v("or upload an image from your computer")]), _vm._v(" "), _c('custom-poster-upload', {
+          ref: "posterUpload",
           attrs: {
             "max-size": _vm.maxSize
           },
@@ -1815,7 +1817,7 @@ var __vue_staticRenderFns__$f = [];
 var __vue_inject_styles__$f = undefined;
 /* scoped */
 
-var __vue_scope_id__$f = "data-v-7246d2e5";
+var __vue_scope_id__$f = "data-v-735b6145";
 /* module identifier */
 
 var __vue_module_identifier__$f = undefined;
