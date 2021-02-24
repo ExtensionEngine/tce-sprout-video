@@ -9,8 +9,11 @@
         <v-icon>mdi-upload</v-icon>
       </template>
     </upload-btn>
-    <p :class="{ 'error--text': isError }" class="mt-1 text-caption">
-      {{ errorMessage }}
+    <p
+      v-if="maxSize"
+      :class="{ 'error--text': isError }"
+      class="mt-1 text-caption">
+      Poster frame must be under {{ maxSizeInKb }}KB.
     </p>
   </div>
 </template>
@@ -21,8 +24,26 @@ import UploadBtn from '../UploadBtn.vue';
 export default {
   name: 'custom-poster-upload',
   props: {
-    isError: { type: Boolean, default: false },
-    errorMessage: { type: String, default: null }
+    maxSize: { type: Number, default: null }
+  },
+  data: () => ({ isError: false }),
+  computed: {
+    maxSizeInKb: vm => vm.maxSize && vm.maxSize / 1000
+  },
+  methods: {
+    validateSize(e) {
+      this.isError = false;
+      const [file] = e.target.files;
+      if (this.maxSize && file.size > this.maxSize) {
+        this.isError = true;
+        return;
+      }
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.addEventListener('load', e => {
+        this.$emit('upload', e.target.result);
+      });
+    }
   },
   components: { UploadBtn }
 };

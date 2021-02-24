@@ -21,10 +21,7 @@
         :selected-index="selectedIndex"
         :is-custom="!!image" />
       <p class="my-3 text-left">or upload an image from your computer</p>
-      <custom-poster-upload
-        @upload="upload"
-        :is-error="isError"
-        :error-message="errorMessage" />
+      <custom-poster-upload @upload="image = $event" :max-size="maxSize" />
     </template>
     <template #actions>
       <v-btn @click="reset" color="primary" text>Close</v-btn>
@@ -42,7 +39,6 @@ import take from 'lodash/take';
 
 const MAX_SIZE = 500000; // 500 KB
 const CUSTOM_POSTER_FRAME_INDEX = 4;
-const FILE_SIZE_ERROR_MSG = 'Poster frame must be under 500KB.';
 
 export default {
   name: 'poster-frame-dialog',
@@ -57,8 +53,7 @@ export default {
       dialog: false,
       image: null,
       selectedIndex: this.selectedPosterFrameIndex,
-      isError: false,
-      errorMessage: FILE_SIZE_ERROR_MSG
+      maxSize: MAX_SIZE
     };
   },
   computed: {
@@ -78,20 +73,6 @@ export default {
       this.image = null;
       this.selectedIndex = this.selectedPosterFrameIndex;
       this.isError = false;
-    },
-    upload(e) {
-      this.isError = false;
-      this.image = null;
-      const [file] = e.target.files;
-      if (file.size > MAX_SIZE) {
-        this.isError = true;
-        return;
-      }
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.addEventListener('load', e => {
-        this.image = e.target.result;
-      });
     },
     save() {
       const { image, selectedIndex } = this;

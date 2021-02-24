@@ -1301,17 +1301,43 @@ var CaptionUpload = normalizeComponent_1({
   staticRenderFns: __vue_staticRenderFns__$a
 }, __vue_inject_styles__$a, __vue_script__$a, __vue_scope_id__$a, __vue_is_functional_template__$a, __vue_module_identifier__$a, undefined, undefined);
 
-//
 var script$b = {
   name: 'custom-poster-upload',
   props: {
-    isError: {
-      type: Boolean,
-      "default": false
-    },
-    errorMessage: {
-      type: String,
+    maxSize: {
+      type: Number,
       "default": null
+    }
+  },
+  data: function data() {
+    return {
+      isError: false
+    };
+  },
+  computed: {
+    maxSizeInKb: function maxSizeInKb(vm) {
+      return vm.maxSize && vm.maxSize / 1000;
+    }
+  },
+  methods: {
+    validateSize: function validateSize(e) {
+      var _this = this;
+
+      this.isError = false;
+
+      var _e$target$files = _slicedToArray(e.target.files, 1),
+          file = _e$target$files[0];
+
+      if (this.maxSize && file.size > this.maxSize) {
+        this.isError = true;
+        return;
+      }
+
+      var fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.addEventListener('load', function (e) {
+        _this.$emit('upload', e.target.result);
+      });
     }
   },
   components: {
@@ -1351,12 +1377,12 @@ var __vue_render__$b = function __vue_render__() {
       },
       proxy: true
     }])
-  }), _vm._v(" "), _c('p', {
+  }), _vm._v(" "), _vm.maxSize ? _c('p', {
     staticClass: "mt-1 text-caption",
     "class": {
       'error--text': _vm.isError
     }
-  }, [_vm._v("\n    " + _vm._s(_vm.errorMessage) + "\n  ")])], 1);
+  }, [_vm._v("\n    Poster frame must be under " + _vm._s(_vm.maxSizeInKb) + "KB.\n  ")]) : _vm._e()], 1);
 };
 
 var __vue_staticRenderFns__$b = [];
@@ -1589,10 +1615,10 @@ var SelectPosterBtn = normalizeComponent_1({
   staticRenderFns: __vue_staticRenderFns__$e
 }, __vue_inject_styles__$e, __vue_script__$e, __vue_scope_id__$e, __vue_is_functional_template__$e, __vue_module_identifier__$e, undefined, undefined);
 
+//
 var MAX_SIZE = 500000; // 500 KB
 
 var CUSTOM_POSTER_FRAME_INDEX = 4;
-var FILE_SIZE_ERROR_MSG = 'Poster frame must be under 500KB.';
 var script$f = {
   name: 'poster-frame-dialog',
   props: {
@@ -1620,8 +1646,7 @@ var script$f = {
       dialog: false,
       image: null,
       selectedIndex: this.selectedPosterFrameIndex,
-      isError: false,
-      errorMessage: FILE_SIZE_ERROR_MSG
+      maxSize: MAX_SIZE
     };
   },
   computed: {
@@ -1652,26 +1677,6 @@ var script$f = {
       this.image = null;
       this.selectedIndex = this.selectedPosterFrameIndex;
       this.isError = false;
-    },
-    upload: function upload(e) {
-      var _this = this;
-
-      this.isError = false;
-      this.image = null;
-
-      var _e$target$files = _slicedToArray(e.target.files, 1),
-          file = _e$target$files[0];
-
-      if (file.size > MAX_SIZE) {
-        this.isError = true;
-        return;
-      }
-
-      var fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.addEventListener('load', function (e) {
-        _this.image = e.target.result;
-      });
     },
     save: function save() {
       var image = this.image,
@@ -1761,11 +1766,12 @@ var __vue_render__$f = function __vue_render__() {
           staticClass: "my-3 text-left"
         }, [_vm._v("or upload an image from your computer")]), _vm._v(" "), _c('custom-poster-upload', {
           attrs: {
-            "is-error": _vm.isError,
-            "error-message": _vm.errorMessage
+            "max-size": _vm.maxSize
           },
           on: {
-            "upload": _vm.upload
+            "upload": function upload($event) {
+              _vm.image = $event;
+            }
           }
         })];
       },
@@ -1809,7 +1815,7 @@ var __vue_staticRenderFns__$f = [];
 var __vue_inject_styles__$f = undefined;
 /* scoped */
 
-var __vue_scope_id__$f = "data-v-118b9c22";
+var __vue_scope_id__$f = "data-v-7246d2e5";
 /* module identifier */
 
 var __vue_module_identifier__$f = undefined;
