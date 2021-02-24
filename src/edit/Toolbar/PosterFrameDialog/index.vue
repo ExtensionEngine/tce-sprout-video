@@ -81,7 +81,7 @@ export default {
       const { image, selectedFrame } = this;
       const video = image
         ? { customPosterFrame: image }
-        : { posterframeNumber: selectedFrame };
+        : { posterFrameNumber: selectedFrame };
       this.$emit('save', { video });
       this.reset();
     },
