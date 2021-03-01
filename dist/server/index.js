@@ -44,7 +44,7 @@ function updatePosterFrame(asset, client) {
   const isPosterUpdated = customPosterFrame || !isNil(posterFrameNumber);
   if (!isPosterUpdated) return;
   return client.videos
-    .editPosterFrame(videoId, { customPosterFrame, posterFrameNumber });
+    .updatePosterFrame(videoId, { customPosterFrame, posterFrameNumber });
 }
 
 function deleteTemporaryAssetProps(asset) {

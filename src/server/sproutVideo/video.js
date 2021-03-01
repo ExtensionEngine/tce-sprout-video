@@ -19,7 +19,7 @@ class Video {
       }));
   }
 
-  async editPosterFrame(id, { customPosterFrame: content, posterFrameNumber }) {
+  async updatePosterFrame(id, { customPosterFrame: content, posterFrameNumber }) {
     if (!content) {
       return this._request.put(
         `videos/${id}`,
