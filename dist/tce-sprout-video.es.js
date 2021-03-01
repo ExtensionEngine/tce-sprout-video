@@ -1695,7 +1695,7 @@ var script$f = {
       var video = image ? {
         customPosterFrame: image
       } : {
-        posterFrameNumber: selectedFrame
+        posterFrameIndex: selectedFrame
       };
       this.$emit('save', {
         video: video
@@ -1831,7 +1831,7 @@ var __vue_staticRenderFns__$f = [];
 var __vue_inject_styles__$f = undefined;
 /* scoped */
 
-var __vue_scope_id__$f = "data-v-4c852904";
+var __vue_scope_id__$f = "data-v-9d2966a2";
 /* module identifier */
 
 var __vue_module_identifier__$f = undefined;

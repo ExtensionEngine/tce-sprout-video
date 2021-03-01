@@ -19,11 +19,11 @@ class Video {
       }));
   }
 
-  async updatePosterFrame(id, { customPosterFrame: content, posterFrameNumber }) {
+  async updatePosterFrame(id, { customPosterFrame: content, posterFrameIndex }) {
     if (!content) {
       return this._request.put(
         `videos/${id}`,
-        { posterframe_number: posterFrameNumber }
+        { posterframe_number: posterFrameIndex }
       );
     }
     const base64Pattern = /^data:image\/(\w+);base64,/;
