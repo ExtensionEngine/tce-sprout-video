@@ -1330,6 +1330,8 @@
     },
     methods: {
       validateSize: function validateSize(e) {
+        this.reset();
+
         var _e$target$files = _slicedToArray(e.target.files, 1),
             file = _e$target$files[0];
 
@@ -1342,8 +1344,6 @@
       },
       upload: function upload(e) {
         var _this = this;
-
-        this.reset();
 
         var _e$target$files2 = _slicedToArray(e.target.files, 1),
             file = _e$target$files2[0];

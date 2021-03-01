@@ -32,6 +32,7 @@ export default {
   },
   methods: {
     validateSize(e) {
+      this.reset();
       const [file] = e.target.files;
       if (this.maxSize && file.size > this.maxSize) {
         this.isOverMaxSize = true;
@@ -40,7 +41,6 @@ export default {
       return true;
     },
     upload(e) {
-      this.reset();
       const [file] = e.target.files;
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
