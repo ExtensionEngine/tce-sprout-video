@@ -2,7 +2,6 @@
 
 const camelCaseKeys = require('camelcase-keys');
 const FormData = require('form-data');
-const snakeCaseKeys = require('snakecase-keys');
 
 const TOKEN_TTL = 300; // time to live in seconds --> 5 minutes
 
@@ -13,12 +12,20 @@ class Video {
 
   get(id) {
     return this._request.get(`videos/${id}`)
-      .then(res => camelCaseKeys(res, { deep: true }));
+      .then(res => camelCaseKeys(res, { deep: true }))
+      .then(({ selectedPosterFrameNumber, ...rest }) => ({
+        ...rest,
+        selectedPosterFrameIndex: selectedPosterFrameNumber
+      }));
   }
 
-  async edit(id, { customPosterFrame: content, ...payload }) {
-    payload = snakeCaseKeys(payload);
-    if (!content) return this._request.put(`videos/${id}`, payload);
+  async editPosterFrame(id, { customPosterFrame: content, posterFrameNumber }) {
+    if (!content) {
+      return this._request.put(
+        `videos/${id}`,
+        { posterframe_number: posterFrameNumber }
+      );
+    }
     const base64Pattern = /^data:image\/(\w+);base64,/;
     const buffer = Buffer.from(content.replace(base64Pattern, ''), 'base64');
     const formData = new FormData();

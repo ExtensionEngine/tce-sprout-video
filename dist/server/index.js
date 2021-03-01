@@ -43,10 +43,8 @@ function updatePosterFrame(asset, client) {
   const { id: videoId, customPosterFrame, posterFrameNumber } = asset.data.video;
   const isPosterUpdated = customPosterFrame || !isNil(posterFrameNumber);
   if (!isPosterUpdated) return;
-  return client.videos.edit(videoId, {
-    customPosterFrame,
-    posterframeNumber: posterFrameNumber
-  });
+  return client.videos
+    .editPosterFrame(videoId, { customPosterFrame, posterFrameNumber });
 }
 
 function deleteTemporaryAssetProps(asset) {
@@ -99,9 +97,9 @@ function afterLoaded(asset, { config: { tce } }) {
   const { sproutVideoApiKey: apiKey } = tce;
   const client = createClient({ apiKey });
   return client.videos.get(videoId)
-    .then(({ embedCode, selectedPosterFrameNumber, assets }) => {
+    .then(({ embedCode, selectedPosterFrameIndex, assets }) => {
       asset.data.video.embedCode = embedCode.replace(/'/g, '"');
-      asset.data.video.selectedPosterFrameIndex = selectedPosterFrameNumber;
+      asset.data.video.selectedPosterFrameIndex = selectedPosterFrameIndex;
       asset.data.video.posterFrames = assets.posterFrames;
       return asset;
     })
