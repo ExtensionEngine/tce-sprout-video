@@ -1,7 +1,7 @@
 <template>
   <div class="text-left">
     <upload-btn
-      @change="validateSize"
+      @change="validateSize($event) && upload($event)"
       label="Upload image"
       accept="image/jpeg"
       small depressed>
@@ -32,12 +32,16 @@ export default {
   },
   methods: {
     validateSize(e) {
-      this.reset();
       const [file] = e.target.files;
       if (this.maxSize && file.size > this.maxSize) {
         this.isOverMaxSize = true;
-        return;
+        return false;
       }
+      return true;
+    },
+    upload(e) {
+      this.reset();
+      const [file] = e.target.files;
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
       fileReader.addEventListener('load', e => {

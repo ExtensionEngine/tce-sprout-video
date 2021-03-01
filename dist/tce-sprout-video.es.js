@@ -1322,17 +1322,23 @@ var script$b = {
   },
   methods: {
     validateSize: function validateSize(e) {
-      var _this = this;
-
-      this.reset();
-
       var _e$target$files = _slicedToArray(e.target.files, 1),
           file = _e$target$files[0];
 
       if (this.maxSize && file.size > this.maxSize) {
         this.isOverMaxSize = true;
-        return;
+        return false;
       }
+
+      return true;
+    },
+    upload: function upload(e) {
+      var _this = this;
+
+      this.reset();
+
+      var _e$target$files2 = _slicedToArray(e.target.files, 1),
+          file = _e$target$files2[0];
 
       var fileReader = new FileReader();
       fileReader.readAsDataURL(file);
@@ -1370,7 +1376,9 @@ var __vue_render__$b = function __vue_render__() {
       "depressed": ""
     },
     on: {
-      "change": _vm.validateSize
+      "change": function change($event) {
+        _vm.validateSize($event) && _vm.upload($event);
+      }
     },
     scopedSlots: _vm._u([{
       key: "icon",
