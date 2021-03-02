@@ -1790,7 +1790,7 @@
               "select": _vm.selectFrame
             }
           }), _vm._v(" "), _c('p', {
-            staticClass: "my-3 text-left"
+            staticClass: "mt-7 mb-3 text-left"
           }, [_vm._v("or upload an image from your computer")]), _vm._v(" "), _c('custom-poster-upload', {
             ref: "posterUpload",
             attrs: {
@@ -1844,7 +1844,7 @@
   var __vue_inject_styles__$f = undefined;
   /* scoped */
 
-  var __vue_scope_id__$f = "data-v-0e67b4df";
+  var __vue_scope_id__$f = "data-v-38be6475";
   /* module identifier */
 
   var __vue_module_identifier__$f = undefined;

@@ -24,7 +24,7 @@
         :options="generatedPosterFrames"
         :value="selectedFrame"
         class="mt-7" />
-      <p class="my-3 text-left">or upload an image from your computer</p>
+      <p class="mt-7 mb-3 text-left">or upload an image from your computer</p>
       <custom-poster-upload
         ref="posterUpload"
         @upload="setCustomPoster"
