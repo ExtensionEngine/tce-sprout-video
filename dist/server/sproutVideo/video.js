@@ -19,15 +19,16 @@ class Video {
       }));
   }
 
-  async updatePosterFrame(id, { customPosterFrame: content, posterFrameIndex }) {
-    if (!content) {
+  async updatePosterFrame(id, { customPosterFrame, posterFrameIndex }) {
+    if (!customPosterFrame) {
       return this._request.put(
         `videos/${id}`,
         { posterframe_number: posterFrameIndex }
       );
     }
     const base64Pattern = /^data:image\/(\w+);base64,/;
-    const buffer = Buffer.from(content.replace(base64Pattern, ''), 'base64');
+    const buffer = Buffer
+      .from(customPosterFrame.replace(base64Pattern, ''), 'base64');
     const formData = new FormData();
     formData.append('custom_poster_frame', buffer);
     const contentLength = await getContentLength(formData);
