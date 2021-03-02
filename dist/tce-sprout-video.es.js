@@ -1019,7 +1019,7 @@ var __vue_render__$8 = function __vue_render__() {
           }
         }, [_vm._v("Close")]), _vm._v(" "), _c('v-btn', {
           attrs: {
-            "color": "error",
+            "color": "secondary",
             "text": ""
           },
           on: {
@@ -1807,13 +1807,16 @@ var __vue_render__$f = function __vue_render__() {
           }
         }, [_vm._v("Close")]), _vm._v(" "), _c('v-btn', {
           attrs: {
-            "color": "success",
-            "text": ""
+            "color": "green darken-3",
+            "text": "",
+            "large": ""
           },
           on: {
             "click": _vm.save
           }
-        }, [_vm._v("Save")])];
+        }, [_c('v-icon', {
+          staticClass: "pr-1"
+        }, [_vm._v("mdi-check")]), _vm._v("\n      Save\n    ")], 1)];
       },
       proxy: true
     }]),
@@ -1833,7 +1836,7 @@ var __vue_staticRenderFns__$f = [];
 var __vue_inject_styles__$f = undefined;
 /* scoped */
 
-var __vue_scope_id__$f = "data-v-041df886";
+var __vue_scope_id__$f = "data-v-0e67b4df";
 /* module identifier */
 
 var __vue_module_identifier__$f = undefined;

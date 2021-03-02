@@ -32,7 +32,13 @@
     </template>
     <template #actions>
       <v-btn @click="reset" color="primary" text>Close</v-btn>
-      <v-btn @click="save" color="success" text>Save</v-btn>
+      <v-btn
+        @click="save"
+        color="green darken-3"
+        text large>
+        <v-icon class="pr-1">mdi-check</v-icon>
+        Save
+      </v-btn>
     </template>
   </tailor-dialog>
 </template>
