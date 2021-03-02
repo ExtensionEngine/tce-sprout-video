@@ -1768,7 +1768,9 @@ var __vue_render__$f = function __vue_render__() {
         }, [_vm._v("\n      Set an image that's displayed before the video is played.\n    ")]), _vm._v(" "), _c('v-img', {
           staticClass: "frame",
           attrs: {
-            "src": _vm.currentPosterFrame
+            "src": _vm.currentPosterFrame,
+            "max-height": 400,
+            "contain": ""
           }
         }), _vm._v(" "), _c('select-poster', {
           staticClass: "mt-7",
@@ -1831,7 +1833,7 @@ var __vue_staticRenderFns__$f = [];
 var __vue_inject_styles__$f = undefined;
 /* scoped */
 
-var __vue_scope_id__$f = "data-v-9d2966a2";
+var __vue_scope_id__$f = "data-v-041df886";
 /* module identifier */
 
 var __vue_module_identifier__$f = undefined;

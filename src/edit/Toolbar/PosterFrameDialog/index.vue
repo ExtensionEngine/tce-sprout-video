@@ -14,7 +14,11 @@
       <p class="mb-3 text-left">
         Set an image that's displayed before the video is played.
       </p>
-      <v-img :src="currentPosterFrame" class="frame" />
+      <v-img
+        :src="currentPosterFrame"
+        :max-height="400"
+        contain
+        class="frame" />
       <select-poster
         @select="selectFrame"
         :options="generatedPosterFrames"
