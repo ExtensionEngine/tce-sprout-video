@@ -4,11 +4,7 @@
       @change="validateSize($event) && upload($event)"
       label="Upload image"
       accept="image/jpeg"
-      small depressed>
-      <template #icon>
-        <v-icon>mdi-upload</v-icon>
-      </template>
-    </upload-btn>
+      small depressed />
     <p
       v-if="maxSize"
       :class="{ 'error--text': isOverMaxSize }"

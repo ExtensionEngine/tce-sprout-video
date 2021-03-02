@@ -1392,14 +1392,7 @@ var __vue_render__$b = function __vue_render__() {
       "change": function change($event) {
         _vm.validateSize($event) && _vm.upload($event);
       }
-    },
-    scopedSlots: _vm._u([{
-      key: "icon",
-      fn: function fn() {
-        return [_c('v-icon', [_vm._v("mdi-upload")])];
-      },
-      proxy: true
-    }])
+    }
   }), _vm._v(" "), _vm.maxSize ? _c('p', {
     staticClass: "mt-1 text-caption",
     "class": {
