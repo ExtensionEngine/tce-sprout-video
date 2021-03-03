@@ -43,8 +43,10 @@ function updatePosterFrame(asset, client) {
   const { id: videoId, customPosterFrame, posterFrameIndex } = asset.data.video;
   const isPosterUpdated = customPosterFrame || !isNil(posterFrameIndex);
   if (!isPosterUpdated) return;
-  return client.videos
-    .updatePosterFrame(videoId, { customPosterFrame, posterFrameIndex });
+  return client.videos.updatePosterFrame(videoId, {
+    customPosterFrame,
+    posterFrameIndex
+  });
 }
 
 function deleteTemporaryAssetProps(asset) {
