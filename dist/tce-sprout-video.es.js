@@ -1,5 +1,7 @@
+import cloneDeep from 'lodash/cloneDeep';
 import axios from 'axios';
 import get from 'lodash/get';
+import omit from 'lodash/omit';
 
 var name = "tce-sprout-video";
 var version = "0.0.1";
@@ -10,6 +12,17 @@ var tailor = {
 		icon: "mdi-video",
 		forceFullWidth: false
 	}
+};
+
+var ELEMENT_STATE = {
+  UPLOADING: 'UPLOADING',
+  UPLOADED: 'UPLOADED',
+  DELETING: 'DELETING'
+};
+var DEFAULT_ERROR_MSG = 'Something went wrong.';
+var shared = {
+  ELEMENT_STATE: ELEMENT_STATE,
+  DEFAULT_ERROR_MSG: DEFAULT_ERROR_MSG
 };
 
 var PRIVATE_VIDEO_CODE = 0;
@@ -31,14 +44,6 @@ function upload(_ref) {
     return res.data;
   });
 }
-
-var ELEMENT_STATE = {
-  UPLOADING: 'UPLOADING',
-  UPLOADED: 'UPLOADED'
-};
-var shared = {
-  ELEMENT_STATE: ELEMENT_STATE
-};
 
 //
 //
@@ -564,7 +569,6 @@ var SproutPlayer = normalizeComponent_1({
 }, __vue_inject_styles__$5, __vue_script__$5, __vue_scope_id__$5, __vue_is_functional_template__$5, __vue_module_identifier__$5, undefined, undefined);
 
 //
-var DEFAULT_ERROR_MSG = 'Something went wrong.';
 var UPLOAD_FAILED_ERROR_MSG = 'Video upload failed. Please try again.';
 var UPLOADING_MSG = 'Video is uploading... Do not leave the page.';
 var PROCESSING_MSG = 'Video is processing...';
@@ -587,35 +591,36 @@ var script$6 = {
   },
   data: function data() {
     return {
-      file: null
+      file: null,
+      error: null
     };
   },
   computed: {
     isEmpty: function isEmpty() {
-      var _this$element$data = this.element.data,
-          error = _this$element$data.error,
-          fileName = _this$element$data.fileName;
+      var _this$element$data$vi = this.element.data.video,
+          error = _this$element$data$vi.error,
+          fileName = _this$element$data$vi.fileName;
       return !error && !fileName;
     },
     didUploadFail: function didUploadFail() {
-      var status = this.element.data.status;
+      var status = this.element.data.video.status;
       return status === shared.ELEMENT_STATE.UPLOADING && !this.file;
     },
     errorMessage: function errorMessage() {
-      var error = this.element.data.error;
+      var error = this.element.data.video.error;
       return this.didUploadFail ? UPLOAD_FAILED_ERROR_MSG : error;
     },
     infoMessage: function infoMessage() {
-      var _this$element$data2 = this.element.data,
-          status = _this$element$data2.status,
-          playable = _this$element$data2.playable;
+      var _this$element$data$vi2 = this.element.data.video,
+          status = _this$element$data$vi2.status,
+          playable = _this$element$data$vi2.playable;
       if (status === shared.ELEMENT_STATE.UPLOADING) return UPLOADING_MSG;
       return !playable && PROCESSING_MSG;
     },
     isReadyToUpload: function isReadyToUpload() {
-      var _this$element$data3 = this.element.data,
-          token = _this$element$data3.token,
-          uploadUrl = _this$element$data3.uploadUrl;
+      var _this$element$data$vi3 = this.element.data.video,
+          token = _this$element$data$vi3.token,
+          uploadUrl = _this$element$data$vi3.uploadUrl;
       return token && this.file && uploadUrl;
     },
     isFocusedOrDisabled: function isFocusedOrDisabled(_ref) {
@@ -628,9 +633,9 @@ var script$6 = {
     upload: function upload$1() {
       var _this = this;
 
-      var _this$element$data4 = this.element.data,
-          url = _this$element$data4.uploadUrl,
-          token = _this$element$data4.token;
+      var _this$element$data$vi4 = this.element.data.video,
+          url = _this$element$data$vi4.uploadUrl,
+          token = _this$element$data$vi4.token;
       return upload({
         url: url,
         file: this.file,
@@ -640,20 +645,24 @@ var script$6 = {
         _this.file = null;
 
         _this.$emit('save', Object.assign({}, _this.element.data, {
-          videoId: id,
-          status: shared.ELEMENT_STATE.UPLOADED
+          video: Object.assign({}, _this.element.data.video, {
+            id: id,
+            status: shared.ELEMENT_STATE.UPLOADED
+          })
         }));
       })["catch"](function (err) {
         _this.$emit('save', Object.assign({}, _this.element.data, {
-          error: get(err, 'response.data.error', DEFAULT_ERROR_MSG),
-          status: null,
-          fileName: null
+          video: Object.assign({}, _this.element.data.video, {
+            error: get(err, 'response.data.error', shared.DEFAULT_ERROR_MSG),
+            status: null,
+            fileName: null
+          })
         }));
       });
     }
   },
   watch: {
-    'element.data.uploadUrl': function elementDataUploadUrl() {
+    'element.data.video.uploadUrl': function elementDataVideoUploadUrl() {
       if (this.isReadyToUpload) this.upload();
     },
     isFocusedOrDisabled: function isFocusedOrDisabled(value) {
@@ -664,21 +673,17 @@ var script$6 = {
     var _this2 = this;
 
     this.$elementBus.on('save', function (_ref3) {
-      var file = _ref3.file;
-      _this2.file = file;
+      var video = _ref3.video,
+          caption = _ref3.caption;
+      _this2.file = get(video, 'file', null);
+      var data = cloneDeep(_this2.element.data);
+      Object.assign(data.video, omit(video, ['file']));
+      Object.assign(data.caption, caption);
 
-      _this2.$emit('save', Object.assign({}, _this2.element.data, {
-        fileName: file.name,
-        error: null,
-        status: shared.ELEMENT_STATE.UPLOADING
-      }));
+      _this2.$emit('save', data);
     });
-    this.$elementBus.on('error', function (_ref4) {
-      var data = _ref4.data;
-
-      _this2.$emit('save', Object.assign({}, _this2.element.data, {
-        error: get(data, 'error.message', DEFAULT_ERROR_MSG)
-      }));
+    this.$elementBus.on('error', function (error) {
+      _this2.error = get(error, 'response.data.error.message', shared.DEFAULT_ERROR_MSG);
     });
   },
   components: {
@@ -703,7 +708,13 @@ var __vue_render__$6 = function __vue_render__() {
 
   return _c('div', {
     staticClass: "tce-sprout-video"
-  }, [_vm.isEmpty ? _c('element-placeholder', {
+  }, [_vm.error ? _c('v-alert', {
+    staticClass: "text-left",
+    attrs: {
+      "type": "error",
+      "dismissible": ""
+    }
+  }, [_vm._v("\n    " + _vm._s(_vm.error) + "\n  ")]) : _vm._e(), _vm._v(" "), _vm.isEmpty ? _c('element-placeholder', {
     attrs: {
       "is-focused": _vm.isFocused,
       "is-disabled": _vm.isDisabled,
@@ -712,7 +723,9 @@ var __vue_render__$6 = function __vue_render__() {
       "active-placeholder": "Use toolbar to upload the video",
       "active-icon": "mdi-arrow-up"
     }
-  }) : _c('div', [_vm.errorMessage ? _c('error-message', {
+  }) : _c('div', {
+    staticClass: "player-container"
+  }, [_vm.errorMessage ? _c('error-message', {
     attrs: {
       "message": _vm.errorMessage
     }
@@ -724,7 +737,7 @@ var __vue_render__$6 = function __vue_render__() {
     attrs: {
       "show": !_vm.isFocusedOrDisabled
     }
-  }, [_vm._v("\n      Double click to preview\n    ")]), _vm._v(" "), _c('sprout-player', _vm._b({}, 'sprout-player', _vm.element.data, false))], 1)], 1);
+  }, [_vm._v("\n      Double click to preview\n    ")]), _vm._v(" "), _c('sprout-player', _vm._b({}, 'sprout-player', _vm.element.data.video, false))], 1)], 1);
 };
 
 var __vue_staticRenderFns__$6 = [];
@@ -733,7 +746,7 @@ var __vue_staticRenderFns__$6 = [];
 var __vue_inject_styles__$6 = undefined;
 /* scoped */
 
-var __vue_scope_id__$6 = "data-v-ae909b6a";
+var __vue_scope_id__$6 = "data-v-93fad3e2";
 /* module identifier */
 
 var __vue_module_identifier__$6 = undefined;
@@ -831,17 +844,32 @@ function _nonIterableRest() {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var script$7 = {
-  name: 'video-upload-btn',
-  inheritAttrs: false,
+  name: 'tailor-dialog',
   props: {
-    label: {
+    headerIcon: {
       type: String,
-      required: true
+      "default": null
     },
-    accept: {
-      type: String,
-      "default": 'video/*'
+    width: {
+      type: [Number, String],
+      "default": 500
+    },
+    paddingless: {
+      type: Boolean,
+      "default": false
     }
   }
 };
@@ -857,8 +885,223 @@ var __vue_render__$7 = function __vue_render__() {
 
   var _c = _vm._self._c || _h;
 
+  return _c('v-dialog', _vm._g(_vm._b({
+    attrs: {
+      "width": _vm.width
+    },
+    scopedSlots: _vm._u([_vm._l(_vm.$scopedSlots, function (_, slot) {
+      return {
+        key: slot,
+        fn: function fn(scope) {
+          return [_vm._t(slot, null, null, scope)];
+        }
+      };
+    })], null, true)
+  }, 'v-dialog', _vm.$attrs, false), _vm.$listeners), [_vm._v(" "), _c('v-card', [_c('v-card-title', {
+    staticClass: "dialog-title primary darken-1",
+    attrs: {
+      "primary-title": ""
+    }
+  }, [_vm.headerIcon ? _c('v-avatar', {
+    staticClass: "mr-3",
+    attrs: {
+      "color": "secondary",
+      "size": "38"
+    }
+  }, [_c('v-icon', {
+    attrs: {
+      "dark": ""
+    }
+  }, [_vm._v(_vm._s(_vm.headerIcon))])], 1) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "text-truncate"
+  }, [_vm._t("header")], 2)], 1), _vm._v(" "), _c('v-card-text', {
+    "class": [_vm.paddingless ? 'pa-0' : 'pt-7 px-4 pb-2']
+  }, [_vm._t("body")], 2), _vm._v(" "), _vm.$slots.actions ? _c('v-card-actions', {
+    staticClass: "px-4 pb-3"
+  }, [_c('v-spacer'), _vm._v(" "), _vm._t("actions")], 2) : _vm._e()], 1)], 1);
+};
+
+var __vue_staticRenderFns__$7 = [];
+/* style */
+
+var __vue_inject_styles__$7 = undefined;
+/* scoped */
+
+var __vue_scope_id__$7 = "data-v-6ebf236f";
+/* module identifier */
+
+var __vue_module_identifier__$7 = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$7 = false;
+/* style inject */
+
+/* style inject SSR */
+
+var TailorDialog = normalizeComponent_1({
+  render: __vue_render__$7,
+  staticRenderFns: __vue_staticRenderFns__$7
+}, __vue_inject_styles__$7, __vue_script__$7, __vue_scope_id__$7, __vue_is_functional_template__$7, __vue_module_identifier__$7, undefined, undefined);
+
+//
+var script$8 = {
+  name: 'confirmation-dialog',
+  data: function data() {
+    return {
+      dialog: false
+    };
+  },
+  methods: {
+    confirm: function confirm() {
+      this.dialog = false;
+      this.$emit('confirm');
+    }
+  },
+  components: {
+    TailorDialog: TailorDialog
+  }
+};
+
+/* script */
+var __vue_script__$8 = script$8;
+/* template */
+
+var __vue_render__$8 = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c('tailor-dialog', {
+    attrs: {
+      "header-icon": "mdi-alert",
+      "width": "500"
+    },
+    scopedSlots: _vm._u([{
+      key: "activator",
+      fn: function fn(scope) {
+        return [_vm._t("default", null, null, scope)];
+      }
+    }, {
+      key: "header",
+      fn: function fn() {
+        return [_vm._v("Delete caption?")];
+      },
+      proxy: true
+    }, {
+      key: "body",
+      fn: function fn() {
+        return [_c('div', {
+          staticClass: "text-left"
+        }, [_vm._v("Are you sure you want to delete caption?")])];
+      },
+      proxy: true
+    }, {
+      key: "actions",
+      fn: function fn() {
+        return [_c('v-btn', {
+          attrs: {
+            "color": "primary",
+            "text": ""
+          },
+          on: {
+            "click": function click($event) {
+              _vm.dialog = false;
+            }
+          }
+        }, [_vm._v("Close")]), _vm._v(" "), _c('v-btn', {
+          attrs: {
+            "color": "error",
+            "text": ""
+          },
+          on: {
+            "click": _vm.confirm
+          }
+        }, [_vm._v("Delete caption")])];
+      },
+      proxy: true
+    }], null, true),
+    model: {
+      value: _vm.dialog,
+      callback: function callback($$v) {
+        _vm.dialog = $$v;
+      },
+      expression: "dialog"
+    }
+  });
+};
+
+var __vue_staticRenderFns__$8 = [];
+/* style */
+
+var __vue_inject_styles__$8 = undefined;
+/* scoped */
+
+var __vue_scope_id__$8 = undefined;
+/* module identifier */
+
+var __vue_module_identifier__$8 = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$8 = false;
+/* style inject */
+
+/* style inject SSR */
+
+var ConfirmationDialog = normalizeComponent_1({
+  render: __vue_render__$8,
+  staticRenderFns: __vue_staticRenderFns__$8
+}, __vue_inject_styles__$8, __vue_script__$8, __vue_scope_id__$8, __vue_is_functional_template__$8, __vue_module_identifier__$8, undefined, undefined);
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var script$9 = {
+  name: 'video-upload-btn',
+  inheritAttrs: false,
+  props: {
+    label: {
+      type: String,
+      required: true
+    },
+    accept: {
+      type: String,
+      "default": 'video/*'
+    }
+  }
+};
+
+/* script */
+var __vue_script__$9 = script$9;
+/* template */
+
+var __vue_render__$9 = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
   return _c('v-btn', _vm._b({
-    staticClass: "text-uppercase",
+    staticClass: "upload-btn text-uppercase",
     attrs: {
       "color": "primary darken-3",
       "text": ""
@@ -888,43 +1131,173 @@ var __vue_render__$7 = function __vue_render__() {
   })], 2);
 };
 
-var __vue_staticRenderFns__$7 = [];
+var __vue_staticRenderFns__$9 = [];
 /* style */
 
-var __vue_inject_styles__$7 = undefined;
+var __vue_inject_styles__$9 = undefined;
 /* scoped */
 
-var __vue_scope_id__$7 = undefined;
+var __vue_scope_id__$9 = "data-v-03230bb2";
 /* module identifier */
 
-var __vue_module_identifier__$7 = undefined;
+var __vue_module_identifier__$9 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$7 = false;
+var __vue_is_functional_template__$9 = false;
 /* style inject */
 
 /* style inject SSR */
 
 var UploadBtn = normalizeComponent_1({
-  render: __vue_render__$7,
-  staticRenderFns: __vue_staticRenderFns__$7
-}, __vue_inject_styles__$7, __vue_script__$7, __vue_scope_id__$7, __vue_is_functional_template__$7, __vue_module_identifier__$7, undefined, undefined);
+  render: __vue_render__$9,
+  staticRenderFns: __vue_staticRenderFns__$9
+}, __vue_inject_styles__$9, __vue_script__$9, __vue_scope_id__$9, __vue_is_functional_template__$9, __vue_module_identifier__$9, undefined, undefined);
 
-var script$8 = {
-  name: 'tce-sprout-video-toolbar',
-  inject: ['$elementBus'],
+var script$a = {
+  name: 'caption-upload',
   props: {
-    element: {
+    video: {
+      type: Object,
+      required: true
+    },
+    caption: {
       type: Object,
       required: true
     }
   },
   computed: {
     fileName: function fileName(_ref) {
-      var _element$data;
+      var caption = _ref.caption;
+      return caption === null || caption === void 0 ? void 0 : caption.fileName;
+    },
+    isVideoPlayable: function isVideoPlayable() {
+      var _this$video = this.video,
+          videoId = _this$video.id,
+          playable = _this$video.playable;
+      return videoId && playable;
+    }
+  },
+  methods: {
+    upload: function upload(e) {
+      var _this = this;
 
-      var element = _ref.element;
-      return (_element$data = element.data) === null || _element$data === void 0 ? void 0 : _element$data.fileName;
+      var _e$target$files = _slicedToArray(e.target.files, 1),
+          file = _e$target$files[0];
+
+      var fileReader = new window.FileReader();
+      fileReader.readAsText(file);
+      fileReader.addEventListener('load', function (e) {
+        _this.$emit('save', {
+          caption: {
+            fileName: file.name,
+            content: e.target.result,
+            status: shared.ELEMENT_STATE.UPLOADING,
+            error: null
+          }
+        });
+      });
+    },
+    remove: function remove() {
+      this.$emit('save', {
+        caption: {
+          fileName: null,
+          status: shared.ELEMENT_STATE.DELETING,
+          error: null
+        }
+      });
+    }
+  },
+  components: {
+    ConfirmationDialog: ConfirmationDialog,
+    UploadBtn: UploadBtn
+  }
+};
+
+/* script */
+var __vue_script__$a = script$a;
+/* template */
+
+var __vue_render__$a = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c('span', [!_vm.fileName ? _c('upload-btn', {
+    attrs: {
+      "disabled": !_vm.isVideoPlayable || _vm.fileName,
+      "label": "Upload caption",
+      "accept": "text/vtt"
+    },
+    on: {
+      "change": _vm.upload
+    }
+  }) : _vm._e(), _vm._v(" "), _vm.fileName ? _c('v-text-field', {
+    attrs: {
+      "value": _vm.fileName,
+      "readonly": "",
+      "hide-details": "",
+      "filled": ""
+    },
+    scopedSlots: _vm._u([{
+      key: "prepend-inner",
+      fn: function fn() {
+        return [_c('v-icon', [_vm._v("mdi-closed-caption")])];
+      },
+      proxy: true
+    }, {
+      key: "append",
+      fn: function fn() {
+        return [_c('confirmation-dialog', {
+          on: {
+            "confirm": _vm.remove
+          },
+          scopedSlots: _vm._u([{
+            key: "default",
+            fn: function fn(ref) {
+              var on = ref.on;
+              var attrs = ref.attrs;
+              return [_c('v-icon', _vm._g(_vm._b({
+                staticClass: "delete-caption"
+              }, 'v-icon', attrs, false), on), [_vm._v("\n          mdi-delete\n        ")])];
+            }
+          }], null, false, 1426420343)
+        })];
+      },
+      proxy: true
+    }], null, false, 1152848328)
+  }) : _vm._e()], 1);
+};
+
+var __vue_staticRenderFns__$a = [];
+/* style */
+
+var __vue_inject_styles__$a = undefined;
+/* scoped */
+
+var __vue_scope_id__$a = "data-v-53991dd2";
+/* module identifier */
+
+var __vue_module_identifier__$a = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$a = false;
+/* style inject */
+
+/* style inject SSR */
+
+var CaptionUpload = normalizeComponent_1({
+  render: __vue_render__$a,
+  staticRenderFns: __vue_staticRenderFns__$a
+}, __vue_inject_styles__$a, __vue_script__$a, __vue_scope_id__$a, __vue_is_functional_template__$a, __vue_module_identifier__$a, undefined, undefined);
+
+var script$b = {
+  name: 'video-upload',
+  props: {
+    video: {
+      type: Object,
+      required: true
     }
   },
   methods: {
@@ -932,8 +1305,13 @@ var script$8 = {
       var _e$target$files = _slicedToArray(e.target.files, 1),
           file = _e$target$files[0];
 
-      this.$elementBus.emit('save', {
-        file: file
+      this.$emit('save', {
+        video: {
+          file: file,
+          fileName: file.name,
+          status: shared.ELEMENT_STATE.UPLOADING,
+          error: null
+        }
       });
     }
   },
@@ -943,10 +1321,89 @@ var script$8 = {
 };
 
 /* script */
-var __vue_script__$8 = script$8;
+var __vue_script__$b = script$b;
 /* template */
 
-var __vue_render__$8 = function __vue_render__() {
+var __vue_render__$b = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c('span', [!_vm.video.fileName ? _c('upload-btn', {
+    attrs: {
+      "label": "Upload Sprout video",
+      "accept": "video/*"
+    },
+    on: {
+      "change": _vm.upload
+    }
+  }) : _c('v-text-field', {
+    attrs: {
+      "value": _vm.video.fileName,
+      "readonly": "",
+      "hide-details": "",
+      "filled": ""
+    },
+    scopedSlots: _vm._u([{
+      key: "prepend-inner",
+      fn: function fn() {
+        return [_c('v-icon', [_vm._v("mdi-video")])];
+      },
+      proxy: true
+    }])
+  })], 1);
+};
+
+var __vue_staticRenderFns__$b = [];
+/* style */
+
+var __vue_inject_styles__$b = undefined;
+/* scoped */
+
+var __vue_scope_id__$b = "data-v-728d3982";
+/* module identifier */
+
+var __vue_module_identifier__$b = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$b = false;
+/* style inject */
+
+/* style inject SSR */
+
+var VideoUpload = normalizeComponent_1({
+  render: __vue_render__$b,
+  staticRenderFns: __vue_staticRenderFns__$b
+}, __vue_inject_styles__$b, __vue_script__$b, __vue_scope_id__$b, __vue_is_functional_template__$b, __vue_module_identifier__$b, undefined, undefined);
+
+//
+var script$c = {
+  name: 'tce-sprout-video-toolbar',
+  inject: ['$elementBus'],
+  props: {
+    element: {
+      type: Object,
+      required: true
+    }
+  },
+  methods: {
+    emitSave: function emitSave(payload) {
+      this.$elementBus.emit('save', payload);
+    }
+  },
+  components: {
+    VideoUpload: VideoUpload,
+    CaptionUpload: CaptionUpload
+  }
+};
+
+/* script */
+var __vue_script__$c = script$c;
+/* template */
+
+var __vue_render__$c = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -963,53 +1420,53 @@ var __vue_render__$8 = function __vue_render__() {
     staticClass: "pl-1 text-left"
   }, [_vm._v("Sprout Video")]), _vm._v(" "), _c('v-toolbar-items', {
     staticClass: "mx-auto"
-  }, [!_vm.fileName ? _c('upload-btn', {
-    staticClass: "upload-btn",
-    attrs: {
-      "label": "Upload Sprout video"
-    },
+  }, [_c('video-upload', _vm._b({
     on: {
-      "change": _vm.upload
+      "save": _vm.emitSave
     }
-  }) : _c('v-text-field', {
-    attrs: {
-      "value": _vm.fileName,
-      "readonly": "",
-      "hide-details": "",
-      "filled": ""
+  }, 'video-upload', _vm.element.data, false)), _vm._v(" "), _c('caption-upload', _vm._b({
+    on: {
+      "save": _vm.emitSave
     }
-  })], 1)], 1);
+  }, 'caption-upload', _vm.element.data, false))], 1)], 1);
 };
 
-var __vue_staticRenderFns__$8 = [];
+var __vue_staticRenderFns__$c = [];
 /* style */
 
-var __vue_inject_styles__$8 = undefined;
+var __vue_inject_styles__$c = undefined;
 /* scoped */
 
-var __vue_scope_id__$8 = "data-v-d869c812";
+var __vue_scope_id__$c = "data-v-37103988";
 /* module identifier */
 
-var __vue_module_identifier__$8 = undefined;
+var __vue_module_identifier__$c = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$8 = false;
+var __vue_is_functional_template__$c = false;
 /* style inject */
 
 /* style inject SSR */
 
 var Toolbar = normalizeComponent_1({
-  render: __vue_render__$8,
-  staticRenderFns: __vue_staticRenderFns__$8
-}, __vue_inject_styles__$8, __vue_script__$8, __vue_scope_id__$8, __vue_is_functional_template__$8, __vue_module_identifier__$8, undefined, undefined);
+  render: __vue_render__$c,
+  staticRenderFns: __vue_staticRenderFns__$c
+}, __vue_inject_styles__$c, __vue_script__$c, __vue_scope_id__$c, __vue_is_functional_template__$c, __vue_module_identifier__$c, undefined, undefined);
 
 var initState = function initState() {
   return {
-    fileName: null,
-    videoId: null,
-    playable: false,
-    status: null,
-    error: null
+    video: {
+      id: null,
+      fileName: null,
+      playable: false,
+      status: null,
+      error: null
+    },
+    caption: {
+      id: null,
+      fileName: null,
+      status: null
+    }
   };
 };
 /**

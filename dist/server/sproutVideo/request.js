@@ -1,6 +1,7 @@
 'use strict';
 
 const axios = require('axios');
+const { DEFAULT_ERROR_MSG } = require('../../server');
 const httpError = require('http-errors');
 
 class Request {
@@ -25,6 +26,10 @@ class Request {
       .catch(toHttpError);
   }
 
+  delete(url, options = {}) {
+    return this._client.delete(url, options);
+  }
+
   get prefixUrl() {
     return this._client.defaults.baseURL;
   }
@@ -36,7 +41,15 @@ function toHttpError(error) {
   const { response } = error;
   if (!response) return Promise.reject(error);
   const { status, data: { error: message } } = response;
-  return Promise.reject(httpError(status, message));
+  return Promise.reject(httpError(status, stringifyError(message)));
+}
+
+function stringifyError(error) {
+  if (!error) return DEFAULT_ERROR_MSG;
+  if (typeof error === 'string') return error;
+  const errors = error.errors || {};
+  return Object.keys(errors)
+    .reduce((message, prop) => `${message}${prop}: ${errors[prop]}. `, '');
 }
 
 module.exports = Request;

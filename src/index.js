@@ -3,11 +3,18 @@ import info from './info';
 import Toolbar from './edit/Toolbar.vue';
 
 const initState = () => ({
-  fileName: null,
-  videoId: null,
-  playable: false,
-  status: null,
-  error: null
+  video: {
+    id: null,
+    fileName: null,
+    playable: false,
+    status: null,
+    error: null
+  },
+  caption: {
+    id: null,
+    fileName: null,
+    status: null
+  }
 });
 
 export { Edit, Toolbar };

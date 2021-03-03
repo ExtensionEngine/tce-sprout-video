@@ -2,7 +2,7 @@
 
 const TOKEN_TTL = 300; // time to live in seconds --> 5 minutes
 
-class Videos {
+class Video {
   constructor(request) {
     this._request = request;
   }
@@ -22,4 +22,4 @@ class Videos {
   }
 }
 
-module.exports = Videos;
+module.exports = Video;
