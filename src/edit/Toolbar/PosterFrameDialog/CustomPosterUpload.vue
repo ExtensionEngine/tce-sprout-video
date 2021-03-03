@@ -6,9 +6,8 @@
       accept="image/jpeg"
       small depressed />
     <p
-      v-if="maxSize"
-      :class="{ 'error--text': isOverMaxSize }"
-      class="mt-1 text-caption">
+      :class="{ 'msg-hidden': !isOverMaxSize }"
+      class="mt-1 mb-0 text-caption error--text">
       Poster frame must be under {{ maxSizeInKb }}KB.
     </p>
   </div>
@@ -51,3 +50,9 @@ export default {
   components: { UploadBtn }
 };
 </script>
+
+<style lang="scss" scoped>
+.msg-hidden {
+  visibility: hidden;
+}
+</style>

@@ -1380,12 +1380,12 @@ var __vue_render__$b = function __vue_render__() {
         _vm.validateSize($event) && _vm.upload($event);
       }
     }
-  }), _vm._v(" "), _vm.maxSize ? _c('p', {
-    staticClass: "mt-1 text-caption",
+  }), _vm._v(" "), _c('p', {
+    staticClass: "mt-1 mb-0 text-caption error--text",
     "class": {
-      'error--text': _vm.isOverMaxSize
+      'msg-hidden': !_vm.isOverMaxSize
     }
-  }, [_vm._v("\n    Poster frame must be under " + _vm._s(_vm.maxSizeInKb) + "KB.\n  ")]) : _vm._e()], 1);
+  }, [_vm._v("\n    Poster frame must be under " + _vm._s(_vm.maxSizeInKb) + "KB.\n  ")])], 1);
 };
 
 var __vue_staticRenderFns__$b = [];
@@ -1394,7 +1394,7 @@ var __vue_staticRenderFns__$b = [];
 var __vue_inject_styles__$b = undefined;
 /* scoped */
 
-var __vue_scope_id__$b = undefined;
+var __vue_scope_id__$b = "data-v-075fc2e4";
 /* module identifier */
 
 var __vue_module_identifier__$b = undefined;
