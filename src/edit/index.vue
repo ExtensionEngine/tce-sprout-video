@@ -27,19 +27,19 @@
 </template>
 
 <script>
-import { DEFAULT_ERROR_MSG, ELEMENT_STATE } from '../shared';
+import { DEFAULT_ERROR_MSG, ELEMENT_STATE } from '@/shared';
 import cloneDeep from 'lodash/cloneDeep';
 import createUpload from '../upload';
-import ElementPlaceholder from '../tce-core/ElementPlaceholder.vue';
+import ElementPlaceholder from '@/tce-core/ElementPlaceholder.vue';
 import ErrorMessage from './ErrorMessage.vue';
 import get from 'lodash/get';
 import omit from 'lodash/omit';
-import PreviewOverlay from '../tce-core/PreviewOverlay.vue';
+import PreviewOverlay from '@/tce-core/PreviewOverlay.vue';
 import ProgressMessage from './ProgressMessage.vue';
 import SproutPlayer from './SproutPlayer.vue';
 
 const UPLOAD_FAILED_ERROR_MSG = 'Video upload failed. Please try again.';
-const UPLOADING_MSG = 'Video is uploading... Do not leave the page.';
+const UPLOADING_MSG = 'Video is uploading. Please do not leave the page.';
 const PROCESSING_MSG = 'Video is processing...';
 
 export default {

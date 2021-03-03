@@ -2,14 +2,21 @@
 
 const { createClient } = require('./sproutVideo');
 const { ELEMENT_STATE } = require('../shared');
+const isNil = require('lodash/isNil');
+const unset = require('lodash/unset');
 
 async function beforeSave(asset, { config: { tce } }) {
   const { sproutVideoApiKey: apiKey } = tce;
   const client = createClient({ apiKey });
   const { id: videoId, playable } = asset.data.video;
-  if (!videoId || !playable) return deleteTemporaryAssetProps(asset);
+  if (!videoId || !playable) {
+    deleteTemporaryAssetProps(asset);
+    return asset;
+  }
   await processCaption(asset, client);
-  return deleteTemporaryAssetProps(asset);
+  await updatePosterFrame(asset, client);
+  deleteTemporaryAssetProps(asset);
+  return asset;
 }
 
 function processCaption(asset, client) {
@@ -32,12 +39,28 @@ function processCaption(asset, client) {
     });
 }
 
+function updatePosterFrame(asset, client) {
+  const { id: videoId, customPosterFrame, posterFrameIndex } = asset.data.video;
+  const isPosterUpdated = customPosterFrame || !isNil(posterFrameIndex);
+  if (!isPosterUpdated) return;
+  return client.videos.updatePosterFrame(videoId, {
+    customPosterFrame,
+    posterFrameIndex
+  });
+}
+
 function deleteTemporaryAssetProps(asset) {
-  delete asset.data.caption.content;
-  delete asset.data.video.embedCode;
-  delete asset.data.video.token;
-  delete asset.data.video.uploadUrl;
-  return asset;
+  const temporaryProps = [
+    'caption.content',
+    'video.embedCode',
+    'video.token',
+    'video.uploadUrl',
+    'video.customPosterFrame',
+    'video.posterFrameIndex',
+    'video.posterFrames',
+    'video.selectedPosterFrameIndex'
+  ];
+  temporaryProps.map(path => unset(asset.data, path));
 }
 
 async function afterSave(asset, { config: { tce } }, options = {}) {
@@ -76,8 +99,10 @@ function afterLoaded(asset, { config: { tce } }) {
   const { sproutVideoApiKey: apiKey } = tce;
   const client = createClient({ apiKey });
   return client.videos.get(videoId)
-    .then(({ embed_code: embedCode }) => {
+    .then(({ embedCode, selectedPosterFrameIndex, assets }) => {
       asset.data.video.embedCode = embedCode.replace(/'/g, '"');
+      asset.data.video.selectedPosterFrameIndex = selectedPosterFrameIndex;
+      asset.data.video.posterFrames = assets.posterFrames;
       return asset;
     })
     .catch(error => setAssetError(asset, error));

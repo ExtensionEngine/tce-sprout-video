@@ -1,5 +1,8 @@
 'use strict';
 
+const camelCaseKeys = require('camelcase-keys');
+const FormData = require('form-data');
+
 const TOKEN_TTL = 300; // time to live in seconds --> 5 minutes
 
 class Video {
@@ -8,7 +11,32 @@ class Video {
   }
 
   get(id) {
-    return this._request.get(`videos/${id}`);
+    return this._request.get(`videos/${id}`)
+      .then(res => camelCaseKeys(res, { deep: true }))
+      .then(({ selectedPosterFrameNumber, ...rest }) => ({
+        ...rest,
+        selectedPosterFrameIndex: selectedPosterFrameNumber
+      }));
+  }
+
+  async updatePosterFrame(id, { customPosterFrame, posterFrameIndex }) {
+    if (!customPosterFrame) {
+      return this._request.put(
+        `videos/${id}`,
+        { posterframe_number: posterFrameIndex }
+      );
+    }
+    const base64Pattern = /^data:image\/(\w+);base64,/;
+    const buffer = Buffer
+      .from(customPosterFrame.replace(base64Pattern, ''), 'base64');
+    const formData = new FormData();
+    formData.append('custom_poster_frame', buffer);
+    const contentLength = await getContentLength(formData);
+    const headers = {
+      ...formData.getHeaders(),
+      'Content-Length': contentLength
+    };
+    return this._request.put(`videos/${id}`, formData, { headers });
   }
 
   getDelegatedToken() {
@@ -20,6 +48,12 @@ class Video {
     const url = new URL('v1/videos', baseUrl);
     return url.href;
   }
+}
+
+function getContentLength(formData) {
+  return new Promise((resolve, reject) => {
+    formData.getLength((err, length) => err ? reject(err) : resolve(length));
+  });
 }
 
 module.exports = Video;

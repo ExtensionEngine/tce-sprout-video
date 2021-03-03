@@ -4,12 +4,14 @@
     <v-toolbar-items class="mx-auto">
       <video-upload @save="emitSave" v-bind="element.data" />
       <caption-upload @save="emitSave" v-bind="element.data" />
+      <poster-frame-dialog @save="emitSave" v-bind="element.data.video" />
     </v-toolbar-items>
   </v-toolbar>
 </template>
 
 <script>
 import CaptionUpload from './CaptionUpload.vue';
+import PosterFrameDialog from './PosterFrameDialog/index.vue';
 import VideoUpload from './VideoUpload.vue';
 
 export default {
@@ -23,7 +25,7 @@ export default {
       this.$elementBus.emit('save', payload);
     }
   },
-  components: { VideoUpload, CaptionUpload }
+  components: { VideoUpload, CaptionUpload, PosterFrameDialog }
 };
 </script>
 

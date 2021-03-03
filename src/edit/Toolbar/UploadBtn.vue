@@ -11,6 +11,7 @@
     {{ label }}
     <input
       ref="uploadInput"
+      @click="$refs.uploadInput.value = null"
       @change="$emit('change', $event)"
       :accept="accept"
       type="file"
@@ -21,7 +22,6 @@
 <script>
 export default {
   name: 'video-upload-btn',
-  inheritAttrs: false,
   props: {
     label: { type: String, required: true },
     accept: { type: String, default: 'video/*' }

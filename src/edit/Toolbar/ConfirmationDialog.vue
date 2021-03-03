@@ -9,13 +9,13 @@
     </template>
     <template #actions>
       <v-btn @click="dialog = false" color="primary" text>Close</v-btn>
-      <v-btn @click="confirm" color="error" text>Delete caption</v-btn>
+      <v-btn @click="confirm" color="secondary" text>Delete caption</v-btn>
     </template>
   </tailor-dialog>
 </template>
 
 <script>
-import TailorDialog from '../tce-core/TailorDialog.vue';
+import TailorDialog from '@/tce-core/TailorDialog.vue';
 
 export default {
   name: 'confirmation-dialog',

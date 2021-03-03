@@ -30,5 +30,9 @@ export default {
 .player {
   min-height: 22.5rem;
   background: #000;
+
+  ::v-deep .sproutvideo-player {
+    max-width: 100%;
+  }
 }
 </style>

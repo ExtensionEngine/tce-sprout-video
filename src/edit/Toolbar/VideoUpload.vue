@@ -3,8 +3,7 @@
     <upload-btn
       v-if="!video.fileName"
       @change="upload"
-      label="Upload Sprout video"
-      accept="video/*" />
+      label="Upload Sprout video" />
     <v-text-field
       v-else
       :value="video.fileName"
@@ -17,7 +16,7 @@
 </template>
 
 <script>
-import { ELEMENT_STATE } from '../shared';
+import { ELEMENT_STATE } from '@/shared';
 import UploadBtn from './UploadBtn.vue';
 
 export default {
