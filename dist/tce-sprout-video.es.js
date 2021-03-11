@@ -904,7 +904,7 @@ var __vue_render__$7 = function __vue_render__() {
   }, 'v-dialog', _vm.$attrs, false), _vm.$listeners), [_vm._v(" "), _c('v-card', {
     staticClass: "dialog"
   }, [_c('v-card-title', {
-    staticClass: "dialog-title primary darken-1",
+    staticClass: "dialog-title primary darken-3",
     attrs: {
       "primary-title": ""
     }
@@ -934,7 +934,7 @@ var __vue_staticRenderFns__$7 = [];
 var __vue_inject_styles__$7 = undefined;
 /* scoped */
 
-var __vue_scope_id__$7 = "data-v-cfd2a3d2";
+var __vue_scope_id__$7 = "data-v-2acf1756";
 /* module identifier */
 
 var __vue_module_identifier__$7 = undefined;
